@@ -2,11 +2,12 @@ version: "3.8"
 
 services:
   mongo:
+    image: carvin/mongo:latest
     build:
       context: docker-assets/mongo/
       dockerfile: Dockerfile
       shm_size: "2gb"
-    image: carvin/mongo:latest
+    container_name: "carvin_mongo"
     init: true
     volumes:
       - data_db_mongodb:/data/db
@@ -14,8 +15,6 @@ services:
       - var_log_mongodb:/var/log/mongodb
     ports:
       - "0.0.0.0:27017:27017"
-      - "0.0.0.0:27018:27018"
-      - "0.0.0.0:27019:27019"
     networks:
       - db
     ulimits:
@@ -34,14 +33,15 @@ services:
 
   mysql:
     image: carvin/mysql:latest
+    container_name: "carvin_mysql"
     build:
       context: ./docker-assets/mysql
       args:
         tz: Etc/UTC
+      shm_size: "2gb"
     environment:
-      MYSQL_ROOT_PASSWORD: 127656
+      MYSQL_ROOT_PASSWORD: "127656"
       MYSQL_ROOT_HOST: "%"
-      APP_ENV: local
       TZ: Etc/UTC
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always

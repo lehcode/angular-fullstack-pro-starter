@@ -5,6 +5,7 @@ module.exports = {
     experimentalDecorators: true,
     forceConsistentCasingInFileNames: true,
     inlineSourceMap: true,
+    sourceMap: true,
     lib: ['es2019', 'es2020.bigint', 'es2020.string', 'es2020.symbol.wellknown'],
     module: 'commonjs',
     noImplicitAny: true,

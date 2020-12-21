@@ -9,18 +9,18 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Build and Test
-            caches:
-              - node
-            script:
-              - cd ui
-              - npm install
-              - npm test
-        - step:
             name: Code linting
             script:
               - cd ui
-              - npm install eslint
-              - npm run lint
+              - npm install
+              - npm run lint:ci
+              - npm run lint:css
             caches:
               - node
+        - step:
+            name: Test and Build
+            caches:
+              - node
+            script:
+              - npm test
+              - npm run build
