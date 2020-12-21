@@ -21,11 +21,7 @@ pipelines:
             name: Lint API
             caches:
               - node
-            script:
-              - cd ../api
-              - npm install
-              - npm run lint:ci
-              - npm run lint:css
+            name: Code linting
         - step:
             name: Test and Build UI
             caches:
