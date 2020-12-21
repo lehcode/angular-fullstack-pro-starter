@@ -7,10 +7,11 @@ services:
     image: carvin/api:latest
     environment:
       TZ: Etc/UTC
+      NODE_ENV: test
+    env_file: ./api/.env
     tty: true
     volumes:
       - ./api:/home/node/carvin/api
-    env_file: ./api/.env
     ports:
       - "0.0.0.0:3000:3000"
       - "0.0.0.0:3443:3443"
@@ -28,16 +29,19 @@ services:
     image: carvin/front:latest
     environment:
       TZ: Etc/UTC
-      API_HOST: api.carvin.local
+      NODE_ENV: test
+    env_file:
+      - ui/.env
     tty: true
     volumes:
       - ./ui:/home/node/carvin/ui
     ports:
+      - "0.0.0.0:4000:4000"
       - "0.0.0.0:4200:4200"
     networks:
       backend:
         aliases:
-          - front.carvin.local
+          - carvin.local
     depends_on:
       - api
 
