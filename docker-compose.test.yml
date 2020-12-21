@@ -2,45 +2,29 @@ version: "3.8"
 
 services:
   api:
-    build:
-      context: ./api
-    image: carvin/api:latest
+    image: carvin/api:test
+    container_name: carvin-api-test
     environment:
-      TZ: Etc/UTC
-    tty: true
-    volumes:
-      - ./api:/home/node/carvin/api
-    env_file: ./api/.env
-    ports:
-      - "0.0.0.0:3000:3000"
-      - "0.0.0.0:3443:3443"
-    networks:
-      backend:
-        aliases:
-          - api.carvin.local
-    depends_on:
-      - mongo
-      - mysql
+      MONGO_DB: carvin-test
+      MONGO_HOST: carvin-mongo-test
+      MONGO_PARAMS: "authSource=admin&ssl=true"
+      MONGO_PASS: Dev_Pass123
+      MONGO_USER: carvinTest
+      NODE_ENV: test
+    command: "yarn test"
+    tty: false
 
   front:
-    build:
-      context: ./ui
-    image: carvin/front:latest
+    image: carvin/front:test
+    container_name: carvin-ui-test
     environment:
-      TZ: Etc/UTC
-      API_HOST: api.carvin.local
-    tty: true
-    volumes:
-      - ./ui:/home/node/carvin/ui
-    ports:
-      - "0.0.0.0:4200:4200"
-    networks:
-      backend:
-        aliases:
-          - front.carvin.local
-    depends_on:
-      - api
+      NODE_ENV: test
+    command: "yarn test"
+    tty: false
 
-networks:
-  api:
-    driver: bridge
+  mongo:
+    container_name: carvin-mongo-test
+    environment:
+      MONGO_INITDB_DATABASE: carvin-test
+      MONGO_INITDB_ROOT_PASSWORD: Dev_Pass123
+      MONGO_INITDB_ROOT_USERNAME: carvinTest

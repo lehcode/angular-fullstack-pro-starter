@@ -1,0 +1,40 @@
+org: lehcode
+app: starter-api
+service: starter-api
+frameworkVersion: ^2.21.1
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-plugin-optimize
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: local
+  region: eu-central-1
+
+  environment:
+    MONGO_HOST: "mongo-prod.com"
+    MONGO_PORT: 27017
+    MONGO_DB: "starter-prod"
+    MONGO_USER: "StarterProd"
+    MONGO_PASS: "SeKRet_Pass!"
+    MONGO_PARAMS: "?authSource=admin&ssl=false&w=majority&readPreference=primary&retryWrites=true"
+
+package:
+  exclude:
+    - .idea/
+    - .git/**
+    - test/**
+    - e2e/**
+    - README.md
+
+functions:
+  app:
+    handler: src/lambda.handler
+    events:
+      - http:
+          cors: true
+          path: '/{any+}'
+          method: any

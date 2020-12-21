@@ -1,0 +1,39 @@
+image: node:10.15.3
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: UI Code Lint
+            caches:
+              - node
+            script:
+              - npm install --force -g yarn
+              - cd ./apps/ui
+              - yarn install
+              - yarn lint
+        - step:
+            name: UI Test and Build
+            caches:
+              - node
+            script:
+              - cd ./apps/ui
+              - yarn test
+              - yarn build
+        - step:
+            name: API Code Lint & Test
+            caches:
+              - node
+            script:
+              - cd ./apps/api
+              - yarn install
+              - yarn lint
+              - yarn test
+        - step:
+            name: Build API
+            caches:
+              - node
+            script:
+              - cd ./apps/api
+              - yarn install
+              - yarn build
