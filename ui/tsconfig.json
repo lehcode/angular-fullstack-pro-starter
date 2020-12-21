@@ -8,7 +8,6 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
     "inlineSourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -21,11 +20,26 @@
     "lib": [
       "es2018",
       "dom"
+    ],
+    "types": [
+      "node",
+      "express",
+      "jest"
     ]
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/@types/jest/index.d.ts",
+    "node_modules/@types/node/index.d.ts",
+    "node_modules/@types/express/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "*.js"
+  ]
 }

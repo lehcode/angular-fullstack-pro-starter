@@ -5,13 +5,13 @@
     "outDir": "./out-tsc/server",
     "target": "es2016",
     "types": [
-      "node"
+      "node",
+      "express"
     ]
   },
   "files": [
     "src/main.server.ts",
-    "server.ts",
-    "server.ts"
+    "src/server.ts",
   ],
   "angularCompilerOptions": {
     "entryModule": "./src/app/app.server.module#AppServerModule"
