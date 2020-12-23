@@ -10,7 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json"
+          "tsconfig.eslint.json"
         ],
         "createDefaultProgram": true
       },
@@ -35,7 +35,9 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "quotes": "off",
+        "@typescript-eslint/quotes": ["error"]
       }
     },
     {
