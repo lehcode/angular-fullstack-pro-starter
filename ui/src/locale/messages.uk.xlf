@@ -2,22 +2,25 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="ru" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="frontpage.heroHeading" datatype="html">
+      <trans-unit id="frontpage.hero_heading" datatype="html">
         <source>Декодировать VIN автомобиля</source>
+        <target>Декодувати VIN автомобіля</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="frontpage.heroLead" datatype="html">
+      <trans-unit id="frontpage.hero_lead" datatype="html">
         <source>Узнать историю автомобиля до покупки!</source>
+        <target>Дізнатися історію автомобіля до покупки!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="global.orderNow" datatype="html">
-        <source>Заказать отчет</source>
+      <trans-unit id="global.order_now" datatype="html">
+        <source>Заказать отчёт</source>
+        <taget>Отримати звіт</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">5</context>
