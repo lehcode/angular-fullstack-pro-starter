@@ -4,6 +4,18 @@
   "newProjectRoot": "projects",
   "projects": {
     "ui": {
+      "i18n": {
+        "sourceLocale": {
+          "code": "ru",
+          "baseHref": ""
+        },
+        "locales": {
+          "uk": {
+            "translation": "src/locale/messages.uk.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -31,8 +43,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              "src/assets/scss/mat-theme.scss"
             ],
             "scripts": []
           },
@@ -95,8 +106,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              "src/assets/scss/mat-theme.scss"
             ],
             "scripts": [],
             "codeCoverage": true

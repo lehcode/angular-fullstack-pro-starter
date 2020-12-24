@@ -16,7 +16,7 @@
     "prerender": "ng run ui:prerender",
     "prettier:format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "serve:ssr": "node dist/ui/server/main.js",
-    "start": "ng serve --host 0.0.0.0 --publicHost=carvin.local --port 4300",
+    "start": "ng serve --host 0.0.0.0 --publicHost=carvin.local --port 4300 --watch",
     "test": "ng test ui",
     "test:watch": "ng test ui --reporters dots,kjhtml --browsers Chrome --watch"
   },
@@ -47,6 +47,7 @@
     "@angular-eslint/template-parser": "0.8.0-beta.6",
     "@angular/cli": "~11.0.5",
     "@angular/compiler-cli": "^11.0.5",
+    "@angular/localize": "^11.0.5",
     "@nguniversal/builders": "^11.0.1",
     "@types/express": "^4.17.9",
     "@types/jasmine": "^3.6.2",
