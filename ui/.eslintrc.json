@@ -1,7 +1,13 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "coverage/**/*",
+    "dist/**/*",
+    "node_modules/**/*",
+    "out-tsc/**/*",
+    "uml/**/*",
+    "src/**/fonts",
+    "src/locale"
   ],
   "overrides": [
     {

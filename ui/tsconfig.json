@@ -26,7 +26,12 @@
       "jasmine",
       "node",
       "express"
-    ]
+    ],
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
