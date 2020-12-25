@@ -8,9 +8,8 @@ describe('FrontPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FrontPageComponent ]
-    })
-    .compileComponents();
+      declarations: [FrontPageComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -22,4 +21,20 @@ describe('FrontPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render hero heading', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.hero__content h1').textContent).toBe('Проверить VIN авто бесплатно');
+  });
+
+  xit('should render hero lead');
+
+  xit('should render VIN search form', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.content span').textContent).toContain('ui app is running!');
+  });
+
+  xit('should render button');
 });

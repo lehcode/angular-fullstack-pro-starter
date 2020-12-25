@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {MatInputModule} from '@angular/material/input';
 import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';

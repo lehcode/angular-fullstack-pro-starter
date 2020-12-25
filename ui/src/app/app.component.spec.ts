@@ -16,16 +16,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have a title 'ui'`, () => {
+  it(`should have a title 'CARVIN :: Расшифровка VIN-кода автомобиля'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ui');
-  });
-
-  xit('should render VIN search form', () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.nativeElement;
-  //   expect(compiled.querySelector('.content span').textContent).toContain('ui app is running!');
+    expect(app.title).toEqual('CARVIN :: Расшифровка VIN-кода автомобиля');
   });
 });
