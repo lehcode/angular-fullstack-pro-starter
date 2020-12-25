@@ -2,13 +2,21 @@
   "root": true,
   "ignorePatterns": [
     "coverage/**/*",
-    "dist/**/*",
-    "node_modules/**/*",
-    "out-tsc/**/*",
-    "uml/**/*",
-    "src/**/fonts",
-    "src/locale"
+    "src/assets/fonts",
+    "src/locale",
+    "node_modules"
   ],
+  "plugins": [
+    "html"
+  ],
+  "settings": {
+    "html/html-extensions": [
+      ".html"
+    ],
+    "html/indent": "0",
+    // code should start at the beginning of the line (no initial indentation).
+    "html/report-bad-indent": "error"
+  },
   "overrides": [
     {
       "files": [
@@ -26,6 +34,13 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "newline-per-chained-call": [
+          "error",
+          {
+            "ignoreChainWithDepth": 2
+          }
+        ],
+        "quotes": "off",
         "@angular-eslint/component-selector": [
           "error",
           {
@@ -42,8 +57,9 @@
             "style": "camelCase"
           }
         ],
-        "quotes": "off",
-        "@typescript-eslint/quotes": ["error"]
+        "@typescript-eslint/quotes": [
+          "error"
+        ]
       }
     },
     {
