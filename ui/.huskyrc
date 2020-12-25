@@ -1,5 +1,5 @@
 {
  "hooks": {
-   "pre-commit": "yarn lint:added:ts && yarn lint:added:scss"
+   "pre-commit": "yarn lint-added-ts && yarn lint-added-scss && lint-added-html"
  }
 }
