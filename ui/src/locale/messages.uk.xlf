@@ -3,28 +3,30 @@
   <file source-language="ru" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="frontpage.hero_heading" datatype="html">
-        <source>Декодировать VIN автомобиля</source>
-        <target>Декодувати VIN автомобіля</target>
+        <source>Проверить VIN авто бесплатно</source>
+        <target>Перевірити VIN авто безкоштовно</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="frontpage.hero_lead" datatype="html">
-        <source>Узнать историю автомобиля до покупки!</source>
-        <target>Дізнатися історію автомобіля до покупки!</target>
+        <source>Узнать историю автомобиля по коду VIN до покупки!</source>
+        <target>Дізнатися історію автомобіля за кодом VIN до покупки!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="global.order_now" datatype="html">
-        <source>Заказать отчёт</source>
-        <taget>Отримати звіт</target>
+      <trans-unit id="frontpage.check_vin" datatype="html">
+        <source>Проверить</source>
+        <taget>Перевірити VIN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/front-page/front-page.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
+        <note priority="1" from="description">Form submit button</note>
+        <note priority="1" from="meaning">button</note>
       </trans-unit>
     </body>
   </file>
