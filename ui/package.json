@@ -38,7 +38,7 @@
     "@angular/router": "~11.0.5",
     "@nguniversal/express-engine": "^11.0.1",
     "express": "^4.15.2",
-    "karma-html-reporter": "^0.2.7",
+    "ngx-logger": "^4.1.9",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -75,6 +75,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "prettier": "^2.2.1",
+    "protractor": "^7.0.0",
     "stylelint": "^13.8.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
