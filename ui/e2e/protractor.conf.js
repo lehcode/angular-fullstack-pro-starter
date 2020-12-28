@@ -15,7 +15,7 @@ exports.config = {
   },
   directConnect: true,
   SELENIUM_PROMISE_MANAGER: false,
-  baseUrl: 'http://localhost:4300/',
+  baseUrl: 'http://localhost:4200/', // SSR server port
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
