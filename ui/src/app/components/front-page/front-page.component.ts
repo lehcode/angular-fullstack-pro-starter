@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-front-page',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./front-page.component.scss']
 })
 export class FrontPageComponent implements OnInit {
+  public title = 'CARVIN :: Расшифровка VIN-кода автомобиля';
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+      private titleService: Title,
+      private logger: NGXLogger
+  ) {
   }
 
+  ngOnInit(): void {
+    this.titleService.setTitle(this.title);
+  }
 }
