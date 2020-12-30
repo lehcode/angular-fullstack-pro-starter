@@ -44,14 +44,6 @@ module.exports = {
         semi: true,
         singleQuote: false,
       },
-    },
-    {
-      files: ['*.scss', '*.sass', '*.css'],
-      options: {
-        tabWidth: 2,
-        semi: true,
-        singleQuote: false,
-      },
-    },
+    }
   ],
 };
