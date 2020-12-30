@@ -1,1 +1,14 @@
-@import "layout";
+@import "includes/colors";
+
+mat-form-field {
+  .mat-form-field-hint-wrapper {
+    display: block;
+    text-align: center;
+  }
+
+  mat-hint {
+    a {
+      color: mat-color(mat-palette($ui-accent, A400));
+    }
+  }
+}

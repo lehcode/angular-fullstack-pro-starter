@@ -36,14 +36,16 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "tsconfig.json",
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
+              "src/assets/fonts",
+              "src/assets/images",
               "src/robots.txt"
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/scss/mat-theme.scss"
             ],
             "scripts": []
@@ -123,6 +125,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/scss/mat-theme.scss"
             ],
             "scripts": [],

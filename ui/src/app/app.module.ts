@@ -1,23 +1,18 @@
 import { BrowserModule, Title as TitleService } from '@angular/platform-browser';
-import { MatInputModule } from '@angular/material/input';
 import { LOCALE_ID, NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VinResultsComponent } from './components/vin-results/vin-results.component';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
-import { FrontPageComponent } from './components/front-page/front-page.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-
+import { LayoutModule } from '~/app/layout/layout.module';
 import '@angular/common/locales/global/ru';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VinResultsComponent,
-    ErrorPageComponent,
-    FrontPageComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
@@ -27,8 +22,18 @@ import '@angular/common/locales/global/ru';
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.INFO,
       serverLogLevel: NgxLoggerLevel.ERROR,
-      colorScheme: ['purple', 'teal', 'gray', 'gray', 'red', 'red', 'red']
-    })
+      colorScheme: [
+        'purple',
+        'teal',
+        'gray',
+        'gray',
+        'red',
+        'red',
+        'red'
+      ]
+    }),
+    LayoutModule,
+    HttpClientModule, // ngx-logger fails without it
   ],
   providers: [
     TitleService,
@@ -37,9 +42,7 @@ import '@angular/common/locales/global/ru';
       useValue: 'ru'
     }
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

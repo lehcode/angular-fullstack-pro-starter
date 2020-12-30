@@ -1,27 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { VinResultsComponent } from '~/app/components/vin-results/vin-results.component';
-import { ErrorPageComponent } from '~/app/components/error-page/error-page.component';
-import { FrontPageComponent } from '~/app/components/front-page/front-page.component';
+import { PageNotFoundComponent } from '~/app/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  {path: 'vin-search-result', component: VinResultsComponent},
-  {path: 'admin', loadChildren: () => import('./modules/domain/admin/admin.module').then((m) => m.AdminModule)},
   {
-    path: 'purchase-report',
-    loadChildren: () => import('./modules/domain/vin-report/vin-report.module').then((m) => m.VinReportModule)
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then((mod) => mod.AdminModule),
+    data: {
+      showSideBar: true
+    }
   },
-  {path: 'blog', loadChildren: () => import('./modules/domain/blog/blog.module').then(m => m.BlogModule)},
-  {path: '', component: FrontPageComponent},
-  {path: '**', component: ErrorPageComponent}
+  {path: '', loadChildren: () => import('./front-page/front-page.module').then((mod) => mod.FrontPageModule)},
+  {path: 'vin-decode', loadChildren: () => import('./vin-decode/vin-decode.module').then((mod) => mod.VinDecodeModule)},
+  {path: 'vin-report', loadChildren: () => import('./vin-report/vin-report.module').then((mod) => mod.VinReportModule)},
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      initialNavigation: 'enabled'
-    })
-  ],
+  imports: [RouterModule.forRoot(routes, {initialNavigation: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
