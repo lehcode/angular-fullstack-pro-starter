@@ -1,0 +1,5 @@
+@import "src/assets/scss/mat-theme";
+
+.navbar {
+  background: mat-color(mat-palette($ui-primary));
+}

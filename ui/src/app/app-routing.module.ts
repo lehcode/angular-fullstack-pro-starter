@@ -10,7 +10,13 @@ const routes: Routes = [
       showSideBar: true
     }
   },
-  {path: '', loadChildren: () => import('./front-page/front-page.module').then((mod) => mod.FrontPageModule)},
+  {
+    path: '', loadChildren: () => import('./front-page/front-page.module').then((mod) => mod.FrontPageModule), data: {
+      showGuestNav: true,
+      // showHeader: true,
+      showFooter: true,
+    }
+  },
   {path: 'vin-decode', loadChildren: () => import('./vin-decode/vin-decode.module').then((mod) => mod.VinDecodeModule)},
   {path: 'vin-report', loadChildren: () => import('./vin-report/vin-report.module').then((mod) => mod.VinReportModule)},
   {path: '**', component: PageNotFoundComponent}

@@ -45,8 +45,8 @@
               "src/robots.txt"
             ],
             "styles": [
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/assets/scss/mat-theme.scss"
+              "src/assets/scss/mat-theme.scss",
+              "src/assets/scss/styles.scss"
             ],
             "scripts": []
           },
@@ -125,8 +125,8 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/assets/scss/mat-theme.scss"
+              "src/assets/scss/mat-theme.scss",
+              "src/assets/scss/styles.scss"
             ],
             "scripts": [],
             "codeCoverage": true

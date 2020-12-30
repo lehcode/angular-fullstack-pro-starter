@@ -4,13 +4,25 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  template: `
+      <app-guest-nav *ngIf="showGuestNav"></app-guest-nav>
+      <app-header *ngIf="showHeader"></app-header>
+
+      <div class="context">
+          <app-sidebar *ngIf="showSidebar"></app-sidebar>
+          <div class="content">
+              <router-outlet></router-outlet>
+          </div>
+      </div>
+
+      <app-footer *ngIf="showFooter"></app-footer>`,
 })
 export class AppComponent implements OnInit {
   public title = '';
-  showHeader = false;
-  showSidebar = false;
-  showFooter = false;
+  public showGuestNav = false;
+  public showHeader = false;
+  public showSidebar = false;
+  public showFooter = false;
 
   public constructor(
       private breakpointObserver: BreakpointObserver,
@@ -36,6 +48,8 @@ export class AppComponent implements OnInit {
         this.showSidebar = this.activatedRoute.firstChild.snapshot.data.showSidebar;
         // @ts-ignore
         this.showFooter = this.activatedRoute.firstChild.snapshot.data.showFooter;
+        // @ts-ignore
+        this.showGuestNav = this.activatedRoute.firstChild.snapshot.data.showGuestNav;
       }
     });
   }

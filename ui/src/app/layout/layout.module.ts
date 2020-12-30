@@ -5,13 +5,15 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { GuestNavComponent } from './guest-nav/guest-nav.component';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    GuestNavComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   exports: [
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    GuestNavComponent
   ],
 })
 export class LayoutModule {

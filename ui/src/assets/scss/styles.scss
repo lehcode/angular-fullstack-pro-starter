@@ -1,14 +1,14 @@
-@import "includes/colors";
+@import "mat-theme";
 
-mat-form-field {
-  .mat-form-field-hint-wrapper {
-    display: block;
-    text-align: center;
-  }
+app-root {
+  display: grid !important;
+  grid-template-areas: "app-root";
+}
 
-  mat-hint {
-    a {
-      color: mat-color(mat-palette($ui-accent, A400));
-    }
+.mat-form-field {
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    background: mat-color(mat-palette($ui-accent, A400-contrast));
   }
 }

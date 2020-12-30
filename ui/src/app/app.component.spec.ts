@@ -16,9 +16,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have a title 'CARVIN :: Расшифровка VIN-кода автомобиля'`, () => {
+  it(`should have a title 'RealFreeVIN.com :: Бесплатная расшифровка VIN-кода автомобиля'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('CARVIN :: Расшифровка VIN-кода автомобиля');
+    expect(app.title).toEqual('RealFreeVIN.com :: Бесплатная расшифровка VIN-кода автомобиля');
   });
 });

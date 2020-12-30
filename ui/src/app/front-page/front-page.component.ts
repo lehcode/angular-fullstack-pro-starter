@@ -6,10 +6,10 @@ import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-front-page',
   templateUrl: './front-page.component.html',
-  styleUrls: ['./front-page.component.scss']
+  styleUrls: ['./front-page.component.scss'],
 })
 export class FrontPageComponent implements OnInit {
-  public title = 'CARVIN :: Расшифровка VIN-кода автомобиля';
+  public title = 'RealFreeVIN.com :: Бесплатная расшифровка VIN-кода автомобиля';
   public vinCodeFormControl: FormControl;
 
   constructor(
@@ -24,6 +24,7 @@ export class FrontPageComponent implements OnInit {
   }
 
   submitForm(form: FormGroup) {
+    /* eslint-disable-next-line */
     debugger;
   }
 }

@@ -1,48 +1,58 @@
-@import "../../assets/scss/mat-theme";
-@import "../../assets/scss/styles";
+@import "src/assets/scss/mat-theme";
 
 header {
-  background: mat-color($ui-accent);
+  background: mat-color($ui-accent, 100, .6);
   display: grid;
   grid-template-areas: "hero";
   height: 60vh;
-  max-height: 600rem;
+  max-height: 60rem;
   place-items: center;
 
   > * {
     grid-area: hero;
   }
+}
 
-  .hero-content {
+.hero-content {
+  @include mat-typography-level-to-styles($custom-typography, body-2);
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  z-index: 1;
+}
+
+h1 {
+  @include mat-typography-level-to-styles($custom-typography, display-3);
+}
+
+img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  z-index: -1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+
+  .mat-form-field-hint-wrapper {
+    display: block;
+    text-align: center;
+  }
+
+  .mat-input-element {
     @include mat-typography-level-to-styles($custom-typography, body-2);
 
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-    z-index: 1;
+    font-size: 4.2rem;
   }
 
-  h1 {
-    @include mat-typography-level-to-styles($custom-typography, display-3);
-  }
-
-  img {
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-    z-index: -1;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 55%;
-
-    .mat-input-element {
-      @include mat-typography-level-to-styles($custom-typography, body-2);
-
-      font-size: 4.2rem;
+  .mat-hint {
+    a {
+      color: mat-color(mat-palette($ui-accent, A400));
     }
   }
 }
