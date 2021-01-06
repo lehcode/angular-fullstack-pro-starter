@@ -20,7 +20,7 @@ export class FrontPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.title);
+    this.titleService.setTitle($localize`${this.title}`);
   }
 
   submitForm(form: FormGroup) {

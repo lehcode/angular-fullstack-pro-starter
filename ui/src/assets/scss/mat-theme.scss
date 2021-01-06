@@ -10,8 +10,8 @@
 // `headlines` and `body-1` levels.
 $custom-typography: mat-typography-config(
   $font-family: "'Noto Sans JP', sans-serif",
-  $display-3: mat-typography-level(56px, 56px, 600),
-  $body-2: mat-typography-level(16px, 24px, 500),
+  $display-3: mat-typography-level(5.6rem, 5.6rem, 600),
+  $body-2: mat-typography-level(1.6rem, 2.4rem, 500),
 );
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -49,7 +49,12 @@ $ui-theme: mat-light-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html {
-  font-size: 62.5%;
+  --maxWidth: 1600px;
+  --gap: 3rem;
+}
+
+html {
+  font-size: clamp(12px,calc(.7rem + .25vw),20px);
 }
 
 html,

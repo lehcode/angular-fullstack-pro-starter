@@ -9,6 +9,9 @@ import { LayoutModule } from '~/app/layout/layout.module';
 import '@angular/common/locales/global/ru';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import '@angular/common/locales/global/ru';
+import '@angular/common/locales/global/en';
+import '@angular/common/locales/global/uk';
 
 @NgModule({
   declarations: [

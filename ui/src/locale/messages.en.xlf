@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="ru" target-language="uk" datatype="plaintext" original="ng2.template">
+    <file source-language="ru" target-language="en" datatype="plaintext" original="ng2.template">
         <body>
             <trans-unit id="guest-nav.login" datatype="html">
                 <source>Вход</source>
-                <target>Вхід</target>
+                <target>Account</target>
                 <context-group purpose="location">
                     <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
                     <context context-type="linenumber">4</context>
@@ -12,7 +12,7 @@
             </trans-unit>
             <trans-unit id="guest-nav.registration" datatype="html">
                 <source>Регистрация</source>
-                <target>Реєстрація</target>
+                <target>Register</target>
                 <context-group purpose="location">
                     <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
                     <context context-type="linenumber">5</context>
@@ -20,7 +20,7 @@
             </trans-unit>
             <trans-unit id="guest-nav.help" datatype="html">
                 <source>Помощь</source>
-                <target>Допомога</target>
+                <target>Help</target>
                 <context-group purpose="location">
                     <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
                     <context context-type="linenumber">6</context>
@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="frontpage.hero_heading" datatype="html">
                 <source>Проверить VIN авто бесплатно</source>
-                <target>Перевірити VIN авто безкоштовно</target>
+                <target>Completely free US/Canada vehicle VIN decode</target>
                 <context-group purpose="location">
                     <context context-type="sourcefile">src/app/front-page/front-page.component.html</context>
                     <context context-type="linenumber">3</context>
@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="frontpage.hero_lead" datatype="html">
                 <source>Узнать историю автомобиля по коду VIN до покупки!</source>
-                <target>Дізнатися історію автомобіля за кодом VIN до покупки!</target>
+                <target>Discover auto history by VIN before buy!</target>
                 <context-group purpose="location">
                     <context context-type="sourcefile">src/app/front-page/front-page.component.html</context>
                     <context context-type="linenumber">4</context>
