@@ -12,13 +12,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import '@angular/common/locales/global/ru';
 import '@angular/common/locales/global/en';
 import '@angular/common/locales/global/uk';
+import { MatFormField } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [
+  declarations: [ // The set of components, directives, and pipes (declarables) that belong to this module.
     AppComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
-  imports: [
+  imports: [ // The set of NgModules whose exported declarables are available to templates in this module.
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -40,13 +41,16 @@ import '@angular/common/locales/global/uk';
     LayoutModule,
     HttpClientModule, // ngx-logger fails without it
   ],
-  providers: [
+  providers: [ // The set of injectable objects that are available in the injector of this module.
     TitleService,
     {
       provide: LOCALE_ID,
       useValue: 'ru'
     }
   ],
+  // exports: [],  // The set of components, directives, and pipes declared in this NgModule that can be used in the
+  // template of any component that is part of an NgModule that imports this NgModule. Exported declarations are
+  // the module's public API.
   bootstrap: [AppComponent]
 })
 export class AppModule {

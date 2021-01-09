@@ -2,4 +2,6 @@
 
 .navbar {
   background: mat-color(mat-palette($ui-primary));
+  flex-wrap: wrap;
+  padding: 0.8rem 1.6rem;
 }

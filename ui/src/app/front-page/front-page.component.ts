@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NGXLogger } from 'ngx-logger';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-front-page',
@@ -23,7 +23,7 @@ export class FrontPageComponent implements OnInit {
     this.titleService.setTitle($localize`${this.title}`);
   }
 
-  submitForm(form: FormGroup) {
+  submitForm(evt: Event) {
     /* eslint-disable-next-line */
     debugger;
   }

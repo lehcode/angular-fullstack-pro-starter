@@ -23,9 +23,9 @@ header {
   z-index: 1;
 }
 
-h1 {
-  @include mat-typography-level-to-styles($custom-typography, display-3);
-}
+//h1 {
+//  @include mat-typography-level-to-styles($custom-typography, display-3);
+//}
 
 img {
   height: 100%;
@@ -37,12 +37,11 @@ img {
 form {
   display: flex;
   flex-direction: column;
-  width: 55%;
+  width: 48rem;
 
-  .mat-form-field-hint-wrapper {
-    display: block;
-    text-align: center;
-  }
+  //.mat-form-field-hint-wrapper {
+  //  justify-content: center;
+  //}
 
   .mat-input-element {
     @include mat-typography-level-to-styles($custom-typography, body-2);
@@ -51,8 +50,14 @@ form {
   }
 
   .mat-hint {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
     a {
       color: mat-color(mat-palette($ui-accent, A400));
+      font-size: 1rem;
+      font-weight: 600;
     }
   }
 }
