@@ -52,8 +52,7 @@
               "src/assets/scss/mat-theme.scss",
               "src/assets/scss/styles.scss"
             ],
-            "scripts": [],
-            "localize": true
+            "scripts": []
           },
           "configurations": {
             "production": {
