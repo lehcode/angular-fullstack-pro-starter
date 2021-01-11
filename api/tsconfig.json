@@ -2,14 +2,39 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": true,
+    "target": "es2015",
+    "lib": [
+      "es2019",
+      "es2020.bigint",
+      "es2020.string",
+      "es2020.symbol.wellknown"
+    ],
+    "noImplicitAny": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
-  }
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "types": [
+      "jest",
+      "node"
+    ],
+  },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/@types/jest/index.d.ts",
+    "node_modules/@types/node/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "*.js"
+  ]
 }

@@ -1,16 +1,18 @@
 {
-  "name": "ui",
+  "name": "vindb-ui",
   "version": "0.0.1",
-  "description": "Carvin frontend application",
-  "author": "",
+  "description": "VIN Frontend Application",
+  "author": "Antony Repin",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
     "ng": "ng",
     "build": "ng run ui:build:production",
     "build-ssr": "ng build --prod && ng run ui:server:production",
+    "ci": "yarn lint-all && yarn test && yarn e2e",
     "e2e": "ng e2e",
-    "extract-i18n": "ng extract-i18n --output-path src/locale",
+    "e2e-ci": "ng e2e:ci",
+    "i18n-extract": "ng extract-i18n --output-path src/locale",
     "lint-added-html": "git status -s | egrep \"^[AM]  \"  | egrep \\.html$ | cut -d ' ' -f 3 | xargs npx eslint",
     "lint-added-scss": "git status -s | egrep \"^[AM]  \"  | egrep \\.scss | cut -d ' ' -f 3 | xargs npx stylelint --syntax scss --allow-empty-input --stdin",
     "lint-added-ts": "git status -s | egrep \"^[AM]  \"  | egrep \\.ts$ | cut -d ' ' -f 3 | xargs npx eslint",
@@ -27,7 +29,7 @@
     "start-i18n-ru": "yarn start -- --configuration ru",
     "start-i18n-uk": "yarn start -- --configuration uk",
     "start-ssr": "ng run ui:serve-ssr",
-    "test": "ng test ui",
+    "test": "ng test ui --progress --watch=false",
     "test-watch": "ng test ui --reporters dots,kjhtml --browsers Chrome --watch"
   },
   "dependencies": {
@@ -83,6 +85,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "prettier": "^2.2.1",
     "protractor": "^7.0.0",
+    "puppeteer": "^5.5.0",
     "stylelint": "^13.8.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-sass-guidelines": "^7.1.0",
@@ -90,11 +93,5 @@
     "stylelint-scss": "^3.18.0",
     "ts-node": "~8.3.0",
     "typescript": "~4.0.2"
-  },
-  "jest": {
-    "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupJest.ts"
-    ]
   }
 }

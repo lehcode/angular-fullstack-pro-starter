@@ -2,49 +2,21 @@ version: "3.8"
 
 services:
   api:
+    image: carvin/api:test
     build:
-      context: ./api
-    image: carvin/api:latest
+      args:
+        node_env: test
+    container_name: "carvin_api_test"
     environment:
-      TZ: Etc/UTC
       NODE_ENV: test
-    env_file: ./api/.env
-    tty: true
-    volumes:
-      - ./api:/home/node/carvin/api
-    ports:
-      - "0.0.0.0:3000:3000"
-      - "0.0.0.0:3443:3443"
-    networks:
-      backend:
-        aliases:
-          - api.carvin.local
-    depends_on:
-      - mongo
-      - mysql
+    command: yarn test
 
   front:
+    image: carvin/front:test
     build:
-      context: ./ui
-    image: carvin/front:latest
+      args:
+        node_env: test
+    container_name: "carvin_ui_test"
     environment:
-      TZ: Etc/UTC
       NODE_ENV: test
-    env_file:
-      - ui/.env
-    tty: true
-    volumes:
-      - ./ui:/home/node/carvin/ui
-    ports:
-      - "0.0.0.0:4000:4000"
-      - "0.0.0.0:4200:4200"
-    networks:
-      backend:
-        aliases:
-          - carvin.local
-    depends_on:
-      - api
-
-networks:
-  api:
-    driver: bridge
+    command: yarn test

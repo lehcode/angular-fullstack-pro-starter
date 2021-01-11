@@ -1,2 +1,15 @@
-node_modules
-/dist
+.idea/
+design/
+dist/
+documentation/
+node_modules/
+out-tsc/
+seo/
+uml/
+.dockerignore
+.huskyrc
+.npmrc
+.gitignore
+.env.dist
+README.md
+yarn-error.log

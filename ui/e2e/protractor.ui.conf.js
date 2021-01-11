@@ -1,6 +1,7 @@
-// @ts-check
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
+var config = exports.config = require('./protractor.conf.js').config;
+config.capabilities.chromeOptions.args = ['--window-size=1680,1050', '--no-sandbox'];
 
 process.env.CHROME_BIN = require("puppeteer").executablePath({executablePath: "/usr/bin/google-chrome"});
 

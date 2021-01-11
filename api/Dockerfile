@@ -1,26 +1,45 @@
-FROM node:14.15.3-buster
+FROM node:10-buster AS install
 
-LABEL maintainer="Antony Repin <lehcode@gmail.com>"
-LABEL description="Node.js with Express.js"
+ARG workdir
+ARG tz
+ARG node_env
 
-RUN apt-get update \
-  && apt-get -y install --no-install-recommends --no-install-suggests \
-    tzdata locales cpanminus \
-  && ln -fs /usr/share/zoneinfo/${TIMEZONE_TZDATA} /etc/localtime \
-  && echo ${TIMEZONE_TZDATA} > /etc/timezone \
-  && dpkg-reconfigure -f noninteractive tzdata \
-  && apt-get upgrade \
-  && apt-get -y install --no-install-recommends --no-install-suggests \
-    curl wget gnupg apt-transport-https inotify-tools  \
+ENV NODE_ENV=${node_env}
+
+VOLUME ${workdir}
+WORKDIR ${workdir}
+
+RUN set -ex \
+  && usermod -a -G audio,video node \
+  && mkdir -p /home/node/Downloads \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee "/etc/apt/sources.list.d/yarn.list" \
-  && npm config set scripts-prepend-node-path auto \
-  && apt-get -y install yarn \
-  && echo "Yarn bin: "$(yarn global bin) \
+  && apt-get update \
+  && apt-get -y upgrade \
+  && apt-get -y install yarn sudo \
   && apt-get clean \
-  && yarn add global @nestjs/cli \
-  && mkdir -p /home/node/carvin/api \
-  && chown -R 1000:1000 /home/node/carvin
+  && sh -c 'echo "node ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers' \
+  && npm config set scripts-prepend-node-path auto \
+  && echo "Node.js version: "${NODE_VERSION} \
+  && echo "Yarn version: "${YARN_VERSION} \
+  && echo "Yarn binary: "$(yarn global bin) \
+  && echo "NPM: version: "$(npm -v) \
+  && echo "NPM binary: "$(npm bin) \
+  && env \
+  && yarn global add @nestjs/cli
 
-WORKDIR /home/node/carvin/api
-USER 1000
+USER node
+
+#---
+#FROM node:10-slim AS release
+#
+#ARG workdir
+#
+#WORKDIR ${workdir}
+#
+#COPY --from=install ${workdir}/dist .
+#
+#RUN env \
+# && chown -R node:node ../${workdir}
+#
+#USER node

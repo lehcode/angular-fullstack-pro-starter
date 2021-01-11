@@ -1,6 +1,66 @@
 version: "3.8"
 
 services:
+  api:
+    build:
+      context: ./api
+      args:
+        workdir: /home/node/carvin/api
+        tz: Etc/UTC
+    image: carvin/api:dev
+    container_name: "carvin_api_dev"
+    environment:
+      TZ: Etc/UTC
+      NODE_ENV: development
+    env_file: ./api/.env
+    tty: true
+    init: true
+    command: yarn start-dev
+    volumes:
+      - ./api:/home/node/carvin/api
+    ports:
+      - "0.0.0.0:3000:3000"
+      - "0.0.0.0:3443:3443"
+    networks:
+      front_net:
+        aliases:
+          - api.carvin.local
+      db_net:
+    depends_on:
+      - mongo
+      - mysql
+
+  front:
+    build:
+      context: ./ui
+      args:
+        workdir: /home/node/carvin/ui
+        tz: Etc/UTC
+        node_env: development
+    image: carvin/front:dev
+    container_name: "carvin_ui_dev"
+    environment:
+      TZ: Etc/UTC
+      NODE_ENV: development
+    env_file:
+      - ui/.env
+    tty: true
+    init: true
+    command: yarn start
+    volumes:
+      - ./ui:/home/node/carvin/ui
+    ports:
+      - "0.0.0.0:4000:4000"
+      - "0.0.0.0:4200:4200"
+      - "0.0.0.0:4300:4300"
+      - "0.0.0.0:9222:9222"
+    networks:
+      front_net:
+        aliases:
+          - carvin.local
+    depends_on:
+      - api
+
   mongo:
     image: carvin/mongo:latest
     build:
@@ -16,7 +76,7 @@ services:
     ports:
       - "0.0.0.0:27017:27017"
     networks:
-      - db
+      - db_net
     ulimits:
       nproc: 65535
       nofile:
@@ -55,10 +115,12 @@ services:
     cap_add:
       - SYS_NICE  # CAP_SYS_NICE
     networks:
-      - db
+      - db_net
 
 networks:
-  db:
+  db_net:
+    driver: bridge
+  front_net:
     driver: bridge
 
 volumes:

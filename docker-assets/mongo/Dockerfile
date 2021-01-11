@@ -1,6 +1,6 @@
 ﻿FROM mongo:4.4-bionic
 
-LABEL maintainer="Antony Repin <3556648+lehcode@users.noreply.github.com>"
+LABEL maintainer="lehcode <3556648+lehcode@users.noreply.github.com>"
 LABEL description="MongoDB server"
 
 RUN apt-get update \
