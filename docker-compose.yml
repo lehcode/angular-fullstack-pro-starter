@@ -21,6 +21,7 @@ services:
     ports:
       - "0.0.0.0:3000:3000"
       - "0.0.0.0:3443:3443"
+      - "0.0.0.0:9229:9229"
     networks:
       front_net:
         aliases:
