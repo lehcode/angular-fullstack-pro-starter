@@ -1,36 +1,96 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { defer, from, interval, Observable, of, Subscription, timer, zip } from 'rxjs';
 import { AxiosResponse } from 'axios';
-import { map } from 'rxjs/operators';
+import { VehicleVariableInterface, VehicleVariableValueInterface } from '../../interfaces/vehicle-variables.interface';
+import { delay, map, mergeAll, mergeMap, tap, throttle, throttleTime } from 'rxjs/operators';
 
 @Injectable()
 export class NHTSAService {
   private readonly API_HOST = 'https://vpic.nhtsa.dot.gov';
   private readonly VEHICLE_VARS_URI = '/api/vehicles/GetVehicleVariableList?format=json';
+  private readonly VEHICLE_VARS_VALUES_URI = '/api/vehicles/GetVehicleVariableValuesList/:id?format=json';
 
-  constructor(private http: HttpService) {}
+  constructor(private readonly http: HttpService) {}
 
-  // WIP
-  get vehicleVariables(): Observable<AxiosResponse<any>> {
-    // 1. Fetch variables from DB
-    // 2. Fetch variables from NHTSA API endpoint
-    const url = `${this.API_HOST}${this.VEHICLE_VARS_URI}`;
+  get apiVehicleVariables(): Observable<any> {
+    let results: any;
 
-    const apiVars = this.http.get(url)
-    .pipe(map((resp) => resp.data));
-
-    // 3. Query DB for variables
-    // 4. Compare results from API and DB (this.compareVariables())
-    // 5. Update DB if API result differs (this.updateVariables())
-    // 6. Return result collection
-    return apiVars;
+    return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_URI}`)
+    .pipe(
+      // map((resp) => resp.data.Results),
+      tap((response) => results = response.data.Results),
+      mergeMap((response) => zip(
+        ...results.map(
+          (result: Record<string, any>): Record<string, any> => {
+            return this._getVariableValues(result);
+          }
+        )
+      ), 5)
+    );
   }
 
-  compareVariables(){
-    return true;
+  private _getVariableValues(result: Record<string, any>) {
+    const variable: VehicleVariableInterface = {
+      dataType: result.DataType,
+      description: result.Description,
+      id: result.ID,
+      name: result.Name
+    };
+
+    if (variable.dataType === 'lookup') {
+      this.getRemoteVariableIdValues$(variable.id).subscribe({
+        next(data: Record<string, any>) {
+          variable.values = data.Results.map((result: Record<string, any>) => {
+            return {
+              id: result.Id,
+              name: result.Name
+            };
+          });
+        }
+      });
+    }
+
+    return of(variable).pipe(delay(1000));
   }
 
-  updateVariables() {
-    return true;
+
+  // get remoteVariables$(): Subscription {
+  //   const updateLookups = this._updateLookups;
+  //
+  //   return this.apiService.callEndpoint(`${this.API_HOST}${this.VEHICLE_VARS_URI}`, 'get').subscribe({
+  //     next(data) {
+  //       console.log(data);
+  //       const update = updateLookups(data);
+  //       return data;
+  //     },
+  //     error(msg) {
+  //       throw new Error(msg);
+  //     }
+  //   });
+  // }
+  //
+  // private _updateLookups(lookups: any) {
+  //   console.log(lookups);
+  //   // @ts-ignore
+  //   debugger;
+  // }
+
+  // // todo
+  // compareVariables() {
+  //   return true;
+  // }
+
+  // todo
+  // updateVariables() {
+  //   let vars: VehicleVariableInterface[];
+  //
+  //   return this.remoteVariables$;
+  // }
+
+  getRemoteVariableIdValues$(id: number): Observable<AxiosResponse<Record<any, any>>> {
+    return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_VALUES_URI}`.replace(':id', id.toString()))
+    .pipe(
+      map((response) => response.data)
+    );
   }
 }

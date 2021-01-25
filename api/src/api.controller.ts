@@ -1,24 +1,39 @@
-import { Controller, Logger, Patch, Req } from '@nestjs/common';
-import { ApiService } from './api.service';
+import { Controller, Logger, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { VehicleVariableInterface } from './interfaces/vehicle-variables.interface';
+import { NHTSAService } from './services/nhtsa/nhtsa.service';
 
 @Controller('api')
 export class ApiController {
   private readonly logger = new Logger(ApiController.name);
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(private readonly nhtsaService: NHTSAService) {}
 
-  @Patch('admin/nhtsa-variables-values')
+  @Post('admin/nhtsa-update-variables')
   async vehicleVariables(@Req() req?: Request): Promise<any> {
-    let vVars: VehicleVariableInterface[] = [];
+    let vars$: VehicleVariableInterface[] = [];
+
+    // 1. Fetch variables from DB
+    // 2. Fetch variables from NHTSA API endpoint
+    // 3. Query DB for variables and values separately
+    // 4. Compare variables and values from API and DB (this.compareVariables())
+    // 5. Update if API result differs from DB (this.updateVariables())
+    // 6. Return status
 
     if (req) {
       this.logger.log('Request headers:');
       this.logger.log(req.headers);
-      vVars = await this.apiService.nhtsaVehicleVariables as any;
+      vars$ = this.nhtsaService.apiVehicleVariables.subscribe({
+          next(rows) {
+            console.log(rows);
+          },
+          error(msg: string) {
+            throw new Error(msg);
+          }
+        }
+      ) as any;
 
-      return vVars;
+      return { success: true };
     }
   }
 }

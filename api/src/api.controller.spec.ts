@@ -7,6 +7,7 @@ import * as vehicleVars from './testing/vehicle-variables.json';
 
 describe('ApiController', () => {
   let apiController: ApiController;
+  let nhtsaService: NHTSAService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,6 +21,7 @@ describe('ApiController', () => {
     .compile();
 
     apiController = module.get<ApiController>(ApiController);
+    nhtsaService = module.get<NHTSAService>(NHTSAService);
     // apiController.mockClear();
   });
 

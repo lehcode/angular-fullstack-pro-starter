@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
-import { NHTSAService } from './services/nhtsa/nhtsa.service';
 import { HttpModule } from '@nestjs/common';
 
 describe('ApiService', () => {
@@ -9,10 +8,8 @@ describe('ApiService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      providers: [
-        ApiService,
-        NHTSAService
-      ]
+      providers: [ApiService],
+      exports: [HttpModule],
     }).compile();
 
     service = module.get<ApiService>(ApiService);
@@ -22,5 +19,11 @@ describe('ApiService', () => {
     expect(service).toBeDefined();
   });
 
-  it.todo('nhtsaVehicleVariables() should provide vehicle variables');
+  it.todo('should make GET API call without parameters');
+
+  it.todo('should make GET API call with parameters');
+
+  it.todo('should make POST API call without payload');
+
+  it.todo('should make POST API call with payload');
 });

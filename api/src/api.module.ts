@@ -1,4 +1,4 @@
-import { HttpModule, HttpService, Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { ApiService } from './api.service';
 import { ApiController } from './api.controller';
 import { NHTSAService } from './services/nhtsa/nhtsa.service';
@@ -9,7 +9,6 @@ import { NHTSAService } from './services/nhtsa/nhtsa.service';
   providers: [
     ApiService,
     NHTSAService,
-    HttpService
   ]
 })
 export class ApiModule {
