@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
+    "inlineSources": true,
     "target": "es2015",
     "lib": [
       "es2019",
@@ -16,9 +17,8 @@
       "es2020.symbol.wellknown"
     ],
     "noImplicitAny": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "rootDir": "./src",
+    "outDir": "dist",
+    "baseUrl": "src",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
