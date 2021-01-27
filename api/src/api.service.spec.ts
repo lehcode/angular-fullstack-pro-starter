@@ -1,22 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
+import { NHTSAService } from './services/nhtsa/nhtsa.service';
 
 describe('ApiService', () => {
-  let service: ApiService;
+  let apiService: ApiService;
+  let nhtsaService: NHTSAService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      providers: [ApiService],
-      exports: [HttpModule],
+      providers: [
+        ApiService,
+        NHTSAService
+      ]
     }).compile();
 
-    service = module.get<ApiService>(ApiService);
+    apiService = module.get<ApiService>(ApiService);
+    nhtsaService = module.get<NHTSAService>(NHTSAService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('ApiService instance should be defined', () => {
+    expect(apiService).toBeDefined();
+  });
+
+  it('NHTSAService instance should be defined', () => {
+    expect(nhtsaService).toBeDefined();
   });
 
   it.todo('should make GET API call without parameters');
