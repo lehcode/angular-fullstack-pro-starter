@@ -32,6 +32,7 @@ module.exports = {
         "prettier/@typescript-eslint"
       ],
       rules: {
+        "array-bracket-newline": "off",
         "id-length": [
           "warn",
           { min: 2 }
@@ -43,7 +44,7 @@ module.exports = {
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/explicit-function-return-type": "warn",
         "@typescript-eslint/explicit-module-boundary-types": "warn",
-        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/quotes": [
           "warn",
           "single",

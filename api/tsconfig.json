@@ -23,10 +23,12 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "types": [
       "jest",
       "node"
     ],
+    "moduleResolution": "node"
   },
   "include": [
     "src/**/*.ts",

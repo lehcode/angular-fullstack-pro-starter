@@ -8,11 +8,15 @@ services:
         workdir: /home/node/carvin/api
         tz: Etc/UTC
     image: carvin/api:dev
-    container_name: "carvin_api_dev"
+    container_name: "carvin-api-dev"
     environment:
       TZ: Etc/UTC
       NODE_ENV: development
-    env_file: ./api/.env
+      MONGO_USER: dev
+      MONGO_PASS: devpass123!
+      MONGO_HOST: carvin-mongo-dev
+      MONGO_PORT: 27017
+      API_PORT: 3000
     tty: true
     init: true
     command: yarn start-dev
@@ -22,14 +26,9 @@ services:
       - "0.0.0.0:3000:3000"
       - "0.0.0.0:3443:3443"
       - "0.0.0.0:9229:9229"
-    networks:
-      front_net:
-        aliases:
-          - api.carvin.local
-      db_net:
     depends_on:
       - mongo
-      - mysql
+#      - mysql
 
   front:
     build:
@@ -39,7 +38,7 @@ services:
         tz: Etc/UTC
         node_env: development
     image: carvin/front:dev
-    container_name: "carvin_ui_dev"
+    container_name: "carvin-ui-dev"
     environment:
       TZ: Etc/UTC
       NODE_ENV: development
@@ -55,10 +54,6 @@ services:
       - "0.0.0.0:4200:4200"
       - "0.0.0.0:4300:4300"
       - "0.0.0.0:9222:9222"
-    networks:
-      front_net:
-        aliases:
-          - carvin.local
     depends_on:
       - api
 
@@ -68,7 +63,7 @@ services:
       context: docker-assets/mongo/
       dockerfile: Dockerfile
       shm_size: "2gb"
-    container_name: "carvin_mongo"
+    container_name: "carvin-mongo-dev"
     init: true
     volumes:
       - data_db_mongodb:/data/db
@@ -76,14 +71,12 @@ services:
       - var_log_mongodb:/var/log/mongodb
     ports:
       - "0.0.0.0:27017:27017"
-    networks:
-      - db_net
     ulimits:
       nproc: 65535
       nofile:
         soft: 64000
         hard: 64000
-    command: mongod --auth --port 27017 --wiredTigerCacheSizeGB 1.5
+    command: mongod --config /etc/mongod.conf --auth --port 27017 --wiredTigerCacheSizeGB 1.5
     environment:
       TZ: Etc/UTC
       MONGO_INITDB_ROOT_USERNAME: "dev"
@@ -92,31 +85,31 @@ services:
     restart: always
     tty: true
 
-  mysql:
-    image: carvin/mysql:latest
-    container_name: "carvin_mysql"
-    build:
-      context: ./docker-assets/mysql
-      args:
-        tz: Etc/UTC
-      shm_size: "2gb"
-    environment:
-      MYSQL_ROOT_PASSWORD: "127656"
-      MYSQL_ROOT_HOST: "%"
-      TZ: Etc/UTC
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    restart: always
-    tty: true
-    ports:
-      - "0.0.0.0:3306:3306"
-      - "0.0.0.0:33060:33060"
-    env_file: ./docker-assets/mysql/.env
-    volumes:
-      - var_lib_mysql:/var/lib/mysql
-    cap_add:
-      - SYS_NICE  # CAP_SYS_NICE
-    networks:
-      - db_net
+#  mysql:
+#    image: carvin/mysql:latest
+#    container_name: "carvin_mysql"
+#    build:
+#      context: ./docker-assets/mysql
+#      args:
+#        tz: Etc/UTC
+#      shm_size: "2gb"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "127656"
+#      MYSQL_ROOT_HOST: "%"
+#      TZ: Etc/UTC
+#    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+#    restart: always
+#    tty: true
+#    ports:
+#      - "0.0.0.0:3306:3306"
+#      - "0.0.0.0:33060:33060"
+#    env_file: ./docker-assets/mysql/.env
+#    volumes:
+#      - var_lib_mysql:/var/lib/mysql
+#    cap_add:
+#      - SYS_NICE  # CAP_SYS_NICE
+#    networks:
+#      - db_net
 
 networks:
   db_net:
@@ -128,5 +121,5 @@ volumes:
   data_db_mongodb:
   var_lib_mongodb:
   var_log_mongodb:
-  var_lib_mysql:
-  var_log_mysql:
+#  var_lib_mysql:
+#  var_log_mysql:

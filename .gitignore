@@ -2,3 +2,6 @@
 ui/design/
 ui/seo/
 promo
+session_buddy*
+*.pdf
+
