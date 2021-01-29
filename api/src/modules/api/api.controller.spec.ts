@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api/api.service';
 import { NHTSAService } from '../../services/nhtsa/nhtsa.service';
 import { HttpModule } from '@nestjs/common';
 import * as vehicleVars from '../../testing/vehicle-variables.json';
+import { VehicleVariable } from "../../services/nhtsa/schemas/vehicle-variable.schema";
 
 describe('ApiController', () => {
   let apiController: ApiController;
@@ -13,7 +14,11 @@ describe('ApiController', () => {
       controllers: [ApiController],
       providers: [
         ApiService,
-        NHTSAService
+        NHTSAService,
+        {
+          provide: 'VehicleVariableModel',
+          useClass: VehicleVariable,
+        }
       ],
       imports: [HttpModule]
     })
@@ -27,7 +32,9 @@ describe('ApiController', () => {
     .toBeDefined();
   });
 
-  it.todo('should process POST request to /api/admin/nhtsa-update-variables');
+  it('should process POST request to /api/admin/nhtsa-update-variables', async () => {
+    jest.spyOn(apiController, 'updateNHTSAVehicleVariables');
+  });
 
   // it.skip('should process GET request to /api/vin endpoint', async () => {
   //   jest.spyOn(apiController, 'vehicleVariables')

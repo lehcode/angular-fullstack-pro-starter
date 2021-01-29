@@ -13,8 +13,8 @@ describe('NHTSAService', () => {
       providers: [
         NHTSAService,
         {
-          provide: getModelToken('VehicleVariableModel'),
-          useValue: VehicleVariable,
+          provide: 'VehicleVariableModel',
+          useClass: VehicleVariable,
         },
       ],
     }).compile();
@@ -30,5 +30,5 @@ describe('NHTSAService', () => {
 
   it.todo('should fetch vehicle variables values JSON from NHTSA API');
 
-  it.todo('should query DB for NHTSA vehicle variables');
+  it.todo('should store NHTSA vehicle variables to DB');
 });

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
 import { NHTSAService } from '../nhtsa/nhtsa.service';
+import { VehicleVariable } from "../nhtsa/schemas/vehicle-variable.schema";
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -12,7 +13,11 @@ describe('ApiService', () => {
       imports: [HttpModule],
       providers: [
         ApiService,
-        NHTSAService
+        NHTSAService,
+        {
+          provide: 'VehicleVariableModel',
+          useClass: VehicleVariable,
+        }
       ]
     }).compile();
 
