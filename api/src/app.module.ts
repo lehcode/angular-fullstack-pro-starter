@@ -9,7 +9,8 @@ import { ApiModule } from './modules/api/api.module';
   imports: [
     ApiModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/?authSource=admin&ssl=false`,
+    MongooseModule.forRoot(
+      `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/?authSource=admin&ssl=false`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -18,11 +19,11 @@ import { ApiModule } from './modules/api/api.module';
         dbName: 'carvin',
         user: process.env.MONGO_USER,
         pass: process.env.MONGO_PASS,
-        family: 4
-      })
+        family: 4,
+      }
+    ),
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { from, Observable, of, zip } from 'rxjs';
 import { VehicleVariableInterface } from './interfaces/vehicle-variable.interface';
 import { delay, map, mergeMap, tap } from 'rxjs/operators';
@@ -13,10 +13,12 @@ export class NHTSAService {
   private readonly API_HOST = 'https://vpic.nhtsa.dot.gov';
   private readonly VEHICLE_VARS_URI = '/api/vehicles/GetVehicleVariableList?format=json';
   private readonly VEHICLE_VARS_VALUES_URI = '/api/vehicles/GetVehicleVariableValuesList/:id?format=json';
+  private readonly logger = new Logger(NHTSAService.name);
 
   constructor(
     private readonly http: HttpService,
-    @InjectModel('VehicleVariable') private vehicleVariablesModel: Model<VehicleVariableDocument>
+    @InjectModel('VehicleVariable')
+    private vehicleVariablesModel: Model<VehicleVariableDocument>
   ) {}
 
   /**
@@ -26,27 +28,30 @@ export class NHTSAService {
   getVehicleVariables(): Observable<any> {
     let results: any;
 
-    return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_URI}`)
-    .pipe(
-      tap((response) => results = response.data.Results),
-      mergeMap((response) => zip(
-        ...results.map(
-          (result: Record<string, any>): Observable<VehicleVariableInterface> => {
-            const variable: VehicleVariableInterface = {
-              dataType: result.DataType,
-              description: result.Description,
-              varId: result.ID,
-              name: result.Name
-            };
+    return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_URI}`).pipe(
+      tap((response) => (results = response.data.Results)),
+      mergeMap(
+        (response) =>
+          zip(
+            ...results.map(
+              (result: Record<string, any>): Observable<VehicleVariableInterface> => {
+                const variable: VehicleVariableInterface = {
+                  dataType: result.DataType,
+                  description: result.Description,
+                  varId: result.ID,
+                  name: result.Name
+                };
 
-            if (variable.dataType === 'lookup') {
-              return this.getLookupValues(variable);
-            }
+                if (variable.dataType === 'lookup') {
+                  return this.getLookupValues(variable);
+                }
 
-            return of(variable);
-          }
-        )
-      ), 5)
+                return of(variable);
+              }
+            )
+          ),
+        5
+      )
     );
   }
 
@@ -59,15 +64,16 @@ export class NHTSAService {
     const record = Object.assign({}, variable);
 
     this.http
-    .get(`${this.API_HOST}${this.VEHICLE_VARS_VALUES_URI}`.replace(':id', variable.varId.toString()))
-    .pipe(
-      map((response) => response.data)
-    )
-    .subscribe({
-      next(data: Record<string, any>) {
-        record.values = data.Results.map((result: Record<string, any>) => ({ id: result.Id, name: result.Name }));
-      }
-    });
+      .get(`${this.API_HOST}${this.VEHICLE_VARS_VALUES_URI}`.replace(':id', variable.varId.toString()))
+      .pipe(map((response) => response.data))
+      .subscribe({
+        next(data: Record<string, any>) {
+          record.values = data.Results.map((result: Record<string, any>) => ({
+            id: result.Id,
+            name: result.Name
+          }));
+        }
+      });
 
     return of(record).pipe(delay(5000));
   }
@@ -75,18 +81,20 @@ export class NHTSAService {
   /**
    * Save NHTSA vehicle variables to DB
    */
-  async storeVehicleVariables(data: VehicleVariableInterface[]) {
+  async storeVehicleVariables(data: VehicleVariableInterface[]): Promise<VehicleVariableInterface[]> {
     await this.vehicleVariablesModel.deleteMany({});
 
     for (const item of data) {
-      await (new this.vehicleVariablesModel(item as CreateVehicleVariableDto))
-      .save()
-      .catch((err) => rethrow(err));
+      this.logger.log(`Inserting record: ${JSON.stringify(item)}`);
+
+      await new this.vehicleVariablesModel(item as CreateVehicleVariableDto).save()
+        .catch((err) => rethrow(err));
     }
+
+    return data;
   }
 
   queryVehicleVariables(): Observable<any> {
     return from(this.vehicleVariablesModel.find().exec());
   }
 }
-

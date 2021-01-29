@@ -1,25 +1,29 @@
-import { Controller, Logger, Post, Req } from '@nestjs/common';
+import { Controller, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { ApiService } from '../../services/api/api.service';
-import { NHTSAService } from '../../services/nhtsa/nhtsa.service';
 
 @Controller('api')
 export class ApiController {
-  private readonly logger = new Logger(ApiController.name);
-
-  constructor(
-    private readonly apiService: ApiService,
-    private readonly nhtsaService: NHTSAService,
-  ) {}
+  constructor(private readonly apiService: ApiService) {}
 
   @Post('admin/nhtsa-update-variables')
-  async updateNHTSAVehicleVariables(@Req() req?: Request): Promise<unknown> {
-    if (req) {
-      this.apiService.nhtsaVehicleVariables.subscribe((data) => {
-        this.nhtsaService.storeVehicleVariables(data);
-      });
+  async updateNHTSAVehicleVariables(@Req() req?: Request): Promise<any> {
+    let rows;
 
-      return { success: true };
+    if (req) {
+      try {
+        rows = await this.apiService.nhtsaVehicleVariables;
+      } catch (err) {
+        return {
+          success: false,
+          error: err.message
+        };
+      }
+
+      return {
+        success: true,
+        inserted: rows.length
+      };
     }
   }
 }

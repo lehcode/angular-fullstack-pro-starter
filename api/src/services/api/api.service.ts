@@ -1,12 +1,18 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { NHTSAService } from '../nhtsa/nhtsa.service';
-import { Observable } from 'rxjs';
+import { pipe } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
   constructor(private readonly nhtsaService: NHTSAService) {}
 
-  get nhtsaVehicleVariables(): Observable<any> {
-    return this.nhtsaService.getVehicleVariables();
+  get nhtsaVehicleVariables(): Promise<any> {
+    const result = this.nhtsaService.getVehicleVariables();
+
+    return result.pipe(
+      take(1),
+      map((data) => this.nhtsaService.storeVehicleVariables(data))
+    ).toPromise();
   }
 }

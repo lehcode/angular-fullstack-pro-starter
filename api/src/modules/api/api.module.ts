@@ -8,13 +8,12 @@ import { VehicleVariableSchema } from '../../services/nhtsa/schemas/vehicle-vari
 @Module({
   imports: [
     HttpModule,
-    MongooseModule.forFeature([{name: 'VehicleVariable', schema: VehicleVariableSchema}])
+    MongooseModule.forFeature([{ name: 'VehicleVariable', schema: VehicleVariableSchema }])
   ],
   controllers: [ApiController],
   providers: [
     ApiService,
-    NHTSAService,
+    NHTSAService
   ]
 })
-export class ApiModule {
-}
+export class ApiModule {}
