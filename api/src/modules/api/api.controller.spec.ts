@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiController } from './api.controller';
-import { ApiService } from './api.service';
-import { NHTSAService } from './services/nhtsa/nhtsa.service';
+import { ApiService } from '../../services/api/api.service';
+import { NHTSAService } from '../../services/nhtsa/nhtsa.service';
 import { HttpModule } from '@nestjs/common';
-import * as vehicleVars from './testing/vehicle-variables.json';
+import * as vehicleVars from '../../testing/vehicle-variables.json';
 
 describe('ApiController', () => {
   let apiController: ApiController;
@@ -29,13 +29,13 @@ describe('ApiController', () => {
 
   it.todo('should process POST request to /api/admin/nhtsa-update-variables');
 
-  it.skip('should process GET request to /api/vin endpoint', async () => {
-    jest.spyOn(apiController, 'vehicleVariables')
-    .mockImplementation(() => Object.create(vehicleVars));
-
-    expect(await apiController.vehicleVariables())
-    .toEqual(vehicleVars);
-  });
+  // it.skip('should process GET request to /api/vin endpoint', async () => {
+  //   jest.spyOn(apiController, 'vehicleVariables')
+  //   .mockImplementation(() => Object.create(vehicleVars));
+  //
+  //   expect(await apiController.vehicleVariables())
+  //   .toEqual(vehicleVars);
+  // });
 
   it.todo('should update NHTSA variables and values collections in DB');
 });

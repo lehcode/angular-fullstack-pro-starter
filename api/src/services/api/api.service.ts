@@ -1,5 +1,5 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { NHTSAService } from './services/nhtsa/nhtsa.service';
+import { NHTSAService } from '../nhtsa/nhtsa.service';
 import { Observable } from 'rxjs';
 
 @Injectable()

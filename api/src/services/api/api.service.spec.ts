@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
-import { NHTSAService } from './services/nhtsa/nhtsa.service';
+import { NHTSAService } from '../nhtsa/nhtsa.service';
 
 describe('ApiService', () => {
   let apiService: ApiService;

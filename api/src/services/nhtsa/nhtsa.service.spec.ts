@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NHTSAService } from './nhtsa.service';
 import { HttpModule } from '@nestjs/common';
+import { getModelToken } from '@nestjs/mongoose';
+import { VehicleVariable } from './schemas/vehicle-variable.schema';
 
 describe('NHTSAService', () => {
   let nhtsaService: NHTSAService;
@@ -8,7 +10,13 @@ describe('NHTSAService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
-      providers: [NHTSAService]
+      providers: [
+        NHTSAService,
+        {
+          provide: getModelToken('VehicleVariableModel'),
+          useValue: VehicleVariable,
+        },
+      ],
     }).compile();
 
     nhtsaService = module.get<NHTSAService>(NHTSAService);
