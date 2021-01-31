@@ -1,9 +1,9 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { ApiService } from '../../services/api/api.service';
+import { ApiService } from './services/api/api.service';
 import { ApiController } from './api.controller';
-import { NHTSAService } from '../../services/nhtsa/nhtsa.service';
+import { NHTSAService } from './services/nhtsa/nhtsa.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { VehicleVariableSchema } from '../../services/nhtsa/schemas/vehicle-variable.schema';
+import { VehicleVariableSchema } from './services/nhtsa/schemas/vehicle-variable.schema';
 
 @Module({
   imports: [

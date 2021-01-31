@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { Request } from 'express';
-import { ApiService } from '../../services/api/api.service';
-import { NHTSAService } from '../../services/nhtsa/nhtsa.service';
+import { ApiService } from './services/api/api.service';
 import { ErrorResponseInterface, SuccessReponseInterface } from './interfaces/response.interface';
 
 @Controller('api')
@@ -11,7 +10,6 @@ export class ApiController {
 
   constructor(
     private readonly apiService: ApiService,
-    private readonly nhtsaService: NHTSAService
   ) {
     this.errorResponse = {
       success: false,
@@ -19,38 +17,21 @@ export class ApiController {
     };
   }
 
-  @Post('admin/nhtsa-update-variables')
-  async updateNHTSAVehicleVariables(@Req() req?: Request): Promise<ErrorResponseInterface | SuccessReponseInterface> {
-    let rows;
+  @Get('decode-vin')
+  async getNHTSAVehicleVariables(@Req() req: Request): Promise<ErrorResponseInterface | SuccessReponseInterface> {
+    let vinData;
 
-    if (req) {
-      try {
-        rows = await this.apiService.nhtsaVehicleVariables;
-      } catch (err) {
-        this.errorResponse.error = err.message;
-        return this.errorResponse;
-      }
+    try {
+      vinData = await this.apiService.decodeVIN(req.params.code);
 
       return {
         success: true,
-        message: `Inserted ${rows.length} rows`
+        message: 'success',
+        data: vinData.toPromise(),
       };
-    }
-
-    return this.errorResponse;
-  }
-
-  @Get('admin/nhtsa-variables')
-  async getNHTSAVehicleVariables(): Promise<ErrorResponseInterface | SuccessReponseInterface> {
-    let rows;
-
-    try {
-      rows = await this.nhtsaService.queryVehicleVariables();
     } catch (err) {
       this.errorResponse.error = err.message;
       return this.errorResponse;
     }
-
-    return rows.toPromise();
   }
 }

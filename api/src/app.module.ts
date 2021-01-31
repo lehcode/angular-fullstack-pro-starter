@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ApiModule } from './modules/api/api.module';
+import { AdminModule } from './modules/admin/admin.module';
 import config from './config';
 
 @Module({
@@ -26,6 +27,7 @@ import config from './config';
         family: 4,
       }
     ),
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

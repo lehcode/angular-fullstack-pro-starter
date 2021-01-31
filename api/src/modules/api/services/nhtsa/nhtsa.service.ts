@@ -97,4 +97,8 @@ export class NHTSAService {
   queryVehicleVariables(): Observable<any> {
     return from(this.vehicleVariablesModel.find().exec());
   }
+
+  decodeVIN(code: string): Observable<any> {
+    return new Observable<any>();
+  }
 }
