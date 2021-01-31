@@ -18,7 +18,7 @@ export class ApiService {
   }
 
   async decodeVIN(code: string): Promise<any> {
-    return this.responseToPromise(this.nhtsaService.decodeVIN(code));
+    return await this.responseToPromise(this.nhtsaService.decodeVIN(code));
   }
 
   private async responseToPromise(observable: Observable<any>): Promise<any> {
