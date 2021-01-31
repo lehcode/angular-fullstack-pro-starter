@@ -2,21 +2,30 @@ version: "3.8"
 
 services:
   api:
-    image: carvin/api:test
-    build:
-      args:
-        node_env: test
-    container_name: "carvin_api_test"
+    image: "carvin/api:test"
+    container_name: "carvin-api-test"
     environment:
-      NODE_ENV: test
-    command: yarn test
+      MONGO_DB: "carvin-test"
+      MONGO_HOST: "carvin-mongo-test"
+      MONGO_PARAMS: "authSource=admin&ssl=true"
+      MONGO_PASS: "3b~8s{6VL/Ax}'J?"
+      MONGO_USER: "test"
+      NODE_ENV: "test"
+    command: "yarn test"
+    tty: false
 
   front:
-    image: carvin/front:test
-    build:
-      args:
-        node_env: test
-    container_name: "carvin_ui_test"
+    image: "carvin/front:test"
+    container_name: "carvin-ui-test"
     environment:
-      NODE_ENV: test
-    command: yarn test
+      NODE_ENV: "test"
+    command: "yarn test"
+    tty: false
+
+  mongo:
+    container_name: "carvin-mongo-test"
+    environment:
+      MONGO_INITDB_DATABASE: "carvin-test"
+      MONGO_INITDB_ROOT_PASSWORD: "3b~8s{6VL/Ax}'J?"
+      MONGO_INITDB_ROOT_USERNAME: "test"
+      MONGO_PARAMS: "authSource=admin&ssl=false"

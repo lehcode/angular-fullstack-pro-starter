@@ -2,23 +2,25 @@ version: "3.8"
 
 services:
   api:
+    image: carvin/api:dev
+    container_name: "carvin-api-dev"
     build:
       context: ./api
       args:
         workdir: /home/node/carvin/api
         tz: Etc/UTC
-    image: carvin/api:dev
-    container_name: "carvin-api-dev"
     environment:
+      API_PORT: "3000"
+      MONGO_DB: "carvin"
+      MONGO_HOST: "carvin-mongo-dev"
+      MONGO_PARAMS: "authSource=admin&ssl=false"
+      MONGO_PASS: "devpass123!"
+      MONGO_PORT: "27017"
+      MONGO_USER: "dev"
+      NODE_ENV: "development"
       TZ: Etc/UTC
-      NODE_ENV: development
-      MONGO_USER: dev
-      MONGO_PASS: devpass123!
-      MONGO_HOST: carvin-mongo-dev
-      MONGO_PORT: 27017
-      API_PORT: 3000
     tty: true
-    init: true
+#    init: true
     command: yarn start-dev
     volumes:
       - ./api:/home/node/carvin/api
@@ -28,24 +30,23 @@ services:
       - "0.0.0.0:9229:9229"
     depends_on:
       - mongo
-#      - mysql
 
   front:
+    image: carvin/front:dev
+    container_name: "carvin-ui-dev"
     build:
       context: ./ui
       args:
         workdir: /home/node/carvin/ui
         tz: Etc/UTC
         node_env: development
-    image: carvin/front:dev
-    container_name: "carvin-ui-dev"
     environment:
       TZ: Etc/UTC
       NODE_ENV: development
     env_file:
       - ui/.env
     tty: true
-    init: true
+#    init: true
     command: yarn start
     volumes:
       - ./ui:/home/node/carvin/ui
@@ -59,11 +60,12 @@ services:
 
   mongo:
     image: carvin/mongo:latest
+    container_name: "carvin-mongo-dev"
     build:
       context: docker-assets/mongo/
       dockerfile: Dockerfile
       shm_size: "2gb"
-    container_name: "carvin-mongo-dev"
+    tty: true
     init: true
     volumes:
       - data_db_mongodb:/data/db
@@ -76,14 +78,13 @@ services:
       nofile:
         soft: 64000
         hard: 64000
-    command: mongod --config /etc/mongod.conf --auth --port 27017 --wiredTigerCacheSizeGB 1.5
+    command: "mongod --config /etc/mongod.conf --auth --port 27017 --wiredTigerCacheSizeGB 1.5"
     environment:
-      TZ: Etc/UTC
-      MONGO_INITDB_ROOT_USERNAME: "dev"
+      MONGO_DATABASE: "carvin"
       MONGO_INITDB_ROOT_PASSWORD: "devpass123!"
-      MONGO_INITDB_DATABASE: "carvin"
+      MONGO_INITDB_ROOT_USERNAME: "dev"
+      TZ: Etc/UTC
     restart: always
-    tty: true
 
 #  mysql:
 #    image: carvin/mysql:latest
