@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as sourcemap from 'source-map-support';
-
-sourcemap.install();
+import { APIGatewayProxyEvent } from 'aws-lambda';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -11,4 +10,6 @@ async function bootstrap(): Promise<void> {
   });
   await app.listen(process.env.API_PORT as string);
 }
+
+sourcemap.install();
 bootstrap();

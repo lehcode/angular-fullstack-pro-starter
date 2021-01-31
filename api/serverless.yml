@@ -1,0 +1,19 @@
+service: carvin-api
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: eu-central-1
+  environment:
+    NODE_ENV: "production"
+
+functions:
+  app:
+    handler: src/main.handler
+    events:
+      - http: 'ANY /'
