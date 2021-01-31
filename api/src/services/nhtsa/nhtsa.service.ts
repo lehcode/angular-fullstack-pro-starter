@@ -85,7 +85,7 @@ export class NHTSAService {
     await this.vehicleVariablesModel.deleteMany({});
 
     for (const item of data) {
-      this.logger.log(`Inserting record: ${JSON.stringify(item)}`);
+      this.logger.log(`Inserting data (truncated): ${JSON.stringify(item).substr(0, 512)}`);
 
       await new this.vehicleVariablesModel(item as CreateVehicleVariableDto).save()
         .catch((err) => rethrow(err));

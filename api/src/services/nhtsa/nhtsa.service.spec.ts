@@ -26,9 +26,11 @@ describe('NHTSAService', () => {
     expect(nhtsaService).toBeDefined();
   });
 
-  it.todo('should fetch vehicle variables JSON from NHTSA API');
+  it.todo('getVehicleVariables() should fetch vehicle variables JSON from NHTSA API');
 
-  it.todo('should fetch vehicle variables values JSON from NHTSA API');
+  it.todo('getLookupValues() should fetch vehicle variables values JSON from NHTSA API');
 
-  it.todo('should store NHTSA vehicle variables to DB');
+  it.todo('storeVehicleVariables() should asynchronously store NHTSA vehicle variables to DB');
+
+  it.todo('should fetch NHTSA vehicle variables from DB');
 });

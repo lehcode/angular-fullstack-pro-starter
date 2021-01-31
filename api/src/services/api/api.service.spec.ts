@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
 import { NHTSAService } from '../nhtsa/nhtsa.service';
-import { VehicleVariable } from "../nhtsa/schemas/vehicle-variable.schema";
+import { VehicleVariable } from '../nhtsa/schemas/vehicle-variable.schema';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -16,7 +16,7 @@ describe('ApiService', () => {
         NHTSAService,
         {
           provide: 'VehicleVariableModel',
-          useClass: VehicleVariable,
+          useClass: VehicleVariable
         }
       ]
     }).compile();
@@ -25,19 +25,17 @@ describe('ApiService', () => {
     nhtsaService = module.get<NHTSAService>(NHTSAService);
   });
 
-  it('ApiService instance should be defined', () => {
+  it('should be defined', () => {
     expect(apiService).toBeDefined();
   });
 
-  it('NHTSAService instance should be defined', () => {
+  it('NHTSAService should be defined', () => {
     expect(nhtsaService).toBeDefined();
   });
 
-  it.todo('should make GET API call without parameters');
+  it.todo('getVehicleVariables() should return Observable');
 
-  it.todo('should make GET API call with parameters');
+  it.todo('storeVehicleVariables() should return resolved rows array');
 
-  it.todo('should make POST API call without payload');
-
-  it.todo('should make POST API call with payload');
+  it.todo('nhtsaVehicleVariables() should return Promise with data');
 });

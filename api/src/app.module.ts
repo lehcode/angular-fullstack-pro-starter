@@ -6,8 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { ApiModule } from './modules/api/api.module';
 import config from './config';
 
-debugger;
-
 @Module({
   imports: [
     ApiModule,
