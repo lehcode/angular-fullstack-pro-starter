@@ -1,0 +1,29 @@
+[
+  {
+    "dataType": "string",
+    "description": "<p>Any other battery information that does not belong to any of the battery related fields.</p>",
+    "varId": 1,
+    "name": "Battery Info",
+    "values": []
+  },
+  {
+    "dataType": "lookup",
+    "description": "<p>Battery type field stores the battery chemistry type for anode, cathode.</p>",
+    "varId": 2,
+    "name": "Battery Type",
+    "values": [
+      {
+        "id": 1,
+        "name": "Lead Acid/Lead"
+      },
+      {
+        "id": 2,
+        "name": "Nickel-Metal-Hydride/NiMH"
+      },
+      {
+        "id": 3,
+        "name": "Lithium-ion/Li-Ion"
+      }
+    ]
+  }
+]

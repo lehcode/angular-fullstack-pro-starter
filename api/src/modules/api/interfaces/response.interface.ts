@@ -6,5 +6,5 @@ export interface ErrorResponseInterface {
 export interface SuccessReponseInterface {
   success: boolean,
   message: string,
-  data?: string
+  data?: any
 }

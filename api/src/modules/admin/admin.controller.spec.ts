@@ -4,10 +4,20 @@ import { ApiService } from '../api/services/api/api.service';
 import { NHTSAService } from '../api/services/nhtsa/nhtsa.service';
 import { VehicleVariable } from '../api/services/nhtsa/schemas/vehicle-variable.schema';
 import { HttpModule } from '@nestjs/common';
+import { SuccessReponseInterface } from '../api/interfaces/response.interface';
+import * as vehicleVariablesResponse from '../api/services/nhtsa/__stubs__/vehicle-variables-response.json';
+import NHTSAServiceMock from '../api/services/nhtsa/__mocks__/nhtsa.service';
+
+jest.mock('./admin.controller');
 
 describe('AdminController', () => {
-  let controller: AdminController;
+  let adminController: AdminController;
   let nhtsaService: NHTSAService;
+
+  const successResponse: SuccessReponseInterface = {
+    success: true,
+    message: 'Inserted rows'
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,7 +25,10 @@ describe('AdminController', () => {
       controllers: [AdminController],
       providers: [
         ApiService,
-        NHTSAService,
+        {
+          provide: NHTSAService,
+          useClass: NHTSAServiceMock
+        },
         {
           provide: 'VehicleVariableModel',
           useClass: VehicleVariable
@@ -23,18 +36,30 @@ describe('AdminController', () => {
       ]
     }).compile();
 
-    controller = module.get<AdminController>(AdminController);
+    adminController = module.get<AdminController>(AdminController);
     nhtsaService = module.get<NHTSAService>(NHTSAService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(adminController).toBeDefined();
     expect(nhtsaService).toBeDefined();
   });
 
-  it.skip('updateNHTSAVehicleVariables() should resolve to rows', () => {
-    jest.spyOn(controller, 'updateNHTSAVehicleVariables');
+  it('getNHTSAVehicleVariables() should return vehicle variables JSON', async () => {
+    jest.spyOn(adminController, 'getNHTSAVehicleVariables')
+      .mockImplementation(() => vehicleVariablesResponse as any);
+
+    expect(await adminController.getNHTSAVehicleVariables()).toEqual(vehicleVariablesResponse);
   });
 
-  it.todo('updateNHTSAVehicleVariables() should response with error object');
+  it.todo('getNHTSAVehicleVariables() should respond with error');
+
+  it('updateNHTSAVehicleVariables() should issue success response', async () => {
+    jest.spyOn(adminController, 'updateNHTSAVehicleVariables')
+      .mockImplementation(() => successResponse as any);
+
+    expect(await adminController.updateNHTSAVehicleVariables()).toEqual(successResponse);
+  });
+
+  it.todo('getNHTSAVehicleVariables() should respond with error');
 });

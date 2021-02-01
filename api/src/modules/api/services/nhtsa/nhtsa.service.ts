@@ -30,29 +30,24 @@ export class NHTSAService {
 
     return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_URI}`).pipe(
       tap((response) => (results = response.data.Results)),
-      mergeMap(
-        (response) =>
-          zip(
-            ...results.map(
-              (result: Record<string, any>): Observable<VehicleVariableInterface> => {
-                const variable: VehicleVariableInterface = {
-                  dataType: result.DataType,
-                  description: result.Description,
-                  varId: result.ID,
-                  name: result.Name
-                };
-
-                if (variable.dataType === 'lookup') {
-                  return this.getLookupValues(variable);
-                }
-
-                return of(variable);
-              }
-            )
-          ),
-        5
-      )
+      mergeMap(() => zip(
+        ...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
     );
+  }
+
+  formatVariable(result: Record<string, any>): Observable<VehicleVariableInterface> {
+    const variable: VehicleVariableInterface = {
+      dataType: result.DataType,
+      description: result.Description,
+      varId: result.ID,
+      name: result.Name
+    };
+
+    if (variable.dataType === 'lookup') {
+      return this.getLookupValues(variable);
+    }
+
+    return of(variable);
   }
 
   /**
@@ -94,11 +89,20 @@ export class NHTSAService {
     return data;
   }
 
-  queryVehicleVariables(): Observable<any> {
-    return from(this.vehicleVariablesModel.find().exec());
+  /**
+   * QUery MonogoDB for vehicle variables
+   */
+  queryVehicleVariables(): Promise<VehicleVariableInterface[]> {
+    return from(this.vehicleVariablesModel.find().exec()).toPromise();
   }
 
+  // @ts-ignore
   decodeVIN(code: string): Observable<any> {
+    return new Observable<any>();
+  }
+
+  // @ts-ignore
+  decodeVINExtended(code: string): Observable<any> {
     return new Observable<any>();
   }
 }

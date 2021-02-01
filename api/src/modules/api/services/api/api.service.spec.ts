@@ -3,6 +3,8 @@ import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
 import { NHTSAService } from '../nhtsa/nhtsa.service';
 import { VehicleVariable } from '../nhtsa/schemas/vehicle-variable.schema';
+import * as vehicleVariables from '../nhtsa/__stubs__/vehicle-variables.json';
+import ApiServiceMock from './__mocks__/api.service';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -12,12 +14,9 @@ describe('ApiService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
       providers: [
-        ApiService,
+        { provide: ApiService, useClass: ApiServiceMock },
         NHTSAService,
-        {
-          provide: 'VehicleVariableModel',
-          useClass: VehicleVariable
-        }
+        { provide: 'VehicleVariableModel', useClass: VehicleVariable }
       ]
     }).compile();
 
@@ -27,15 +26,12 @@ describe('ApiService', () => {
 
   it('should be defined', () => {
     expect(apiService).toBeDefined();
-  });
-
-  it('NHTSAService should be defined', () => {
     expect(nhtsaService).toBeDefined();
   });
 
-  it.todo('getVehicleVariables() should return Observable');
+  it('getNHTSAVehicleVariables() should resolve to vehicle variables', async () => {
+    jest.spyOn(apiService, 'getNHTSAVehicleVariables');
 
-  it.todo('storeVehicleVariables() should return resolved rows array');
-
-  it.todo('nhtsaVehicleVariables() should return Promise with data');
+    expect(await apiService.getNHTSAVehicleVariables()).toEqual(vehicleVariables);
+  });
 });

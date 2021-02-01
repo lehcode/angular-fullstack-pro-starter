@@ -1,0 +1,25 @@
+{
+  "Count": 3,
+  "Message": "Results returned successfully",
+  "SearchCriteria": null,
+  "Results": [
+    {
+      "DataType": "string",
+      "Description": "<p>Any other battery information that does not belong to any of the battery related fields.</p>",
+      "ID": 1,
+      "Name": "Battery Info"
+    },
+    {
+      "DataType": "lookup",
+      "Description": "<p>Battery type field stores the battery chemistry type for anode, cathode.</p>",
+      "ID": 2,
+      "Name": "Battery Type"
+    },
+    {
+      "DataType": "lookup",
+      "Description": "<p>Bed type is the type of bed (the open back) used for pickup trucks. The common values are standard, short, long, extended.</p>",
+      "ID": 3,
+      "Name": "Bed Type"
+    }
+  ]
+}

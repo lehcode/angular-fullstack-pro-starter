@@ -3,8 +3,9 @@ import { ApiController } from './api.controller';
 import { ApiService } from './services/api/api.service';
 import { NHTSAService } from './services/nhtsa/nhtsa.service';
 import { HttpModule } from '@nestjs/common';
-// import * as vehicleVarsJSON from '../../testing/vehicle-variables.json';
 import { VehicleVariable } from './services/nhtsa/schemas/vehicle-variable.schema';
+import NHTSAServiceMock from './services/nhtsa/__mocks__/nhtsa.service';
+import ApiServiceMock from './services/api/__mocks__/api.service';
 
 describe('ApiController', () => {
   let controller: ApiController;
@@ -15,12 +16,9 @@ describe('ApiController', () => {
       imports: [HttpModule],
       controllers: [ApiController],
       providers: [
-        ApiService,
-        NHTSAService,
-        {
-          provide: 'VehicleVariableModel',
-          useClass: VehicleVariable
-        }
+        { provide: ApiService, useClass: ApiServiceMock },
+        { provide: NHTSAService, useClass: NHTSAServiceMock },
+        { provide: 'VehicleVariableModel', useClass: VehicleVariable }
       ]
     }).compile();
 

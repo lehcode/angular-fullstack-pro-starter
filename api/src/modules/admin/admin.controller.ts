@@ -4,6 +4,7 @@ import { ApiService } from '../api/services/api/api.service';
 import { NHTSAService } from '../api/services/nhtsa/nhtsa.service';
 import { Request } from 'express';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
+import { VehicleVariableInterface } from '../api/services/nhtsa/interfaces/vehicle-variable.interface';
 
 @Controller('admin')
 export class AdminController {
@@ -22,15 +23,14 @@ export class AdminController {
 
   @Post('nhtsa-update-variables')
   async updateNHTSAVehicleVariables(@Req() req?: Request): Promise<SuccessReponseInterface | undefined> {
-    let rows;
-
     if (req) {
       try {
-        rows = await this.apiService.getNHTSAVehicleVariables();
+        const vars = await this.apiService.getNHTSAVehicleVariables();
+        const inserted = await this.nhtsaService.storeVehicleVariables(vars);
 
         return {
           success: true,
-          message: `Inserted ${rows.length} rows`
+          message: `Inserted ${inserted.length} rows`
         };
       } catch (err) {
         rethrow(err.message);
@@ -40,15 +40,18 @@ export class AdminController {
 
   @Get('nhtsa-variables')
   async getNHTSAVehicleVariables(): Promise<ErrorResponseInterface | SuccessReponseInterface> {
-    let rows;
+    let rows: VehicleVariableInterface[];
 
     try {
       rows = await this.nhtsaService.queryVehicleVariables();
     } catch (err) {
-      this.errorResponse.error = err.message;
-      return this.errorResponse;
+      rethrow(err.message);
     }
 
-    return rows.toPromise();
+    return {
+      success: true,
+      message: 'success',
+      data: rows
+    };
   }
 }

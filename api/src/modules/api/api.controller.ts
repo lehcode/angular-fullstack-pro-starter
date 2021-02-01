@@ -17,12 +17,12 @@ export class ApiController {
     };
   }
 
-  @Get('decode-vin')
-  async getNHTSAVehicleVariables(@Req() req: Request): Promise<ErrorResponseInterface | SuccessReponseInterface> {
+  @Get('decode-default')
+  async decodeDefault(@Req() req: Request): Promise<ErrorResponseInterface | SuccessReponseInterface> {
     let vinData;
 
     try {
-      vinData = await this.apiService.decodeVIN(req.params.code);
+      vinData = await this.apiService.decodeVIN(req.params.code, 'default');
 
       return {
         success: true,
