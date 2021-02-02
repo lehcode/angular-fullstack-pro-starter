@@ -7,19 +7,22 @@ import { Model } from 'mongoose';
 import { CreateVehicleVariableDto } from './dto/create-vehicle-variable.dto';
 import { VehicleVariableDocument } from './interfaces/vehicle-variable.document';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
+import { ConfigService } from '@nestjs/config';
+import { isNaN, isEmpty } from 'lodash';
+import { DecodedVinItemInterface } from '../api/interfaces/decoded-vin-item.interface';
 
 @Injectable()
 export class NHTSAService {
-  private readonly API_HOST = 'https://vpic.nhtsa.dot.gov';
-  private readonly VEHICLE_VARS_URI = '/api/vehicles/GetVehicleVariableList?format=json';
-  private readonly VEHICLE_VARS_VALUES_URI = '/api/vehicles/GetVehicleVariableValuesList/:id?format=json';
+  private apiHost;
   private readonly logger = new Logger(NHTSAService.name);
 
   constructor(
     private readonly http: HttpService,
-    @InjectModel('VehicleVariable')
-    private vehicleVariablesModel: Model<VehicleVariableDocument>
-  ) {}
+    private readonly configService: ConfigService,
+    @InjectModel('VehicleVariable') private vehicleVariablesModel: Model<VehicleVariableDocument>
+  ) {
+    this.apiHost = this.configService.get<string>('services.nhtsa.apiHost');
+  }
 
   /**
    * Make a call to the NHTSA API vehicle variables endpoint.
@@ -27,14 +30,17 @@ export class NHTSAService {
    */
   getVehicleVariables(): Observable<any> {
     let results: any;
+    const endpoint = this.configService.get<string>('services.nhtsa.uris.vehicleVars');
 
-    return this.http.get(`${this.API_HOST}${this.VEHICLE_VARS_URI}`).pipe(
+    return this.http.get(`${this.apiHost}${endpoint}`).pipe(
       tap((response) => (results = response.data.Results)),
-      mergeMap(() => zip(
-        ...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
+      mergeMap(() => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
     );
   }
 
+  /**
+   * Provide normalized object
+   */
   formatVariable(result: Record<string, any>): Observable<VehicleVariableInterface> {
     const variable: VehicleVariableInterface = {
       dataType: result.DataType,
@@ -57,9 +63,10 @@ export class NHTSAService {
    */
   getLookupValues(variable: VehicleVariableInterface): Observable<VehicleVariableInterface> {
     const record = Object.assign({}, variable);
+    const endpoint = this.configService.get<string>('services.nhtsa.uris.vehicleVarsValues');
 
     this.http
-      .get(`${this.API_HOST}${this.VEHICLE_VARS_VALUES_URI}`.replace(':id', variable.varId.toString()))
+      .get(`${this.apiHost}${endpoint}`.replace('{:id}', variable.varId.toString()))
       .pipe(map((response) => response.data))
       .subscribe({
         next(data: Record<string, any>) {
@@ -90,19 +97,100 @@ export class NHTSAService {
   }
 
   /**
-   * QUery MonogoDB for vehicle variables
+   * Query MonogoDB for vehicle variables
    */
-  queryVehicleVariables(): Promise<VehicleVariableInterface[]> {
-    return from(this.vehicleVariablesModel.find().exec()).toPromise();
+  queryVehicleVariables(): Observable<VehicleVariableInterface[]> {
+    return from(this.vehicleVariablesModel.find().exec());
   }
 
-  // @ts-ignore
-  decodeVIN(code: string): Observable<any> {
-    return new Observable<any>();
+  getVariableValue$(varId: number, varName: string): Observable<any> {
+    return from(
+      this.vehicleVariablesModel
+        .findOne({ varId: varId, name: { $eq: varName } })
+        .select('-_id -__v')
+        .lean()
+        .exec()
+    );
   }
 
-  // @ts-ignore
-  decodeVINExtended(code: string): Observable<any> {
-    return new Observable<any>();
+  private formatDecodedItem(result: any, variable: any) {
+    const valueIdx = parseInt(result.valueId) - 1;
+
+    if (variable.values[valueIdx]) {
+      try {
+        result.details = variable.values[valueIdx].name;
+        result.description = variable.description;
+      } catch (err) {
+        this.logger.error(err);
+      }
+    }
+
+    if (!isNaN(parseInt(result.value))) {
+      result.value = parseInt(result.value);
+    }
+
+    result.label = result.variable;
+    delete result.variable;
+    delete result.variableId;
+    delete result.valueId;
+
+    return result;
+  }
+
+  /**
+   * Default VIN decoding
+   */
+  decodeVIN$(code: string, year?: number): Observable<any> {
+    let endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVin')?.replace('{:vin}', code.toString());
+
+    if (year) {
+      endpoint += 'modelyear={:year}'.replace('{:year}', year.toString());
+    }
+
+    return this.http.get(`${this.apiHost}${endpoint}`).pipe(
+      map((response) => response.data.Results),
+      mergeMap((results: Record<string, any>[]) => {
+        if (!results) {
+          this.logger.warn('NHTSAService.decodeVIN$(): Nothing found');
+          return of();
+        }
+
+        return zip(
+          ...results.map((result: Record<any, any>) => {
+            Object.keys(result).forEach((key) => {
+              const keyToLower = `${key.charAt(0).toLowerCase()}${key.slice(1)}`;
+              result[keyToLower] = result[key] as any;
+              delete result[key];
+              result.value = isEmpty(result.value) ? null : result.value;
+              result.valueId = isEmpty(result.valueId) || result.valueId === '0' ? null : result.valueId;
+            });
+
+            this.getVariableValue$(result.variableId, result.variable).subscribe({
+              next: (variable) => {
+                if (variable.dataType === 'lookup' && result.valueId) {
+                  result = this.formatDecodedItem(result, variable);
+                }
+              },
+              error: (err) => rethrow(err)
+            });
+
+            return of(result as DecodedVinItemInterface).pipe(delay(1000));
+          })
+        );
+      })
+    );
+  }
+
+  /**
+   * Get flattened values
+   */
+  decodeVINValues$(code: string): Observable<any> {
+    const endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVinValues');
+
+    return this.http.get(`${this.apiHost}${endpoint?.replace('{:vin}', code.toString())}`).pipe(
+      map((response) => {
+        const data = response.data.Results;
+      })
+    );
   }
 }
