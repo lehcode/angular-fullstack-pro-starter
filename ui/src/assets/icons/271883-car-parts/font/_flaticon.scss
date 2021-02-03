@@ -1,0 +1,195 @@
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+.fimanager:before {
+    display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.flaticon-001-oil:before { content: "\f100"; }
+.flaticon-002-temperature:before { content: "\f101"; }
+.flaticon-003-gas-station:before { content: "\f102"; }
+.flaticon-004-dashboard:before { content: "\f103"; }
+.flaticon-005-dashboard:before { content: "\f104"; }
+.flaticon-006-dashboard:before { content: "\f105"; }
+.flaticon-007-dashboard:before { content: "\f106"; }
+.flaticon-008-dashboard:before { content: "\f107"; }
+.flaticon-009-parking:before { content: "\f108"; }
+.flaticon-010-mechanic:before { content: "\f109"; }
+.flaticon-011-seat-belt:before { content: "\f10a"; }
+.flaticon-012-car:before { content: "\f10b"; }
+.flaticon-013-car:before { content: "\f10c"; }
+.flaticon-014-car:before { content: "\f10d"; }
+.flaticon-015-car:before { content: "\f10e"; }
+.flaticon-016-car:before { content: "\f10f"; }
+.flaticon-017-car:before { content: "\f110"; }
+.flaticon-018-warning:before { content: "\f111"; }
+.flaticon-019-warning:before { content: "\f112"; }
+.flaticon-020-information:before { content: "\f113"; }
+.flaticon-021-air-conditioner:before { content: "\f114"; }
+.flaticon-022-airbag:before { content: "\f115"; }
+.flaticon-023-air-conditioner:before { content: "\f116"; }
+.flaticon-024-air-conditioner:before { content: "\f117"; }
+.flaticon-025-air-conditioner:before { content: "\f118"; }
+.flaticon-026-air-conditioner:before { content: "\f119"; }
+.flaticon-027-indicators:before { content: "\f11a"; }
+.flaticon-028-window:before { content: "\f11b"; }
+.flaticon-029-window:before { content: "\f11c"; }
+.flaticon-030-engine:before { content: "\f11d"; }
+.flaticon-031-windshield:before { content: "\f11e"; }
+.flaticon-032-exhaust:before { content: "\f11f"; }
+.flaticon-033-info:before { content: "\f120"; }
+.flaticon-034-windshield:before { content: "\f121"; }
+.flaticon-035-light:before { content: "\f122"; }
+.flaticon-036-parking:before { content: "\f123"; }
+.flaticon-037-chassis:before { content: "\f124"; }
+.flaticon-038-car:before { content: "\f125"; }
+.flaticon-039-parking:before { content: "\f126"; }
+.flaticon-040-catalytic-converter:before { content: "\f127"; }
+.flaticon-041-car-key:before { content: "\f128"; }
+.flaticon-042-car-key:before { content: "\f129"; }
+.flaticon-043-steering-wheel:before { content: "\f12a"; }
+.flaticon-044-car-lights:before { content: "\f12b"; }
+.flaticon-045-steering-wheel:before { content: "\f12c"; }
+.flaticon-046-air-pump:before { content: "\f12d"; }
+.flaticon-047-oil:before { content: "\f12e"; }
+.flaticon-048-gearshift:before { content: "\f12f"; }
+.flaticon-049-spark-plug:before { content: "\f130"; }
+.flaticon-050-break:before { content: "\f131"; }
+.flaticon-051-break:before { content: "\f132"; }
+.flaticon-052-break:before { content: "\f133"; }
+.flaticon-053-break:before { content: "\f134"; }
+.flaticon-054-gearshift:before { content: "\f135"; }
+.flaticon-055-fog-light:before { content: "\f136"; }
+.flaticon-056-exhaust:before { content: "\f137"; }
+.flaticon-057-exhaust:before { content: "\f138"; }
+.flaticon-058-seatbelt:before { content: "\f139"; }
+.flaticon-059-engine:before { content: "\f13a"; }
+.flaticon-060-suspension:before { content: "\f13b"; }
+.flaticon-061-tire:before { content: "\f13c"; }
+.flaticon-062-piston:before { content: "\f13d"; }
+.flaticon-063-damper:before { content: "\f13e"; }
+.flaticon-064-car-lights:before { content: "\f13f"; }
+.flaticon-065-turbine:before { content: "\f140"; }
+.flaticon-066-car-lights:before { content: "\f141"; }
+.flaticon-067-radiator:before { content: "\f142"; }
+.flaticon-068-alloy-wheel:before { content: "\f143"; }
+.flaticon-069-alloy-wheel:before { content: "\f144"; }
+.flaticon-070-alloy-wheel:before { content: "\f145"; }
+.flaticon-071-alloy-wheel:before { content: "\f146"; }
+.flaticon-072-alloy-wheel:before { content: "\f147"; }
+.flaticon-073-alloy-wheel:before { content: "\f148"; }
+.flaticon-074-alloy-wheel:before { content: "\f149"; }
+.flaticon-075-alloy-wheel:before { content: "\f14a"; }
+.flaticon-076-alloy-wheel:before { content: "\f14b"; }
+.flaticon-077-frost:before { content: "\f14c"; }
+.flaticon-078-alloy-wheel:before { content: "\f14d"; }
+.flaticon-079-frost:before { content: "\f14e"; }
+.flaticon-080-battery:before { content: "\f14f"; }
+
+$font-Flaticon-001-oil: "\f100";
+$font-Flaticon-002-temperature: "\f101";
+$font-Flaticon-003-gas-station: "\f102";
+$font-Flaticon-004-dashboard: "\f103";
+$font-Flaticon-005-dashboard: "\f104";
+$font-Flaticon-006-dashboard: "\f105";
+$font-Flaticon-007-dashboard: "\f106";
+$font-Flaticon-008-dashboard: "\f107";
+$font-Flaticon-009-parking: "\f108";
+$font-Flaticon-010-mechanic: "\f109";
+$font-Flaticon-011-seat-belt: "\f10a";
+$font-Flaticon-012-car: "\f10b";
+$font-Flaticon-013-car: "\f10c";
+$font-Flaticon-014-car: "\f10d";
+$font-Flaticon-015-car: "\f10e";
+$font-Flaticon-016-car: "\f10f";
+$font-Flaticon-017-car: "\f110";
+$font-Flaticon-018-warning: "\f111";
+$font-Flaticon-019-warning: "\f112";
+$font-Flaticon-020-information: "\f113";
+$font-Flaticon-021-air-conditioner: "\f114";
+$font-Flaticon-022-airbag: "\f115";
+$font-Flaticon-023-air-conditioner: "\f116";
+$font-Flaticon-024-air-conditioner: "\f117";
+$font-Flaticon-025-air-conditioner: "\f118";
+$font-Flaticon-026-air-conditioner: "\f119";
+$font-Flaticon-027-indicators: "\f11a";
+$font-Flaticon-028-window: "\f11b";
+$font-Flaticon-029-window: "\f11c";
+$font-Flaticon-030-engine: "\f11d";
+$font-Flaticon-031-windshield: "\f11e";
+$font-Flaticon-032-exhaust: "\f11f";
+$font-Flaticon-033-info: "\f120";
+$font-Flaticon-034-windshield: "\f121";
+$font-Flaticon-035-light: "\f122";
+$font-Flaticon-036-parking: "\f123";
+$font-Flaticon-037-chassis: "\f124";
+$font-Flaticon-038-car: "\f125";
+$font-Flaticon-039-parking: "\f126";
+$font-Flaticon-040-catalytic-converter: "\f127";
+$font-Flaticon-041-car-key: "\f128";
+$font-Flaticon-042-car-key: "\f129";
+$font-Flaticon-043-steering-wheel: "\f12a";
+$font-Flaticon-044-car-lights: "\f12b";
+$font-Flaticon-045-steering-wheel: "\f12c";
+$font-Flaticon-046-air-pump: "\f12d";
+$font-Flaticon-047-oil: "\f12e";
+$font-Flaticon-048-gearshift: "\f12f";
+$font-Flaticon-049-spark-plug: "\f130";
+$font-Flaticon-050-break: "\f131";
+$font-Flaticon-051-break: "\f132";
+$font-Flaticon-052-break: "\f133";
+$font-Flaticon-053-break: "\f134";
+$font-Flaticon-054-gearshift: "\f135";
+$font-Flaticon-055-fog-light: "\f136";
+$font-Flaticon-056-exhaust: "\f137";
+$font-Flaticon-057-exhaust: "\f138";
+$font-Flaticon-058-seatbelt: "\f139";
+$font-Flaticon-059-engine: "\f13a";
+$font-Flaticon-060-suspension: "\f13b";
+$font-Flaticon-061-tire: "\f13c";
+$font-Flaticon-062-piston: "\f13d";
+$font-Flaticon-063-damper: "\f13e";
+$font-Flaticon-064-car-lights: "\f13f";
+$font-Flaticon-065-turbine: "\f140";
+$font-Flaticon-066-car-lights: "\f141";
+$font-Flaticon-067-radiator: "\f142";
+$font-Flaticon-068-alloy-wheel: "\f143";
+$font-Flaticon-069-alloy-wheel: "\f144";
+$font-Flaticon-070-alloy-wheel: "\f145";
+$font-Flaticon-071-alloy-wheel: "\f146";
+$font-Flaticon-072-alloy-wheel: "\f147";
+$font-Flaticon-073-alloy-wheel: "\f148";
+$font-Flaticon-074-alloy-wheel: "\f149";
+$font-Flaticon-075-alloy-wheel: "\f14a";
+$font-Flaticon-076-alloy-wheel: "\f14b";
+$font-Flaticon-077-frost: "\f14c";
+$font-Flaticon-078-alloy-wheel: "\f14d";
+$font-Flaticon-079-frost: "\f14e";
+$font-Flaticon-080-battery: "\f14f";
