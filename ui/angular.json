@@ -49,7 +49,6 @@
               "src/robots.txt"
             ],
             "styles": [
-              "src/assets/scss/mat-theme.scss",
               "src/assets/scss/styles.scss"
             ],
             "scripts": []
@@ -129,7 +128,6 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/scss/mat-theme.scss",
               "src/assets/scss/styles.scss"
             ],
             "scripts": [],

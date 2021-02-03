@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { LayoutModule } from '~/app/modules/layout/layout.module';
-import '@angular/common/locales/global/ru';
 import { PageNotFoundComponent } from './modules/layout/components/page-not-found/page-not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import '@angular/common/locales/global/ru';
@@ -24,7 +23,7 @@ import { MatFormField } from '@angular/material/form-field';
     AppRoutingModule,
     BrowserAnimationsModule,
     LoggerModule.forRoot({
-      serverLoggingUrl: '/api/logs',
+      serverLoggingUrl: '/api/log',
       level: NgxLoggerLevel.INFO,
       serverLogLevel: NgxLoggerLevel.ERROR,
       colorScheme: [

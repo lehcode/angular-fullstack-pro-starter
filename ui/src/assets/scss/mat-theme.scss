@@ -27,13 +27,11 @@ $custom-typography: mat-typography-config(
 // hue. Available color palettes: https://material.io/design/color/
 $ui-primary: mat-palette($ui-primary, 400, 300, 900);
 $ui-accent: mat-palette($ui-accent, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
 $ui-warn: mat-palette($mat-red);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$ui-theme: mat-light-theme((
+$light-theme: mat-light-theme((
   color: (
     primary: $ui-primary,
     accent: $ui-accent,
@@ -44,8 +42,18 @@ $ui-theme: mat-light-theme((
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($ui-theme);
-@include mat-base-typography($custom-typography);
+@include angular-material-theme($light-theme);
+
+$dark-primary: mat-palette($ui-dark-primary);
+$dark-accent: mat-palette($ui-dark-accent, A200, A100, A400);
+$dark-warn: mat-palette($mat-red);
+$dark-theme: mat-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+    warn: $dark-warn,
+  )
+));
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -64,4 +72,8 @@ body {
 body, .mat-body {
   font: 400 1.6rem/2rem 'Noto Sans JP', sans-serif !important;
   margin: 0;
+}
+
+.dark-theme {
+  @include angular-material-color($dark-theme);
 }
