@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
@@ -19,9 +18,8 @@ import { MatRippleModule } from '@angular/material/core';
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatFormFieldModule,
     MatInputModule,
-    MatRippleModule,
+    MatRippleModule
   ]
 })
 export class FrontPageModule {

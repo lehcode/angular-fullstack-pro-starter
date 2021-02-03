@@ -11,7 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import '@angular/common/locales/global/ru';
 import '@angular/common/locales/global/en';
 import '@angular/common/locales/global/uk';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,8 @@ import { MatFormField } from '@angular/material/form-field';
     }),
     FlexLayoutModule,
     LayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule
   ],
   providers: [
     TitleService,

@@ -5,8 +5,9 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { GuestNavComponent } from '../../components/guest-nav/guest-nav.component';
-
+import { GuestNavComponent } from '../front-page/components/guest-nav/guest-nav.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { GuestNavComponent } from '../../components/guest-nav/guest-nav.componen
   imports: [
     CommonModule,
     FlexLayoutModule,
-    RouterModule
+    RouterModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
   exports: [
     HeaderComponent,
