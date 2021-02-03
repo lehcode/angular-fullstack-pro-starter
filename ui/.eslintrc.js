@@ -44,7 +44,7 @@ module.exports = {
             style: 'camelCase',
           },
         ],
-        '@typescript-eslint/quotes': ['error', 'single', { allowTemplateLiterals: true }],
+        '@typescript-eslint/quotes': ['warn', 'single', { allowTemplateLiterals: true }],
       },
     },
     {
