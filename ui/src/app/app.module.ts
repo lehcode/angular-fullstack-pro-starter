@@ -5,9 +5,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { LayoutModule } from '~/app/layout/layout.module';
+import { LayoutModule } from '~/app/modules/layout/layout.module';
 import '@angular/common/locales/global/ru';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './modules/layout/components/page-not-found/page-not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import '@angular/common/locales/global/ru';
 import '@angular/common/locales/global/en';
@@ -15,11 +15,11 @@ import '@angular/common/locales/global/uk';
 import { MatFormField } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [ // The set of components, directives, and pipes (declarables) that belong to this module.
+  declarations: [
     AppComponent,
     PageNotFoundComponent
   ],
-  imports: [ // The set of NgModules whose exported declarables are available to templates in this module.
+  imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -39,18 +39,15 @@ import { MatFormField } from '@angular/material/form-field';
     }),
     FlexLayoutModule,
     LayoutModule,
-    HttpClientModule, // ngx-logger fails without it
+    HttpClientModule
   ],
-  providers: [ // The set of injectable objects that are available in the injector of this module.
+  providers: [
     TitleService,
     {
       provide: LOCALE_ID,
       useValue: 'ru'
     }
   ],
-  // exports: [],  // The set of components, directives, and pipes declared in this NgModule that can be used in the
-  // template of any component that is part of an NgModule that imports this NgModule. Exported declarations are
-  // the module's public API.
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FrontPageRoutingModule } from '~/app/front-page/frontpage-routing.module';
-import { FrontPageComponent } from '~/app/front-page/front-page.component';
+import { FrontPageRoutingModule } from './frontpage-routing.module';
+import { FrontPageComponent } from './front-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';

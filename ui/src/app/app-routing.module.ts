@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from '~/app/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from '~/app/modules/layout/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then((mod) => mod.AdminModule),
+    loadChildren: () => import('./modules/admin/admin.module').then((mod) => mod.AdminModule),
     data: {
       showSideBar: true
     }
   },
   {
-    path: '', loadChildren: () => import('./front-page/front-page.module').then((mod) => mod.FrontPageModule), data: {
+    path: '', loadChildren: () => import('./modules/front-page/front-page.module').then((mod) => mod.FrontPageModule), data: {
       showGuestNav: true,
       // showHeader: true,
       showFooter: true,
     }
   },
-  {path: 'vin-decode', loadChildren: () => import('./vin-decode/vin-decode.module').then((mod) => mod.VinDecodeModule)},
-  {path: 'vin-report', loadChildren: () => import('./vin-report/vin-report.module').then((mod) => mod.VinReportModule)},
+  {path: 'vin-decode', loadChildren: () => import('./modules/vin-decode/vin-decode.module').then((mod) => mod.VinDecodeModule)},
+  {path: 'vin-report', loadChildren: () => import('./modules/vin-report/vin-report.module').then((mod) => mod.VinReportModule)},
   {path: '**', component: PageNotFoundComponent}
 ];
 

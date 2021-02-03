@@ -5,21 +5,21 @@
       <trans-unit id="guest-nav.login" datatype="html">
         <source>Вход</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
+          <context context-type="sourcefile">src/app/components/guest-nav/guest-nav.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="guest-nav.registration" datatype="html">
         <source>Регистрация</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
+          <context context-type="sourcefile">src/app/components/guest-nav/guest-nav.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="guest-nav.help" datatype="html">
         <source>Помощь</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/layout/guest-nav/guest-nav.component.html</context>
+          <context context-type="sourcefile">src/app/components/guest-nav/guest-nav.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>

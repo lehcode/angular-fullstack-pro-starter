@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { GuestNavComponent } from './guest-nav/guest-nav.component';
+import { GuestNavComponent } from '../../components/guest-nav/guest-nav.component';
 
 
 @NgModule({
