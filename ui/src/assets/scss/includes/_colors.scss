@@ -1,3 +1,5 @@
+// http://mcg.mbitson.com/#!?mcgpalette0=%238bc34a&themename=mcgtheme
+
 $ui-primary: (
   50: #edf7ed,
   100: #d1ebd2,
@@ -64,11 +66,68 @@ $ui-accent: (
   )
 );
 
-$ui-dark-primary: #455A64;
-//$primary-color: #607D8B;
-//$primary-color-light: #CFD8DC;
-//$primary-color-text: #FFFFFF;
-$ui-dark-accent: #8BC34A;
-//$primary-text-color: #212121;
-//$secondary-text-color: #757575;
-//$divider-color: #BDBDBD;
+$ui-dark-primary: (
+  50 : #e9ebec,
+  100 : #c7ced1,
+  200 : #a2adb2,
+  300 : #7d8c93,
+  400 : #61737b,
+  500 : #455a64,
+  600 : #3e525c,
+  700 : #364852,
+  800 : #2e3f48,
+  900 : #1f2e36,
+  A100 : #7dcdff,
+  A200 : #4abaff,
+  A400 : #17a7ff,
+  A700 : #009cfc,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #ffffff,
+  )
+);
+
+$ui-dark-accent: (
+  50 : #f1f8e9,
+  100 : #dcedc9,
+  200 : #c5e1a5,
+  300 : #aed580,
+  400 : #9ccc65,
+  500 : #8bc34a,
+  600 : #83bd43,
+  700 : #78b53a,
+  800 : #6eae32,
+  900 : #5ba122,
+  A100 : #ebffdd,
+  A200 : #ceffaa,
+  A400 : #b0ff77,
+  A700 : #a2ff5d,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);

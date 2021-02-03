@@ -51,7 +51,7 @@ $dark-theme: mat-dark-theme((
   color: (
     primary: $dark-primary,
     accent: $dark-accent,
-    warn: $dark-warn,
+    warn: mat-palette($dark-accent, A700),
   )
 ));
 
