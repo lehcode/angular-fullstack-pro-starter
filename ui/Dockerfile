@@ -31,8 +31,8 @@ RUN set -ex \
   && echo "NPM binary: "$(which npm) \
   && env \
   && yarn global add @angular/cli \
-  && yarn install
-#  && yarn build
+  && yarn install \
+  && echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/40-max-user-watches.conf #Fix change watch issue
 
 #---
 #FROM node:10-slim AS release
