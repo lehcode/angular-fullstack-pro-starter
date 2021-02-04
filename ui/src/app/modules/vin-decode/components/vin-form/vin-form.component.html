@@ -1,1 +1,15 @@
-<p>vin-form works!</p>
+<div>
+    <form #vinForm="ngForm" (ngSubmit)="submitForm($event)" [ngFormOptions]="{updateOn: 'blur'}">
+        <mat-form-field id="vin-input" appearance="outline">
+            <input type="text"
+                   matInput
+                   class="form-control"
+                   [formControl]="vinCodeFormControl"
+                   name="vin-code"
+            />
+            <mat-hint><a href="#">Где найти код VIN?</a></mat-hint>
+        </mat-form-field>
+        <button mat-flat-button color="primary" [disabled]="!vinForm.valid">Проверить</button>
+    </form>
+    <!--		<a href="/vin-decode" class="button" i18n="button|Form submit button@@frontpage.check_vin">Проверить</a>-->
+</div>

@@ -2,19 +2,7 @@
     <div class="hero-content">
         <h1 i18n="@@frontpage.hero_heading">Проверить VIN авто бесплатно</h1>
         <p i18n="@@frontpage.hero_lead">Узнать историю автомобиля по коду VIN до покупки!</p>
-        <form #vinForm="ngForm" (ngSubmit)="submitForm($event)" [ngFormOptions]="{updateOn: 'blur'}">
-            <mat-form-field id="vin-input" appearance="outline">
-                <input type="text"
-                       matInput
-                       class="form-control"
-                       [formControl]="vinCodeFormControl"
-                       name="vin-code"
-                />
-                <mat-hint><a href="#">Где найти код VIN?</a></mat-hint>
-            </mat-form-field>
-            <button mat-flat-button color="primary" [disabled]="!vinForm.valid">Проверить</button>
-        </form>
-        <!--		<a href="/vin-decode" class="button" i18n="button|Form submit button@@frontpage.check_vin">Проверить</a>-->
+        <app-vin-form></app-vin-form>
     </div>
     <img src="../../../assets/images/vin-decoded-bg.png" alt=""/>
 </header>

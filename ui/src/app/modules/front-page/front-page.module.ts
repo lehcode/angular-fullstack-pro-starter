@@ -3,11 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FrontPageRoutingModule } from './frontpage-routing.module';
 import { FrontPageComponent } from './front-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRippleModule } from '@angular/material/core';
+import { VINDecodeModule } from '~/app/modules/vin-decode/vin-decode.module';
 
 @NgModule({
   declarations: [FrontPageComponent],
@@ -15,11 +11,7 @@ import { MatRippleModule } from '@angular/material/core';
     CommonModule,
     FrontPageRoutingModule,
     FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatInputModule,
-    MatRippleModule
+    VINDecodeModule
   ]
 })
 export class FrontPageModule {

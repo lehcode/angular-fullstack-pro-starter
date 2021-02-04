@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './vin-report.component.html',
   styleUrls: ['./vin-report.component.scss']
 })
-export class VinReportComponent implements OnInit {
+export class VINReportComponent implements OnInit {
 
   constructor() { }
 

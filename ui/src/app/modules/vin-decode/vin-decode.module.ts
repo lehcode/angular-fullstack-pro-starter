@@ -3,16 +3,26 @@ import { CommonModule } from '@angular/common';
 import { VinDecodeRoutingModule } from './vin-decode-routing.module';
 import { FreeReportComponent } from '../../components/free-report/free-report.component';
 import { VINFormComponent } from './components/vin-form/vin-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    VinDecodeRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatRippleModule
+  ],
   declarations: [
     FreeReportComponent,
     VINFormComponent
   ],
-  imports: [
-    CommonModule,
-    VinDecodeRoutingModule
-  ]
+  exports: [VINFormComponent]
 })
-export class VinDecodeModule {
+export class VINDecodeModule {
 }
