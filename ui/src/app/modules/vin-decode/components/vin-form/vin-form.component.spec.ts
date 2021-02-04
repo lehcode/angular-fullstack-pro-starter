@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { VINFormComponent } from './vin-form.component';
 
-import { VinFormComponent } from './vin-form.component';
-
-describe('VinFormComponent', () => {
-  let component: VinFormComponent;
-  let fixture: ComponentFixture<VinFormComponent>;
+describe('VINFormComponent', () => {
+  let component: VINFormComponent;
+  let fixture: ComponentFixture<VINFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VinFormComponent ]
+      declarations: [ VINFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VinFormComponent);
+    fixture = TestBed.createComponent(VINFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

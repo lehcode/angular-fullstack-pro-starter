@@ -1,11 +1,12 @@
+/* eslint-disable array-bracket-newline */
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { VinDecodeComponent } from './vin-decode.component';
+// import { VINFormComponent } from './components/vin-form/vin-form.component';
 import { FreeReportComponent } from '../../components/free-report/free-report.component';
 
 const routes: Routes = [
-  {path: '', component: VinDecodeComponent},
+  // {path: '', component: VINFormComponent},
   {path: 'free-report', component: FreeReportComponent}
 ];
 
