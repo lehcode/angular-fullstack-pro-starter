@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { VinDecodeRoutingModule } from './vin-decode-routing.module';
-import { VinDecodeComponent } from './vin-decode.component';
 import { FreeReportComponent } from '../../components/free-report/free-report.component';
+import { VinFormComponent } from './components/vin-form/vin-form.component';
 
 
 @NgModule({
   declarations: [
-    VinDecodeComponent,
-    FreeReportComponent
+    FreeReportComponent,
+    VinFormComponent
   ],
   imports: [
     CommonModule,
