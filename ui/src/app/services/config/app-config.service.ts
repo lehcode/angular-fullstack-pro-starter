@@ -6,6 +6,7 @@ import config from '../../config';
 })
 export class AppConfigService {
   getValue(key: string): any {
-    return key.split('.').reduce((o: any, i)=>o[i], config);
+    return key.split('.')
+      .reduce((obj: any, idx) => obj[idx], config);
   }
 }
