@@ -1,5 +1,5 @@
 {
-  "name": "vindb-ui",
+  "name": "vin4free-ui",
   "version": "0.0.1",
   "description": "VIN Frontend Application",
   "author": "Antony Repin",
@@ -47,7 +47,10 @@
     "@angular/platform-server": "^11.0.5",
     "@angular/router": "~11.0.5",
     "@nguniversal/express-engine": "^11.0.1",
+    "@types/lodash": "^4.14.168",
+    "dotenv": "^8.2.0",
     "express": "^4.15.2",
+    "lodash": "^4.17.20",
     "ngx-logger": "^4.1.9",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
