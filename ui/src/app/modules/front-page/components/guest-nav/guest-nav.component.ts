@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfigService } from '~/app/modules/config/config.service';
 
 @Component({
   selector: 'app-guest-nav',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./guest-nav.component.scss']
 })
 export class GuestNavComponent implements OnInit {
+  public navTitle = '';
 
-  constructor() { }
+  constructor(private readonly configService: ConfigService) {
+    this.navTitle = 'vin4free.com';
+  }
 
   ngOnInit(): void {
   }

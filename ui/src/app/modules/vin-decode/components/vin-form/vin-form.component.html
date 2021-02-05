@@ -1,15 +1,33 @@
 <div>
-    <form #vinForm="ngForm" (ngSubmit)="submitForm($event)" [ngFormOptions]="{updateOn: 'blur'}">
-        <mat-form-field id="vin-input" appearance="outline">
+    <form [formGroup]="dataForm" id="vin-form">
+        <mat-hint>
+            <a href="#" i18n="@@where_to_find_vin">Где найти код VIN?</a>
+        </mat-hint>
+        <mat-form-field appearance="outline">
             <input type="text"
                    matInput
-                   class="form-control"
-                   [formControl]="vinCodeFormControl"
-                   name="vin-code"
+                   formControlName="vinCodeInput"
+                   [(ngModel)]="vinCode"
             />
-            <mat-hint><a href="#">Где найти код VIN?</a></mat-hint>
         </mat-form-field>
-        <button mat-flat-button color="primary" [disabled]="!vinForm.valid">Проверить</button>
+
+        <mat-hint *ngIf="dataForm.controls.vinCodeInput.touched && dataForm.controls.vinCodeInput.valid">
+            <a href="#" i18n="@@vin-form.know_model_year">Знаешь год выпуска? Выбери ниже</a>
+        </mat-hint>
+        <mat-slider *ngIf="dataForm.controls.vinCodeInput.touched && dataForm.controls.vinCodeInput.valid"
+                    [(ngModel)]="modelYear"
+                    formControlName="modelYearInput"
+                    min="1980"
+                    max="2021"
+                    step="1"
+                    value="2016"
+                    thumbLabel="true"
+        ></mat-slider>
+
+        <button id="submit-btn"
+                mat-flat-button
+                color="primary"
+                [disabled]="!dataForm.valid"
+                i18n="@@vin-form.decode">Проверить</button>
     </form>
-    <!--		<a href="/vin-decode" class="button" i18n="button|Form submit button@@frontpage.check_vin">Проверить</a>-->
 </div>

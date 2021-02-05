@@ -48,7 +48,6 @@
     "@angular/router": "~11.0.5",
     "@nguniversal/express-engine": "^11.0.1",
     "@types/lodash": "^4.14.168",
-    "dotenv": "^8.2.0",
     "express": "^4.15.2",
     "lodash": "^4.17.20",
     "ngx-logger": "^4.1.9",

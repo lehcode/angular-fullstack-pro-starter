@@ -7,9 +7,11 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./front-page.component.scss'],
 })
 export class FrontPageComponent implements OnInit {
-  public title = 'RealFreeVIN.com :: Бесплатная расшифровка VIN-кода автомобиля';
+  public title = $localize`:@@page_title:vin4free.com - Бесплатная расшифровка VIN-кода автомобиля`;
 
-  constructor(private titleService: Title) {}
+  constructor(private titleService: Title) {
+
+  }
 
   ngOnInit(): void {
     this.titleService.setTitle($localize`${this.title}`);

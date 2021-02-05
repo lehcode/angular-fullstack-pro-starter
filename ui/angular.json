@@ -46,7 +46,7 @@
               "src/favicon.ico",
               "src/assets/fonts",
               "src/assets/images",
-              "src/robots.txt"
+              "src/robots.txt",
             ],
             "styles": [
               "src/assets/scss/styles.scss"
@@ -125,7 +125,9 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets/fonts",
+              "src/assets/images",
+              "src/robots.txt",
             ],
             "styles": [
               "src/assets/scss/styles.scss"

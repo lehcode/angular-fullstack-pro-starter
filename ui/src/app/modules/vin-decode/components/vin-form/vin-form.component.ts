@@ -1,29 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { AppConfigService } from '~/app/services/config/app-config.service';
-import { FormControl, Validators } from '@angular/forms';
+import { AfterViewInit, Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
+import { fromEvent } from 'rxjs';
+import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
+import { isUndefined, isNull } from 'lodash';
+import { BackendService } from '~/app/services/backend.service';
+import { ConfigService } from '~/app/modules/config/config.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vin-form',
   templateUrl: './vin-form.component.html',
   styleUrls: ['./vin-form.component.scss']
 })
-export class VINFormComponent implements OnInit {
+export class VINFormComponent implements AfterViewInit {
   public apiUrl: string;
-  public vinCodeFormControl: FormControl;
+  public dataForm: FormGroup;
+  public vinData: Record<string, any> = {};
+  public vinCode: string | undefined;
+  public modelYear = 1980;
 
   constructor(
-    private readonly appConfigService: AppConfigService,
-    private logger: NGXLogger
+    private readonly config: ConfigService,
+    private backendService: BackendService,
+    private logger: NGXLogger,
+    private router: Router
   ) {
-    this.apiUrl = this.appConfigService.getValue('api.url');
-    this.vinCodeFormControl = new FormControl('', [Validators.required]);
+    this.apiUrl = `${this.config.get<string>('api.host')}:${this.config.get<string>('api.port')}`;
+    this.dataForm = new FormGroup({
+      vinCodeInput: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^\s?[A-HJ-NPR-Z0-9]{9,17}\s?$/)
+      ]),
+      modelYearInput: new FormControl('', [Validators.pattern(/^\s?\d{4}\s?$/)])
+    });
   }
 
-  ngOnInit(): void {}
-
-  submitForm(evt: Event) {
-    /* eslint-disable-next-line */
-    debugger;
+  ngAfterViewInit(): void {
+    fromEvent(document.querySelector('form button') as FromEventTarget<Event>, 'click')
+      .subscribe(evt => {
+        if (this.dataForm.valid) {
+          this.backendService.decodeVIN$(this.vinCode, this.modelYear)
+            .subscribe((data: Record<string, any>) => {
+                this.vinData = data;
+                this.router.navigateByUrl(`/free-report`);
+              }
+            );
+        }
+      });
   }
 }

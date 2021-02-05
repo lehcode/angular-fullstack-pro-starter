@@ -12,7 +12,8 @@ import '@angular/common/locales/global/ru';
 import '@angular/common/locales/global/en';
 import '@angular/common/locales/global/uk';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AppConfigService } from '~/app/services/config/app-config.service';
+import { ConfigModule } from '~/app/modules/config/config.module';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AppConfigService } from '~/app/services/config/app-config.service';
     FlexLayoutModule,
     LayoutModule,
     HttpClientModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ConfigModule
   ],
   providers: [
     TitleService,
@@ -48,7 +50,6 @@ import { AppConfigService } from '~/app/services/config/app-config.service';
       provide: LOCALE_ID,
       useValue: 'ru'
     },
-    AppConfigService
   ],
   bootstrap: [AppComponent]
 })

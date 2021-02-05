@@ -17,7 +17,13 @@ const routes: Routes = [
       showFooter: true,
     }
   },
-  {path: 'vin-decode', loadChildren: () => import('./modules/vin-decode/vin-decode.module').then((mod) => mod.VINDecodeModule)},
+  {
+    path: 'faq', loadChildren: () => import('./modules/faq/faq.module').then((mod) => mod.FAQModule), data: {
+      // showGuestNav: true,
+      showHeader: true,
+      showFooter: true,
+    }
+  },
   // {path: 'vin-report', loadChildren: () => import('./modules/vin-report/vin-report.module').then((mod) => mod.VINReportModule)},
   {path: '**', component: PageNotFoundComponent}
 ];
