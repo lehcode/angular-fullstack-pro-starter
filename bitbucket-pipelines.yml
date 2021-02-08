@@ -1,32 +1,29 @@
-#  Template NodeJS build
-
-#  This template allows you to validate your NodeJS code.
-#  The workflow allows running tests and code linting on the default branch.
-
 image: node:10.15.3
 
 pipelines:
   default:
     - parallel:
         - step:
-            name: Lint UI
+            name: Lint API
             script:
-              - cd ./ui
+              - cd ./api
               - npm install
-              - npm run lint:ci
-              - npm run lint:css
+              - npm run lint
             caches:
               - node
         - step:
             name: Lint API
             caches:
               - node
-            name: Code linting
+            script:
+              - cd ./api
+              - npm install
+              - npm run lint
         - step:
-            name: Test and Build UI
+            name: Test and Build API
             caches:
               - node
             script:
-              - cd ../ui
+              - cd ./ui
               - npm test
               - npm run build

@@ -15,7 +15,6 @@ pipelines:
             name: Lint API
             caches:
               - node
-            name: Code linting
             script:
               - cd ./api
               - npm install
