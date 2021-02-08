@@ -5,6 +5,8 @@ import { NHTSAService } from '../nhtsa/nhtsa.service';
 import { VehicleVariable } from '../nhtsa/schemas/vehicle-variable.schema';
 import * as vehicleVariables from '../nhtsa/__stubs__/vehicle-variables.json';
 import ApiServiceMock from './__mocks__/api.service';
+import { ConfigService } from '@nestjs/config';
+import { LocaleService } from '../locale/locale.service';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -16,7 +18,9 @@ describe('ApiService', () => {
       providers: [
         { provide: ApiService, useClass: ApiServiceMock },
         NHTSAService,
-        { provide: 'VehicleVariableModel', useClass: VehicleVariable }
+        { provide: 'VehicleVariableModel', useClass: VehicleVariable },
+        ConfigService,
+        LocaleService
       ]
     }).compile();
 

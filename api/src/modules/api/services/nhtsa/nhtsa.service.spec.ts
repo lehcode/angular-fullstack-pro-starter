@@ -6,6 +6,8 @@ import NHTSAServiceMock from './__mocks__/nhtsa.service';
 import { VehicleVariableInterface } from './interfaces/vehicle-variable.interface';
 import * as vehicleVariableResponse from './__stubs__/vehicle-variables-response.json';
 import * as vehicleVariables from './__stubs__/vehicle-variables.json';
+import { ConfigService } from '@nestjs/config';
+import { LocaleService } from '../locale/locale.service';
 
 describe('NHTSAService', () => {
   let nhtsaService: NHTSAService;
@@ -19,7 +21,9 @@ describe('NHTSAService', () => {
       providers: [
         NHTSAService,
         { provide: NHTSAServiceMock, useClass: NHTSAServiceMock },
-        { provide: 'VehicleVariableModel', useClass: VehicleVariable }
+        { provide: 'VehicleVariableModel', useClass: VehicleVariable },
+        ConfigService,
+        LocaleService
       ]
     }).compile();
 
