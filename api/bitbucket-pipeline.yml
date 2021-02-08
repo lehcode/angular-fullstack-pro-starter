@@ -1,0 +1,30 @@
+image: node:10.15.3
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Lint API
+            script:
+              - cd ./api
+              - npm install
+              - npm run lint
+            caches:
+              - node
+        - step:
+            name: Lint API
+            caches:
+              - node
+            name: Code linting
+            script:
+              - cd ./api
+              - npm install
+              - npm run lint
+        - step:
+            name: Test and Build API
+            caches:
+              - node
+            script:
+              - cd ./ui
+              - npm test
+              - npm run build
