@@ -3,13 +3,19 @@ module.exports = {
   ignorePatterns: ["dist", "node_modules"],
   plugins: [],
   rules: {
-    "indent": ["error",
-      2,
-      { SwitchCase: 1 }],
+    "indent": ["error", 2, { SwitchCase: 1 }],
     "array-bracket-newline": ["warn", "consistent"],
     "array-element-newline": ["warn", "consistent"],
     "function-call-argument-newline": ["warn", "consistent"],
     "function-paren-newline": ["warn", "consistent"],
+    "max-lines": [
+      "error",
+      {
+        max: 500,
+        skipBlankLines: true,
+        skipComments: true,
+      },
+    ],
     "quotes": ["error", "double"],
     "quote-props": ["error", "consistent"],
     "semi": "error",
@@ -22,9 +28,7 @@ module.exports = {
         project: ["tsconfig.json"],
         createDefaultProgram: true,
       },
-      extends: [
-        "plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"
-      ],
+      extends: ["plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"],
       rules: {
         "id-length": ["warn", { min: 2 }],
         "newline-per-chained-call": ["warn", { ignoreChainWithDepth: 2 }],
@@ -33,11 +37,7 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "warn",
         "@typescript-eslint/explicit-module-boundary-types": "warn",
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/quotes": [
-          "warn",
-          "single",
-          { allowTemplateLiterals: true }
-        ],
+        "@typescript-eslint/quotes": ["warn", "single", { allowTemplateLiterals: true }],
       },
     },
   ],

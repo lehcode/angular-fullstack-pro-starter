@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { PageNotFoundComponent } from '~/app/modules/layout/components/page-not-found/page-not-found.component';
+import { environment } from '~/environments/environment';
 
 const routes: Routes = [
   {
@@ -11,7 +12,9 @@ const routes: Routes = [
     }
   },
   {
-    path: '', loadChildren: () => import('./modules/front-page/front-page.module').then((mod) => mod.FrontPageModule), data: {
+    path: '',
+    loadChildren: () => import('./modules/front-page/front-page.module').then((mod) => mod.FrontPageModule),
+    data: {
       showGuestNav: true,
       // showHeader: true,
       showFooter: true,
@@ -28,8 +31,16 @@ const routes: Routes = [
   {path: '**', component: PageNotFoundComponent}
 ];
 
+const routerOpts = {
+  initialNavigation: 'enabled'
+};
+
+if (!environment.production) {
+  Object.assign(routerOpts, {enableTracing: true});
+}
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {initialNavigation: 'enabled'})],
+  imports: [RouterModule.forRoot(routes, routerOpts as ExtraOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

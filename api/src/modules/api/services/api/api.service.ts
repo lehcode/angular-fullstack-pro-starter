@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NHTSAService } from '../nhtsa/nhtsa.service';
 import { VehicleVariableInterface } from '../nhtsa/interfaces/vehicle-variable.interface';
-import { from, Observable, of, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { DecodedVinItemInterface } from './interfaces/decoded-vin-item.interface';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class ApiService {
   /**
    * GET decoded dataset
    */
-  getNHTSADecodedVIN$(code: string, year: string): Observable<DecodedVinItemInterface[]> {
-    return this.nhtsaService.decodeVIN$(code, parseInt(year));
+  getNHTSADecodedVIN$(code: string, locale: string, year: string): Observable<DecodedVinItemInterface[]> {
+    return this.nhtsaService.decodeVIN$(code, locale, parseInt(year));
   }
 }

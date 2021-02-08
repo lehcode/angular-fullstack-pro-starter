@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -18,11 +20,13 @@ import { MatSliderModule } from '@angular/material/slider';
     MatButtonModule,
     MatInputModule,
     MatRippleModule,
-    MatSliderModule
+    MatSliderModule,
+    MatListModule,
+    MatCardModule
   ],
   declarations: [
     FreeReportComponent,
-    VINFormComponent
+    VINFormComponent,
   ],
   exports: [VINFormComponent]
 })

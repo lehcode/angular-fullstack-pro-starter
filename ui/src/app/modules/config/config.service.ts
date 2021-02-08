@@ -7,15 +7,22 @@ import config from '~/config';
 })
 export class ConfigService {
   private static config = config;
+  private static appEnv = 'development';
 
-  constructor() {}
+  constructor() {
+    ConfigService.appEnv = environment.production ? 'prod' : 'dev';
+  }
 
   /**
    * Convert string to object path and return property value
    */
   private static getSetting<T = any>(path: string): T | undefined {
-    const appEnv: any = environment.production ? 'prod' : 'dev';
-    return path.split('.').reduce((o, x) => o[x] as any, ConfigService.config[appEnv]);
+    return path.split('.')
+      .reduce((o, x) => o[x] as any, ConfigService.config[ConfigService.appEnv]);
+  }
+
+  getEnv() {
+    return ConfigService.appEnv;
   }
 
   /**

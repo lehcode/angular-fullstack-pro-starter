@@ -6,6 +6,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApiModule } from './modules/api/api.module';
 import { AdminModule } from './modules/admin/admin.module';
 import config from './config';
+import {
+  I18nModule,
+  I18nJsonParser,
+  QueryResolver,
+  HeaderResolver,
+  AcceptLanguageResolver,
+  CookieResolver
+} from 'nestjs-i18n';
+import path from 'path';
 
 @Module({
   imports: [
@@ -28,6 +37,20 @@ import config from './config';
       }
     ),
     AdminModule,
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      parser: I18nJsonParser,
+      parserOptions: {
+        path: path.resolve(path.join(__dirname, '/i18n/')),
+        watch: true,
+      },
+      resolvers: [
+        { use: QueryResolver, options: ['lc'] },
+        new HeaderResolver(['x-front-lang']),
+        AcceptLanguageResolver,
+        new CookieResolver(['lc']),
+      ],
+    })
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

@@ -18,6 +18,7 @@ export class AdminController {
       try {
         const vars = await this.apiService.getNHTSAVehicleVariables();
         const inserted = await this.nhtsaService.storeVehicleVariables(vars);
+        // const localized = await this
 
         return {
           success: true,

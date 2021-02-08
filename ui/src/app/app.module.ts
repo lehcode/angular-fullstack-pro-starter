@@ -13,7 +13,8 @@ import '@angular/common/locales/global/en';
 import '@angular/common/locales/global/uk';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfigModule } from '~/app/modules/config/config.module';
-
+import {MatNativeDateModule} from '@angular/material/core';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,6 @@ import { ConfigModule } from '~/app/modules/config/config.module';
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
-    AppRoutingModule,
     BrowserAnimationsModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/log',
@@ -42,7 +42,9 @@ import { ConfigModule } from '~/app/modules/config/config.module';
     LayoutModule,
     HttpClientModule,
     MatFormFieldModule,
-    ConfigModule
+    MatNativeDateModule,
+    ConfigModule,
+    AppRoutingModule,
   ],
   providers: [
     TitleService,
@@ -50,6 +52,7 @@ import { ConfigModule } from '~/app/modules/config/config.module';
       provide: LOCALE_ID,
       useValue: 'ru'
     },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }
   ],
   bootstrap: [AppComponent]
 })

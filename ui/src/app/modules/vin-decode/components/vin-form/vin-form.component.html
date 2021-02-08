@@ -1,26 +1,27 @@
 <div>
     <form [formGroup]="dataForm" id="vin-form">
         <mat-hint>
-            <a href="#" i18n="@@where_to_find_vin">Где найти код VIN?</a>
+            <a href="#" i18n="@@general.where_to_find_vin">Где найти код VIN?</a>
         </mat-hint>
         <mat-form-field appearance="outline">
             <input type="text"
+                   id="vin-code-input"
                    matInput
                    formControlName="vinCodeInput"
-                   [(ngModel)]="vinCode"
+                   [placeholder]="vinInputPlaceholderText"
             />
         </mat-form-field>
 
         <mat-hint *ngIf="dataForm.controls.vinCodeInput.touched && dataForm.controls.vinCodeInput.valid">
-            <a href="#" i18n="@@vin-form.know_model_year">Знаешь год выпуска? Выбери ниже</a>
+            <a href="#" i18n="@@vin-form.do_know_model_year_select_below">Знаешь год выпуска? Выбери ниже</a>
         </mat-hint>
-        <mat-slider *ngIf="dataForm.controls.vinCodeInput.touched && dataForm.controls.vinCodeInput.valid"
-                    [(ngModel)]="modelYear"
+        <mat-slider *ngIf="!hideModelYearInput"
+                    id="model-year"
                     formControlName="modelYearInput"
-                    min="1980"
-                    max="2021"
+                    [min]="modelYearMin"
+                    [max]="modelYearMax"
                     step="1"
-                    value="2016"
+                    [(value)]="modelYearValue"
                     thumbLabel="true"
         ></mat-slider>
 

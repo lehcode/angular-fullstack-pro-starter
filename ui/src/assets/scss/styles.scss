@@ -12,3 +12,7 @@ app-root {
     background: mat-color(mat-palette($ui-accent, A400-contrast));
   }
 }
+
+.context > .content {
+  min-height: 90vh;
+}

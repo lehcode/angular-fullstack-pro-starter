@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 import { fromEvent } from 'rxjs';
 import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
-import { isUndefined, isNull } from 'lodash';
 import { BackendService } from '~/app/services/backend.service';
 import { ConfigService } from '~/app/modules/config/config.service';
 import { Router } from '@angular/router';
@@ -17,8 +16,12 @@ export class VINFormComponent implements AfterViewInit {
   public apiUrl: string;
   public dataForm: FormGroup;
   public vinData: Record<string, any> = {};
-  public vinCode: string | undefined;
-  public modelYear = 1980;
+  public vinCode = '';
+  public modelYearMin = 1979;
+  public modelYearMax = new Date().getFullYear();
+  public modelYearValue: number | null;
+  public hideModelYearInput = true;
+  public vinInputPlaceholderText = $localize`:@@vin-form.code_input_placeholder:Введите VIN код`;
 
   constructor(
     private readonly config: ConfigService,
@@ -34,19 +37,45 @@ export class VINFormComponent implements AfterViewInit {
       ]),
       modelYearInput: new FormControl('', [Validators.pattern(/^\s?\d{4}\s?$/)])
     });
+    this.modelYearValue = this.modelYearMin;
   }
 
   ngAfterViewInit(): void {
+    fromEvent(document.querySelector('#vin-code-input') as FromEventTarget<Event>, 'blur')
+      .subscribe(evt => {
+        if (this.dataForm.controls.vinCodeInput.valid) {
+          this.hideModelYearInput = false;
+          // this.updateMinModelYear();
+        }
+      });
+
     fromEvent(document.querySelector('form button') as FromEventTarget<Event>, 'click')
       .subscribe(evt => {
         if (this.dataForm.valid) {
-          this.backendService.decodeVIN$(this.vinCode, this.modelYear)
+          this.vinCode = this.dataForm.controls.vinCodeInput.value;
+          const route = this.modelYearValue === 1979
+            ? `/decode/${this.vinCode}`
+            : `/decode/${this.vinCode}/model-year/${this.modelYearValue}`;
+
+          this.backendService.decodeVIN$(this.vinCode, this.modelYearValue)
             .subscribe((data: Record<string, any>) => {
-                this.vinData = data;
-                this.router.navigateByUrl(`/free-report`);
+                this.router.navigateByUrl(route, {
+                  state: {
+                    code: this.vinCode,
+                    modelYear: this.modelYearValue,
+                    vinData: data
+                  }
+                });
               }
             );
         }
       });
   }
+
+  // private updateMinModelYear() {
+  //   fromEvent(document.querySelector('#model-year') as FromEventTarget<Event>, 'click')
+  //     .subscribe(evt => {
+  //       this.modelYearMin = 1980;
+  //     });
+  // }
 }

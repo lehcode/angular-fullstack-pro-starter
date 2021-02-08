@@ -4,6 +4,8 @@ import { ApiController } from './api.controller';
 import { NHTSAService } from './services/nhtsa/nhtsa.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { VehicleVariableSchema } from './services/nhtsa/schemas/vehicle-variable.schema';
+import { LocaleService } from './services/locale/locale.service';
+import { TranslationService } from './services/translation/translation.service';
 
 @Module({
   imports: [
@@ -13,7 +15,9 @@ import { VehicleVariableSchema } from './services/nhtsa/schemas/vehicle-variable
   controllers: [ApiController],
   providers: [
     ApiService,
-    NHTSAService
+    NHTSAService,
+    LocaleService,
+    TranslationService
   ]
 })
 export class ApiModule {}

@@ -1,6 +1,6 @@
 export interface DecodedVinItemInterface {
   description?: string;
-  lookupValue?: string;
-  value: number | null;
-  variable: string;
+  label: string;
+  value?: string | number;
+  details?: string;
 }

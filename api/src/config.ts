@@ -9,5 +9,8 @@ export default () => ({
         decodeVinValues: '/vehicles/DecodeVinValuesExtended/{:vin}?format=json&modelyear={:year}'
       }
     }
+  },
+  locale: {
+    default: 'en'
   }
 });

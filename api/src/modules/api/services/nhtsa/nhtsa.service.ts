@@ -113,20 +113,24 @@ export class NHTSAService {
     );
   }
 
-  private formatDecodedItem(result: any, variable: any) {
+  private formatDecodedItem(result: any, variable: any): Record<string, any> {
     const valueIdx = parseInt(result.valueId) - 1;
 
-    if (variable.values[valueIdx]) {
+    if (variable.values.length && variable.values[valueIdx]) {
       try {
         result.details = variable.values[valueIdx].name;
         result.description = variable.description;
       } catch (err) {
         this.logger.error(err);
       }
+    } else {
+      result.description = variable.description;
     }
 
     if (!isNaN(parseInt(result.value))) {
       result.value = parseInt(result.value);
+    } else if (result.value === null) {
+      delete result.value;
     }
 
     result.label = result.variable;
@@ -140,13 +144,12 @@ export class NHTSAService {
   /**
    * Default VIN decoding
    */
-  decodeVIN$(code: string, year?: number): Observable<any> {
+  decodeVIN$(code: string, locale: string, year?: number): Observable<any> {
     let endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVin')?.replace('{:vin}', code.toString());
 
     if (year) {
       endpoint += 'modelyear={:year}'.replace('{:year}', year.toString());
     }
-
     return this.http.get(`${this.apiHost}${endpoint}`).pipe(
       map((response) => response.data.Results),
       mergeMap((results: Record<string, any>[]) => {
@@ -167,9 +170,7 @@ export class NHTSAService {
 
             this.getVariableValue$(result.variableId, result.variable).subscribe({
               next: (variable) => {
-                if (variable.dataType === 'lookup' && result.valueId) {
-                  result = this.formatDecodedItem(result, variable);
-                }
+                result = this.formatDecodedItem(result, variable);
               },
               error: (err) => rethrow(err)
             });

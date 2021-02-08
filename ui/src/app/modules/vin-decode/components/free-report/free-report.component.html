@@ -1,1 +1,17 @@
-<p>free-report works!</p>
+<ul>
+    <li *ngFor="let item of data" class="property">
+        <mat-card role="region">
+            <mat-card-header>
+                <mat-card-title><h4>{{ item.label }}</h4></mat-card-title>
+                <mat-card-subtitle *ngIf="item.description">
+                    <div [innerHTML]="item.description"></div>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ item.value }}</p>
+                <p *ngIf="item.value">{{ item.details }}</p>
+            </mat-card-content>
+        </mat-card>
+
+    </li>
+</ul>
