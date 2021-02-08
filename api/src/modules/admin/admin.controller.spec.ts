@@ -4,7 +4,6 @@ import { ApiService } from '../api/services/api/api.service';
 import { NHTSAService } from '../api/services/nhtsa/nhtsa.service';
 import { VehicleVariable } from '../api/services/nhtsa/schemas/vehicle-variable.schema';
 import { HttpModule } from '@nestjs/common';
-import { SuccessReponseInterface } from '../api/interfaces/response.interface';
 import * as vehicleVariablesResponse from '../api/services/nhtsa/__stubs__/vehicle-variables-response.json';
 import NHTSAServiceMock from '../api/services/nhtsa/__mocks__/nhtsa.service';
 
@@ -13,11 +12,6 @@ jest.mock('./admin.controller');
 describe('AdminController', () => {
   let adminController: AdminController;
   let nhtsaService: NHTSAService;
-
-  const successResponse: SuccessReponseInterface = {
-    success: true,
-    message: 'Inserted rows'
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
