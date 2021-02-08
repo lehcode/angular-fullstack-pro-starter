@@ -5,18 +5,11 @@ pipelines:
     - parallel:
         - step:
             name: Lint API
-            script:
-              - cd ./api
-              - npm install
-              - npm run lint
-            caches:
-              - node
-        - step:
-            name: Lint API
             caches:
               - node
             script:
               - cd ./api
+              - npm install -g @angular/cli
               - npm install
               - npm run lint
         - step:
@@ -24,6 +17,8 @@ pipelines:
             caches:
               - node
             script:
-              - cd ./ui
-              - npm test
+              - cd ./api
+              - npm install -g @angular/cli
+              - npm install
+              - npm run test
               - npm run build
