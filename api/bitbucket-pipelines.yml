@@ -24,6 +24,6 @@ pipelines:
             caches:
               - node
             script:
-              - cd ./ui
+              - cd ./api
               - npm test
               - npm run build
