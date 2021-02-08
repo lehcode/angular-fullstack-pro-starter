@@ -48,12 +48,12 @@ describe('AdminController', () => {
 
   it.todo('getNHTSAVehicleVariables() should respond with error');
 
-  it('updateNHTSAVehicleVariables() should issue success response', async () => {
-    jest.spyOn(adminController, 'updateNHTSAVehicleVariables')
-      .mockImplementation(() => successResponse as any);
-
-    expect(await adminController.updateNHTSAVehicleVariables()).toEqual(successResponse);
-  });
+  // it('updateNHTSAVehicleVariables() should issue success response', async () => {
+  //   jest.spyOn(adminController, 'updateNHTSAVehicleVariables')
+  //     .mockImplementation(() => successResponse as any);
+  //
+  //   expect(await adminController.updateNHTSAVehicleVariables()).toEqual(successResponse);
+  // });
 
   it.todo('getNHTSAVehicleVariables() should respond with error');
 });
