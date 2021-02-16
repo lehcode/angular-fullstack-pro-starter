@@ -19,7 +19,7 @@
     "lint-ci": "yarn lint-ts && yarn lint-js && yarn lint-html && yarn lint-scss",
     "lint-html": "eslint 'src/**/*.html'",
     "lint-js": "eslint '*.js'",
-    "lint-scss": "npx stylelint --syntax scss src/**/*.scss",
+    "lint-scss": "npx stylelint --syntax scss src/assets/scss/**/*.scss",
     "lint-ts": "eslint 'src/**/*.{ts,tsx}'",
     "prerender": "ng run ui:prerender",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.(ts|html|scss)' --write",

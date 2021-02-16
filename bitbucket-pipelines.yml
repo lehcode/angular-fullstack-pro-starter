@@ -41,15 +41,12 @@ pipelines:
               - npm install
               - NODE_ENV=test npm run test
               - NODE_ENV=test npm run e2e
-        - step:
-            name: Build UI Documentation
-            caches:
-              - node
-            script:
-              - NODE_ENV=production npm run doc
+              - npm run doc
         - step:
             name: Build UI Application
             caches:
               - node
             script:
+              - npm install -g @angular/cli
+              - npm install
               - NODE_ENV=production npm run ssr-build
