@@ -25,7 +25,8 @@ describe('NHTSAService', () => {
         ConfigService,
         LocaleService
       ]
-    }).compile();
+    })
+      .compile();
 
     nhtsaService = module.get<NHTSAService>(NHTSAService);
     nhtsaServiceMock = module.get<NHTSAServiceMock>(NHTSAServiceMock);
@@ -33,62 +34,69 @@ describe('NHTSAService', () => {
   });
 
   it('NHTSAService instance should be defined', () => {
-    expect(nhtsaService).toBeDefined();
+    expect(nhtsaService)
+      .toBeDefined();
   });
 
   it('getVehicleVariables() should fetch vehicle variables JSON', (done) => {
     jest.spyOn(nhtsaServiceMock, 'getVehicleVariables');
 
-    nhtsaServiceMock.getVehicleVariables().subscribe({
-      next: (data: VehicleVariableInterface[]) => {
-        expect(data.length).toBe(3);
-      },
-      error: (error) => {
-        throw new Error(error);
-      },
-      complete: done()
-    });
+    nhtsaServiceMock.getVehicleVariables()
+      .subscribe({
+        next: (data: VehicleVariableInterface[]) => {
+          expect(data.length)
+            .toBe(3);
+        },
+        error: (error) => {
+          throw new Error(error);
+        },
+        complete: done()
+      });
   });
 
   it('formatVariable() should format string vehicle variable response entity', (done) => {
     jest.spyOn(nhtsaServiceMock, 'formatVariable');
     jest.spyOn(nhtsaServiceMock, 'getLookupValues');
 
-    nhtsaServiceMock.formatVariable(responseStub.Results[0]).subscribe({
-      next: (variable: VehicleVariableInterface) => {
-        expect(variable).toEqual({
-          dataType: responseStub.Results[0].DataType,
-          description: responseStub.Results[0].Description,
-          varId: responseStub.Results[0].ID,
-          name: responseStub.Results[0].Name
-        });
-      },
-      error: (error) => {
-        throw new Error(error);
-      },
-      complete: done()
-    });
+    nhtsaServiceMock.formatVariable(responseStub.Results[0])
+      .subscribe({
+        next: (variable: VehicleVariableInterface) => {
+          expect(variable)
+            .toEqual({
+              dataType: responseStub.Results[0].DataType,
+              description: responseStub.Results[0].Description,
+              varId: responseStub.Results[0].ID,
+              name: responseStub.Results[0].Name
+            });
+        },
+        error: (error) => {
+          throw new Error(error);
+        },
+        complete: done()
+      });
   });
 
   it('formatVariable() should format lookup vehicle variable response entity', (done) => {
     jest.spyOn(nhtsaServiceMock, 'formatVariable');
 
-    nhtsaServiceMock.formatVariable(responseStub.Results[1]).subscribe({
-      next: (variable: VehicleVariableInterface) => {
+    nhtsaServiceMock.formatVariable(responseStub.Results[1])
+      .subscribe({
+        next: (variable: VehicleVariableInterface) => {
         // expect(nhtsaServiceMock.getLookupValues).toHaveBeenCalled();
-        expect(variable).toEqual({
-          dataType: responseStub.Results[1].DataType,
-          description: responseStub.Results[1].Description,
-          varId: responseStub.Results[1].ID,
-          name: responseStub.Results[1].Name,
-          values: [...vehicleVariables[1].values]
-        });
-      },
-      error: (error) => {
-        throw new Error(error);
-      },
-      complete: done()
-    });
+          expect(variable)
+            .toEqual({
+              dataType: responseStub.Results[1].DataType,
+              description: responseStub.Results[1].Description,
+              varId: responseStub.Results[1].ID,
+              name: responseStub.Results[1].Name,
+              values: [...vehicleVariables[1].values]
+            });
+        },
+        error: (error) => {
+          throw new Error(error);
+        },
+        complete: done()
+      });
   });
 
   it('getLookupValues() should add "values" property to vehicle variable entity', (done) => {
@@ -101,17 +109,18 @@ describe('NHTSAService', () => {
       })
       .subscribe({
         next: (variable: VehicleVariableInterface) => {
-          expect(variable).toEqual({
-            dataType: responseStub.Results[1].DataType,
-            description: responseStub.Results[1].Description,
-            varId: responseStub.Results[1].ID,
-            name: responseStub.Results[1].Name,
-            values: [
-              { id: 1, name: 'Lead Acid/Lead' },
-              { id: 2, name: 'Nickel-Metal-Hydride/NiMH' },
-              { id: 3, name: 'Lithium-ion/Li-Ion' }
-            ]
-          });
+          expect(variable)
+            .toEqual({
+              dataType: responseStub.Results[1].DataType,
+              description: responseStub.Results[1].Description,
+              varId: responseStub.Results[1].ID,
+              name: responseStub.Results[1].Name,
+              values: [
+                { id: 1, name: 'Lead Acid/Lead' },
+                { id: 2, name: 'Nickel-Metal-Hydride/NiMH' },
+                { id: 3, name: 'Lithium-ion/Li-Ion' }
+              ]
+            });
         },
         error: (error) => {
           throw new Error(error);

@@ -1,22 +1,40 @@
+const apiHost = 'vin4free.com';
+const apiPort = 3000;
+const endpoints = {
+  decodeVin: '/api/vin-decode?code=',
+};
+
 export default Object.create({
   dev: {
-    siteHost: 'vin4free.com',
+    apiHost: `!!!dev!!! ${apiHost}`,
     api: {
       host: 'http://localhost',
-      port: 3000,
-      endpoints: {
-        decodeVin: '/api/vin-decode?code=',
-      }
-    }
+      apiPort,
+      endpoints
+    },
+  },
+  test: {
+    apiHost: `!!!dev!!! ${apiHost}`,
+    api: {
+      host: 'http://localhost',
+      apiPort,
+      endpoints
+    },
+  },
+  staging: {
+    apiHost: `!!!dev!!! ${apiHost}`,
+    api: {
+      host: 'https://staging.vin4free.com',
+      port: 3333,
+      endpoints
+    },
   },
   prod: {
-    siteHost: 'vin4free.com',
+    apiHost,
     api: {
       host: 'https://vin4free.com',
-      port: '',
-      endpoints: {
-        decodeVin: '/api/vin-decode?code=',
-      }
-    }
+      port: 6666,
+      endpoints
+    },
   }
 });

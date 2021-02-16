@@ -8,9 +8,10 @@ export default class NHTSAServiceMock {
   public readonly vehicleVariablesResponse: any = vehicleVariablesResponse;
 
   getVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    return from(Promise.resolve(this.vehicleVariablesResponse)).pipe(
-      map((response: Record<string, any>) => response.Results)
-    );
+    return from(Promise.resolve(this.vehicleVariablesResponse))
+      .pipe(
+        map((response: Record<string, any>) => response.Results)
+      );
   }
 
   formatVariable(result: Record<string, any>): Observable<VehicleVariableInterface> {
@@ -42,7 +43,8 @@ export default class NHTSAServiceMock {
         }
       });
 
-    return of(record).pipe(delay(5000));
+    return of(record)
+      .pipe(delay(5000));
   }
 
   // async queryVehicleVariablesResolve() {

@@ -8,12 +8,14 @@ describe('LocaleService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ConfigService, LocaleService]
-    }).compile();
+    })
+      .compile();
 
     service = module.get<LocaleService>(LocaleService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(service)
+      .toBeDefined();
   });
 });

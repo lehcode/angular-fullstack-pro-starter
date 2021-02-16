@@ -7,7 +7,7 @@ import config from '~/config';
 })
 export class ConfigService {
   private static config = config;
-  private static appEnv = 'development';
+  private static appEnv = 'dev';
 
   constructor() {
     ConfigService.appEnv = environment.production ? 'prod' : 'dev';

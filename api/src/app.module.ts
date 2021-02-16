@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApiModule } from './modules/api/api.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { DbModule } from './modules/db/db.module';
 import config from './config';
-import * as dotenv from 'dotenv';
 
 dotenv.config();
 

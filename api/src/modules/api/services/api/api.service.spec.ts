@@ -22,20 +22,24 @@ describe('ApiService', () => {
         ConfigService,
         LocaleService
       ]
-    }).compile();
+    })
+      .compile();
 
     apiService = module.get<ApiService>(ApiService);
     nhtsaService = module.get<NHTSAService>(NHTSAService);
   });
 
   it('should be defined', () => {
-    expect(apiService).toBeDefined();
-    expect(nhtsaService).toBeDefined();
+    expect(apiService)
+      .toBeDefined();
+    expect(nhtsaService)
+      .toBeDefined();
   });
 
   it('getNHTSAVehicleVariables() should resolve to vehicle variables', async () => {
     jest.spyOn(apiService, 'getNHTSAVehicleVariables');
 
-    expect(await apiService.getNHTSAVehicleVariables()).toEqual(vehicleVariables);
+    expect(await apiService.getNHTSAVehicleVariables())
+      .toEqual(vehicleVariables);
   });
 });

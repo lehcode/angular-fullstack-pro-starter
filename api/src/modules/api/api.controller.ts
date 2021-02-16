@@ -1,33 +1,37 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Req } from '@nestjs/common';
 import { Request } from 'express';
-import { ApiService } from './services/api/api.service';
-import { Observable } from 'rxjs';
-import { DecodedVinItemInterface } from './services/api/interfaces/decoded-vin-item.interface';
 import { map } from 'rxjs/operators';
-import { ConfigService } from '@nestjs/config';
-import { LocaleService } from './services/locale/locale.service';
+import * as Joi from 'joi';
+import { ApiService } from '@api/services/api/api.service';
+import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
+// eslint-disable-next-line
+import { Observable } from 'rxjs';
+
 
 @Controller('api')
 export class ApiController {
-  constructor(
-    private readonly apiService: ApiService,
-    private readonly config: ConfigService,
-    private readonly localeService: LocaleService
-  ) {}
+  constructor(private readonly apiService: ApiService) {}
 
-  @Get('vin-decode')
-  decodeDefault$(@Req() req: Request): Observable<DecodedVinItemInterface[]> {
-    const locale = this.detectLocale(req);
+  @Get('vin-decode/:code/:lc?')
+  // @ts-ignore
+  async decodeDefault$(@Req() req: Request): Promise<Observable<DecodedVinItemInterface[]>> {
+    const merged = { ...req.params, ...req.query };
+    const { error, value } = Joi.object({
+      code: Joi.string()
+        .required(),
+      lc: Joi.string()
+        .pattern(/(uk|ru|en)/),
+      year: Joi.number()
+        .min(1980)
+        .max(2021)
+    })
+      .validate(merged);
 
-    return this.apiService
-      .getNHTSADecodedVIN$(req.query.code as string, locale as string, req.query.year as string)
-      .pipe(map((data) => data));
-  }
+    if (error) {
+      throw new BadRequestException('Validation failed');
+    }
 
-  /**
-   * Detect app locale
-   */
-  private detectLocale(req: Request) {
-    return this.localeService.detect(req);
+    return this.apiService.getNHTSADecodedVIN$(value)
+      .pipe(map((data: DecodedVinItemInterface[]) => data));
   }
 }

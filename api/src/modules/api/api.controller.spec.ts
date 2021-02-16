@@ -24,15 +24,18 @@ describe('ApiController', () => {
         ConfigService,
         LocaleService
       ]
-    }).compile();
+    })
+      .compile();
 
     controller = module.get<ApiController>(ApiController);
     apiService = module.get<ApiService>(ApiService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-    expect(apiService).toBeDefined();
+    expect(controller)
+      .toBeDefined();
+    expect(apiService)
+      .toBeDefined();
   });
 
   it.skip('should call updateNHTSAVehicleVariables()', async () => {

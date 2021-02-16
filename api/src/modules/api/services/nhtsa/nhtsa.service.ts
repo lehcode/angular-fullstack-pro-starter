@@ -1,19 +1,21 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { from, Observable, of, zip } from 'rxjs';
-import { VehicleVariableInterface } from './interfaces/vehicle-variable.interface';
 import { delay, map, mergeMap, tap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateVehicleVariableDto } from './dto/create-vehicle-variable.dto';
-import { VehicleVariableDocument } from './interfaces/vehicle-variable.document';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
 import { ConfigService } from '@nestjs/config';
 import { isNaN, isEmpty } from 'lodash';
-import { DecodedVinItemInterface } from '../api/interfaces/decoded-vin-item.interface';
+// @ts-ignore
+import { VehicleVariableDocument } from '@api/services/nhtsa/interfaces/vehicle-variable.document';
+import { VehicleVariableInterface } from '@api/services/nhtsa/interfaces/vehicle-variable.interface';
+import { CreateVehicleVariableDto } from '@api/services/nhtsa/dto/create-vehicle-variable.dto';
+import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
 
 @Injectable()
 export class NHTSAService {
   private apiHost;
+
   private readonly logger = new Logger(NHTSAService.name);
 
   constructor(
@@ -34,10 +36,11 @@ export class NHTSAService {
     let results: any;
     const endpoint = this.configService.get<string>('services.nhtsa.uris.vehicleVars');
 
-    return this.http.get(`${this.apiHost}${endpoint}`).pipe(
-      tap((response) => (results = response.data.Results)),
-      mergeMap(() => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
-    );
+    return this.http.get(`${this.apiHost}${endpoint}`)
+      .pipe(
+        tap((response) => (results = response.data.Results)),
+        mergeMap(() => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
+      );
   }
 
   /**
@@ -79,7 +82,8 @@ export class NHTSAService {
         }
       });
 
-    return of(record).pipe(delay(5000));
+    return of(record)
+      .pipe(delay(5000));
   }
 
   /**
@@ -89,9 +93,11 @@ export class NHTSAService {
     await this.vehicleVariablesModel.deleteMany({});
 
     for (const item of data) {
-      this.logger.log(`Inserting data (truncated): ${JSON.stringify(item).substr(0, 512)}`);
+      this.logger.log(`Inserting data (truncated): ${JSON.stringify(item)
+        .substr(0, 512)}`);
 
-      await new this.vehicleVariablesModel(item as CreateVehicleVariableDto).save()
+      await new this.vehicleVariablesModel(item as CreateVehicleVariableDto)
+        .save()
         .catch((err) => rethrow(err));
     }
 
@@ -99,16 +105,17 @@ export class NHTSAService {
   }
 
   /**
-   * Query MonogoDB for vehicle variables
+   * Query MongoDB for vehicle variables
    */
   queryVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    return from(this.vehicleVariablesModel.find().exec());
+    return from(this.vehicleVariablesModel.find()
+      .exec());
   }
 
   getVariableValue$(varId: number, varName: string): Observable<any> {
     return from(
       this.vehicleVariablesModel
-        .findOne({ varId: varId, name: { $eq: varName } })
+        .findOne({ varId: varId, name: { $eq: varName }})
         .select('-_id -__v')
         .lean()
         .exec()
@@ -150,54 +157,60 @@ export class NHTSAService {
   /**
    * Default VIN decoding
    */
-  decodeVIN$(code: string, locale: string, year?: number): Observable<any> {
-    let endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVin')?.replace('{:vin}', code.toString());
+  decodeVIN$(code: string, year?: number): Observable<any> {
+    let endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVin')
+      ?.replace('{:vin}', code.toString());
 
     if (year) {
-      endpoint += 'modelyear={:year}'.replace('{:year}', year.toString());
+      endpoint += '&modelyear={:year}'.replace('{:year}', year.toString());
     }
-    return this.http.get(`${this.apiHost}${endpoint}`).pipe(
-      map((response) => response.data.Results),
-      mergeMap((results: Record<string, any>[]) => {
-        if (!results) {
-          this.logger.warn('NHTSAService.decodeVIN$(): Nothing found');
-          return of();
-        }
 
-        return zip(
-          ...results.map((result: Record<any, any>) => {
-            Object.keys(result).forEach((key) => {
-              const keyToLower = `${key.charAt(0).toLowerCase()}${key.slice(1)}`;
-              result[keyToLower] = result[key] as any;
-              delete result[key];
-              result.value = isEmpty(result.value) ? null : result.value;
-              result.valueId = isEmpty(result.valueId) || result.valueId === '0' ? null : result.valueId;
-            });
+    return this.http.get(`${this.apiHost}${endpoint}`)
+      .pipe(
+        map((response) => response.data.Results),
+        mergeMap((results: Record<string, any>[]) => {
+          if (!results) {
+            this.logger.warn('NHTSAService.decodeVIN$(): Nothing found');
+            return of();
+          }
 
-            this.getVariableValue$(result.variableId, result.variable).subscribe({
-              next: (variable) => {
-                result = this.formatDecodedItem(result, variable);
-              },
-              error: (err) => rethrow(err)
-            });
+          return zip(
+            ...results.map((result: Record<any, any>) => {
+              Object.keys(result)
+                .forEach((key) => {
+                  const keyToLower = `${key.charAt(0)
+                    .toLowerCase()}${key.slice(1)}`;
+                  result[keyToLower] = result[key] as any;
+                  delete result[key];
+                  result.value = isEmpty(result.value) ? null : result.value;
+                  result.valueId = isEmpty(result.valueId) || result.valueId === '0' ? null : result.valueId;
+                });
 
-            return of(result as DecodedVinItemInterface).pipe(delay(1000));
-          })
-        );
-      })
-    );
+              this.getVariableValue$(result.variableId, result.variable)
+                .subscribe({
+                  next: (variable) => {
+                    result = this.formatDecodedItem(result, variable);
+                  },
+                  error: (err) => rethrow(err)
+                });
+
+              return of(result as DecodedVinItemInterface)
+                .pipe(delay(1000));
+            })
+          );
+        })
+      );
   }
 
-  /**
-   * Get flattened values
-   */
-  decodeVINValues$(code: string): Observable<any> {
-    const endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVinValues');
-
-    return this.http.get(`${this.apiHost}${endpoint?.replace('{:vin}', code.toString())}`).pipe(
-      map((response) => {
-        const data = response.data.Results;
-      })
-    );
-  }
+  // /**
+  //  * Get flattened values
+  //  */
+  // decodeVINValues$(code: string): Observable<any> {
+  //   const endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVinValues');
+  //
+  //   return this.http.get(`${this.apiHost}${endpoint?.replace('{:vin}', code.toString())}`)
+  //     .pipe(
+  //       map((response) => response.data.Results)
+  //     );
+  // }
 }

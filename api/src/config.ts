@@ -1,4 +1,4 @@
-export default () => ({
+export default (): Record<string, any> => ({
   services: {
     nhtsa: {
       apiHost: 'https://vpic.nhtsa.dot.gov',
@@ -10,10 +10,16 @@ export default () => ({
       }
     }
   },
+  env: process.env.NODE_ENV,
   locale: {
     default: 'en'
   },
   mongo: {
-
+    host: process.env.MONGO_HOST,
+    port: process.env.MONGO_PORT,
+    urlParams: process.env.MONGO_URL_PARAMS,
+    db: process.env.MONGO_DB,
+    user: process.env.MONGO_USER,
+    pass: process.env.MONGO_PASS
   }
 });

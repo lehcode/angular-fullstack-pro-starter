@@ -5,7 +5,8 @@ import browserLanguage from 'accept-language-parser';
 
 @Injectable()
 export class LocaleService {
-  private fallback: string;
+  private readonly fallback: string;
+
   private readonly logger = new Logger(LocaleService.name);
 
   constructor(private readonly config: ConfigService) {
@@ -20,11 +21,12 @@ export class LocaleService {
     let frontLocale = 'en';
 
     if (req.headers.hasOwnProperty('accept-language')) {
-      browserLang = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language']).exec(/^([a-z]{2})/)[1] as string;
+      browserLang = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language'])
+        .exec(/^([a-z]{2})/)[1] as string;
     }
 
-    if (req.query.hasOwnProperty('lc')) {
-      frontLocale = req.query.lc as string;
+    if (req.params.hasOwnProperty('lc')) {
+      frontLocale = req.params.lc as string;
     }
 
     const appLocale = frontLocale || browserLang;
@@ -33,6 +35,6 @@ export class LocaleService {
     this.logger.log(`Frontend language: ${frontLocale}`);
     this.logger.log(`App locale: ${appLocale}`);
 
-    return appLocale;
+    return appLocale || this.fallback;
   }
 }
