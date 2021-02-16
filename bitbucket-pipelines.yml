@@ -4,17 +4,16 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Lint API
+            name: Lint API Application
             caches:
               - node
             script:
               - cd ./api
-              - npm install -g @nestjs/cli
               - NODE_ENV=production
               - npm install
               - npm run lint
         - step:
-            name: Test and Build API
+            name: Test and Build API Application
             caches:
               - node
             script:
@@ -23,3 +22,34 @@ pipelines:
               - npm install
               - NODE_ENV=test npm run test
               - NODE_ENV=production npm run build
+        - step:
+            name: Lint UI Application
+            caches:
+              - node
+            script:
+              - cd ./ui
+              - NODE_ENV=production
+              - npm install
+              - npm run lint-ci
+        - step:
+            name: Test and Build UI Application
+            caches:
+              - node
+            script:
+              - cd ./ui
+              - npm install -g @angular/cli
+              - npm install
+              - NODE_ENV=test npm run test
+              - NODE_ENV=test npm run e2e
+        - step:
+            name: Build UI Documentation
+            caches:
+              - node
+            script:
+              - NODE_ENV=production npm run doc
+        - step:
+            name: Build UI Application
+            caches:
+              - node
+            script:
+              - NODE_ENV=production npm run ssr-build
