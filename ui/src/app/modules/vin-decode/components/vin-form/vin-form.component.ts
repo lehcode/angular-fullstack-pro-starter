@@ -50,7 +50,7 @@ export class VINFormComponent implements AfterViewInit {
             }
           });
 
-      fromEvent(document.querySelector('form button') as FromEventTarget<Event>, 'click')
+      fromEvent(document.querySelector('form#vin-form') as FromEventTarget<Event>, 'submit')
           .subscribe(evt => {
             if (this.dataForm.valid) {
               this.vinCode = this.dataForm.controls.vinCodeInput.value;
