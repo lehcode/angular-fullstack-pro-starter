@@ -32,7 +32,7 @@ pipelines:
               - npm install
               - npm run lint-ci
         - step:
-            name: Test and Build UI Application
+            name: Test and Build UI Documentation
             caches:
               - node
             script:

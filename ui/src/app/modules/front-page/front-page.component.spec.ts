@@ -5,7 +5,6 @@ import { NGXLogger } from 'ngx-logger';
 import { NgForm } from '@angular/forms';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatInputHarness } from '@angular/material/input/testing';
 
 describe('FrontPageComponent', () => {
   let component: FrontPageComponent;
@@ -30,7 +29,7 @@ describe('FrontPageComponent', () => {
     rootLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
     fixture.detectChanges();
 
-    pageTitle = 'RealFreeVIN.com :: Бесплатная расшифровка VIN-кода автомобиля';
+    pageTitle = 'vin4free.com - Бесплатная расшифровка VIN-кода автомобиля';
   });
 
   it('should create', () => {
@@ -43,42 +42,5 @@ describe('FrontPageComponent', () => {
       .toEqual(pageTitle);
   });
 
-  // xit('should render hero lead with correct text');
-
-  it('loads harnesses', async () => {
-    // The button element is inside the fixture's root element, so we use `loader`.
-    const vinInputHarness = await loader.getHarness(MatInputHarness);
-
-    await vinInputHarness.focus();
-    await vinInputHarness.blur();
-
-    expect(await vinInputHarness.getValue())
-      .toBe('');
-
-    await vinInputHarness.setValue('3TMMU52N49M026526');
-
-    expect(await vinInputHarness.getValue())
-      .toBe('3TMMU52N49M026526');
-
-    // // Click the button to open the dialog
-    // await buttonHarness.click();
-    //
-    // // The dialog is appended to `document.body`, outside of the fixture's root element,
-    // // so we use `rootLoader` in this case.
-    // const dialogHarness = await rootLoader.getHarness(MyDialogHarness);
-  });
-
-  // xit('should render VIN search form', () => {
-  //   fixture.detectChanges();
-  //
-  //   const compiled = fixture.nativeElement;
-  //   const inputSelector = 'input.form-control';
-  //
-  //   expect(compiled.querySelector('form')).toBeTruthy();
-  //   expect(compiled.querySelector(`form ${inputSelector}`)).toBeTruthy();
-  //   expect(compiled.querySelector(`form ${inputSelector}`).name).toBe('vin-code');
-  //   expect(compiled.querySelector(`form ${inputSelector}`).text).toBe('');
-  //   expect(compiled.querySelector('form button')).toBeTruthy();
-  //   expect(compiled.querySelector('form button').text).toBe('Проверить');
-  // });
+  xit('should render hero lead with correct text');
 });

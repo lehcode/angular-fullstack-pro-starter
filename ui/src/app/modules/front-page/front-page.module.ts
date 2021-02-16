@@ -4,6 +4,7 @@ import { FrontPageRoutingModule } from './frontpage-routing.module';
 import { FrontPageComponent } from './front-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { VINDecodeModule } from '~/app/modules/vin-decode/vin-decode.module';
+import { MatToolbarModule } from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [FrontPageComponent],
@@ -11,7 +12,8 @@ import { VINDecodeModule } from '~/app/modules/vin-decode/vin-decode.module';
     CommonModule,
     FrontPageRoutingModule,
     FlexLayoutModule,
-    VINDecodeModule
+    VINDecodeModule,
+    MatToolbarModule
   ]
 })
 export class FrontPageModule {
