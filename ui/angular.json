@@ -46,7 +46,7 @@
               "src/favicon.ico",
               "src/assets/fonts",
               "src/assets/images",
-              "src/robots.txt",
+              "src/robots.txt"
             ],
             "styles": [
               "src/assets/scss/styles.scss"
@@ -130,7 +130,7 @@
               "src/favicon.ico",
               "src/assets/fonts",
               "src/assets/images",
-              "src/robots.txt",
+              "src/robots.txt"
             ],
             "styles": [
               "src/assets/scss/styles.scss"
@@ -151,9 +151,9 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/ui/server",
-            "main": "src/server.ts",
-            "tsConfig": "tsconfig.server.json"
+            "outputPath": "dist/ui/serverless",
+            "main": "src/serverless.ts",
+            "tsConfig": "tsconfig.serverless.json"
           },
           "configurations": {
             "production": {

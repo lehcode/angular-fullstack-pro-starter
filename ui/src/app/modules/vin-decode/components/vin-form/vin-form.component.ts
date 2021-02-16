@@ -41,35 +41,37 @@ export class VINFormComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(document.querySelector('#vin-code-input') as FromEventTarget<Event>, 'blur')
-      .subscribe(evt => {
-        if (this.dataForm.controls.vinCodeInput.valid) {
-          this.hideModelYearInput = false;
-          // this.updateMinModelYear();
-        }
-      });
+    if (document) {
+      fromEvent(document.querySelector('#vin-code-input') as FromEventTarget<Event>, 'blur')
+          .subscribe(evt => {
+            if (this.dataForm.controls.vinCodeInput.valid) {
+              this.hideModelYearInput = false;
+              // this.updateMinModelYear();
+            }
+          });
 
-    fromEvent(document.querySelector('form button') as FromEventTarget<Event>, 'click')
-      .subscribe(evt => {
-        if (this.dataForm.valid) {
-          this.vinCode = this.dataForm.controls.vinCodeInput.value;
-          const route = this.modelYearValue === 1979
-            ? `/decode/${this.vinCode}`
-            : `/decode/${this.vinCode}/model-year/${this.modelYearValue}`;
+      fromEvent(document.querySelector('form button') as FromEventTarget<Event>, 'click')
+          .subscribe(evt => {
+            if (this.dataForm.valid) {
+              this.vinCode = this.dataForm.controls.vinCodeInput.value;
+              const route = this.modelYearValue === 1979
+                  ? `/decode/${this.vinCode}`
+                  : `/decode/${this.vinCode}/model-year/${this.modelYearValue}`;
 
-          this.backendService.decodeVIN$(this.vinCode, this.modelYearValue)
-            .subscribe((data: Record<string, any>) => {
-                this.router.navigateByUrl(route, {
-                  state: {
-                    code: this.vinCode,
-                    modelYear: this.modelYearValue,
-                    vinData: data
-                  }
-                });
-              }
-            );
-        }
-      });
+              this.backendService.decodeVIN$(this.vinCode, this.modelYearValue)
+                  .subscribe((data: Record<string, any>) => {
+                        this.router.navigateByUrl(route, {
+                          state: {
+                            code: this.vinCode,
+                            modelYear: this.modelYearValue,
+                            vinData: data
+                          }
+                        });
+                      }
+                  );
+            }
+          });
+    }
   }
 
   // private updateMinModelYear() {

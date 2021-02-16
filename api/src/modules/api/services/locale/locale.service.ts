@@ -20,7 +20,7 @@ export class LocaleService {
     let frontLocale = 'en';
 
     if (req.headers.hasOwnProperty('accept-language')) {
-      browserLang = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language']).exec(/^([a-z]{2})/)[1];
+      browserLang = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language']).exec(/^([a-z]{2})/)[1] as string;
     }
 
     if (req.query.hasOwnProperty('lc')) {

@@ -22,10 +22,12 @@ export class NHTSAService {
     @InjectModel('VehicleVariable') private vehicleVariablesModel: Model<VehicleVariableDocument>
   ) {
     this.apiHost = this.configService.get<string>('services.nhtsa.apiHost');
+    // this.vehicleVariablesModel
   }
 
   /**
    * Make a call to the NHTSA API vehicle variables endpoint.
+   *
    * https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleVariableList?format=xml
    */
   getVehicleVariables(): Observable<any> {
@@ -115,6 +117,10 @@ export class NHTSAService {
 
   private formatDecodedItem(result: any, variable: any): Record<string, any> {
     const valueIdx = parseInt(result.valueId) - 1;
+
+    if (!variable) {
+      throw new Error('Variables not specified. Probably not updated from NHTSA API');
+    }
 
     if (variable.values.length && variable.values[valueIdx]) {
       try {

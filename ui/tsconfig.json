@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,
@@ -41,7 +41,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "!src/**/*.spec.ts",
     "node_modules/@types/jest/index.d.ts",
     "node_modules/@types/node/index.d.ts",
     "node_modules/@types/express/index.d.ts"
