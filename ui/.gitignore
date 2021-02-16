@@ -48,3 +48,4 @@ documentation/
 /**/eps
 /**/psd
 /**/*.zip
+.serverless/

@@ -26,7 +26,7 @@ RUN set -ex \
   && echo "NPM: version: "$(npm -v) \
   && echo "NPM binary: "$(npm bin) \
   && env \
-  && yarn global add @nestjs/cli
+  && yarn global add @nestjs/cli serverless
 
 USER node
 

@@ -30,8 +30,7 @@ RUN set -ex \
   && echo "NPM: version: "$(npm -v) \
   && echo "NPM binary: "$(which npm) \
   && env \
-  && yarn global add @angular/cli \
-  && yarn install \
+  && yarn global add @angular/cli serverless \
   && echo fs.inotify.max_user_watches=524288 | tee /etc/sysctl.d/40-max-user-watches.conf #Fix change watch issue
 
 #---
