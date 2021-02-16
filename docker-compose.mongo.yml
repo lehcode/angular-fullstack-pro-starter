@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: carvin/mongo:latest
+    container_name: carvin-mongo-dev
+    build:
+      context: docker-assets/mongo/
+      dockerfile: Dockerfile
+      shm_size: "2gb"
+    tty: true
+    init: true
+    volumes:
+      - data_db_mongodb:/data/db
+      - var_lib_mongodb:/var/lib/mongodb
+      - var_log_mongodb:/var/log/mongodb
+    ports:
+      - "0.0.0.0:27017:27017"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 64000
+        hard: 64000
+    command: "mongod -vvv --config /etc/mongod.conf --auth --port 27017 --wiredTigerCacheSizeGB 1.5"
+    environment:
+      MONGO_INITDB_DATABASE: carvin
+      MONGO_INITDB_ROOT_PASSWORD: Dev_Pass123
+      MONGO_INITDB_ROOT_USERNAME: dev
+      TZ: Etc/UTC
+    restart: always
+
+volumes:
+  data_db_mongodb:
+  var_lib_mongodb:
+  var_log_mongodb:

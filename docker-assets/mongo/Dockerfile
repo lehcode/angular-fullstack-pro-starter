@@ -10,9 +10,10 @@ RUN apt-get update \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get -y upgrade \
-    && apt-get -y install curl wget build-essential apt-transport-https dumb-init \
+    && apt-get -y install curl wget tree \
     && cp /etc/mongod.conf.orig /etc/mongod.conf \
-    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf
+    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf \
+    && chown -R mongodb:mongodb /var/lib/mongodb /var/log/mongodb
 
 EXPOSE 27017:27017/tcp
 EXPOSE 27018:27018/tcp

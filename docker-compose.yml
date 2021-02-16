@@ -11,25 +11,26 @@ services:
         tz: Etc/UTC
     environment:
       AWS_REGION: eu-central-1
-      AWS_ACCESS_KEY_ID: '********'
-      AWS_SECRET_ACCESS_KEY: '********'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       API_PORT: 3000
       MONGO_DB: carvin
       MONGO_HOST: carvin-mongo-dev
-      MONGO_PARAMS: "authSource=admin&ssl=false"
-      MONGO_PASS: "devpass123!"
+      MONGO_URL_PARAMS: "?authSource=admin&ssl=false&appname=CarVIN&retryWrites=true&w=majority"
+      MONGO_PASS: Dev_Pass123
       MONGO_PORT: 27017
       MONGO_USER: dev
       NODE_ENV: development
       TZ: Etc/UTC
     tty: true
-    command: yarn start-dev
+    command: "yarn start-dev"
     volumes:
       - ./api:/home/node/carvin/api
     ports:
       - "0.0.0.0:3000:3000"
       - "0.0.0.0:3443:3443"
       - "0.0.0.0:9229:9229"
+    restart: always
     depends_on:
       - mongo
 
@@ -48,8 +49,8 @@ services:
     env_file:
       - ui/.env
     tty: true
-#    init: true
-    command: yarn start
+#    command: "yarn ssr-build && yarn sls-local"
+    command: "yarn start"
     volumes:
       - ./ui:/home/node/carvin/ui
     ports:
@@ -59,70 +60,3 @@ services:
       - "0.0.0.0:9222:9222"
     depends_on:
       - api
-
-  mongo:
-    image: carvin/mongo:latest
-    container_name: carvin-mongo-dev
-    build:
-      context: docker-assets/mongo/
-      dockerfile: Dockerfile
-      shm_size: "2gb"
-    tty: true
-    init: true
-    volumes:
-      - data_db_mongodb:/data/db
-      - var_lib_mongodb:/var/lib/mongodb
-      - var_log_mongodb:/var/log/mongodb
-    ports:
-      - "0.0.0.0:27017:27017"
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 64000
-        hard: 64000
-    command: "mongod --config /etc/mongod.conf --auth --port 27017 --wiredTigerCacheSizeGB 1.5"
-    environment:
-      MONGO_DATABASE: carvin
-      MONGO_INITDB_ROOT_PASSWORD: "devpass123!"
-      MONGO_INITDB_ROOT_USERNAME: dev
-      TZ: Etc/UTC
-    restart: always
-
-#  mysql:
-#    image: carvin/mysql:latest
-#    container_name: "carvin_mysql"
-#    build:
-#      context: ./docker-assets/mysql
-#      args:
-#        tz: Etc/UTC
-#      shm_size: "2gb"
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "127656"
-#      MYSQL_ROOT_HOST: "%"
-#      TZ: Etc/UTC
-#    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-#    restart: always
-#    tty: true
-#    ports:
-#      - "0.0.0.0:3306:3306"
-#      - "0.0.0.0:33060:33060"
-#    env_file: ./docker-assets/mysql/.env
-#    volumes:
-#      - var_lib_mysql:/var/lib/mysql
-#    cap_add:
-#      - SYS_NICE  # CAP_SYS_NICE
-#    networks:
-#      - db_net
-
-#networks:
-#  db_net:
-#    driver: bridge
-#  front_net:
-#    driver: bridge
-
-volumes:
-  data_db_mongodb:
-  var_lib_mongodb:
-  var_log_mongodb:
-#  var_lib_mysql:
-#  var_log_mysql:
