@@ -6,19 +6,20 @@ frameworkVersion: ^2.21.1
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
-  - serverless-plugin-optimize
 
 provider:
   name: aws
   runtime: nodejs10.x
   stage: local
+  memorySize: 192
   region: eu-central-1
+  role: lambda-full-access-role
 
   environment:
     MONGO_HOST: "localhost"
     MONGO_PORT: 27017
     MONGO_DB: "carvin"
-    MONGO_USER: dev
+    MONGO_USER: "dev"
     MONGO_PASS: "devpass123!"
     MONGO_PARAMS: "?authSource=admin&ssl=false&w=majority&readPreference=primary&retryWrites=true"
 
@@ -30,15 +31,20 @@ package:
     - e2e/**
     - README.md
 
+custom:
+  apigwBinary:
+    types:
+      - "*/*"
+
 functions:
   app:
     handler: src/lambda.handler
     events:
       - http:
           cors: true
-          path: '/{any+}'
+          path: '/'
           method: any
-#      - http:
-#          cors: true
-#          path: '{proxy+}'
-#          method: any
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: any

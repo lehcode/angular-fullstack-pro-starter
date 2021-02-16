@@ -1,4 +1,6 @@
+.build/
 .idea/
+.serverless/
 dist/
 documentation/
 node_modules/
