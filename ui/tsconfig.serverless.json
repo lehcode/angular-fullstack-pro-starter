@@ -3,9 +3,12 @@
   "compilerOptions": {
     "outDir": "./out-tsc/serverless"
   },
-  "include": [
+  "files": [
     "src/main.server.ts",
     "src/serverless.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
   ],
   "angularCompilerOptions": {
     "entryModule": "./src/app/app.server.module#AppServerModule"

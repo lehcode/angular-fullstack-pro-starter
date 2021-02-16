@@ -40,8 +40,9 @@
     "strictTemplates": true
   },
   "include": [
-    "src/**/*.ts",
-    "node_modules/@types/jest/index.d.ts",
+    "src/config.ts",
+    "src/main.ts",
+    "src/polyfills.ts",
     "node_modules/@types/node/index.d.ts",
     "node_modules/@types/express/index.d.ts"
   ],

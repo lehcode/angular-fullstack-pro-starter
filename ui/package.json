@@ -23,6 +23,7 @@
     "lint-ts": "eslint 'src/**/*.{ts,tsx}'",
     "prerender": "ng run ui:prerender",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.(ts|html|scss)' --write",
+    "sls-build": "ng run ui:serverless:production",
     "sls-deploy": "rm -rf .build && SLS_DEBUG=* sls deploy",
     "sls-local": "rm -rf .build && SLS_DEBUG=* sls offline start --noPrependStageInUrl --httpPort 3300",
     "ssr-build": "ng build --prod && ng run ui:server:production",
