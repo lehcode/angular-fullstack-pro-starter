@@ -24,3 +24,4 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 admin_accessKeys.csv
+.ssl/

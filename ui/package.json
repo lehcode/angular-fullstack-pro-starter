@@ -33,7 +33,7 @@
     "start-i18n-en": "yarn start --configuration en",
     "start-i18n-ru": "yarn start --configuration ru",
     "start-i18n-uk": "yarn start --configuration uk",
-    "test": "ng test ui --progress --watch=false",
+    "test": "NODE_ENV=test ng test ui --progress --watch=false",
     "test-watch": "ng test ui --reporters dots,kjhtml --browsers Chrome --watch"
   },
   "dependencies": {

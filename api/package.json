@@ -17,16 +17,19 @@
     "start": "nest start",
     "start-dev": "nest start --debug 0.0.0.0:9229 --watch",
     "start-prod": "node dist/main",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "test-cov": "jest --coverage",
     "test-debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
     "accept-language-parser": "^1.5.0",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "i18next": "^19.8.7",
     "i18next-express-middleware": "^2.0.0",
     "i18next-json-sync": "^2.3.1",
     "i18next-node-fs-backend": "^2.1.3",
+    "joi": "^17.4.0",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.11",
     "reflect-metadata": "^0.1.13",
@@ -77,7 +80,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -86,6 +89,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@base/(.*)": "<rootDir>/$1" ,
+      "@admin/(.*)": "<rootDir>/modules/admin/$1",
+      "@api/(.*)": "<rootDir>/modules/api/$1",
+      "@db/(.*)": "<rootDir>/modules/db/$1"
+    }
   }
 }
