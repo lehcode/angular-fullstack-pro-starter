@@ -3,12 +3,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ApiModule } from './modules/api/api.module';
-import { AdminModule } from './modules/admin/admin.module';
-import { DbModule } from './modules/db/db.module';
-import config from './config';
+import { AppController } from '@base/app.controller';
+import { AppService } from '@base/app.service';
+import { ApiModule } from '@api/api.module';
+import { AdminModule } from '@admin/admin.module';
+import { DbModule } from '@db/db.module';
+import config from '@base/config';
 
 dotenv.config();
 
@@ -25,7 +25,6 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
 
 @Module({
   imports: [
-    ApiModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config]
@@ -43,6 +42,7 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
         family: 4
       }
     ),
+    ApiModule,
     AdminModule,
     DbModule
   ],

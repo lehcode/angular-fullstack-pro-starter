@@ -1,14 +1,27 @@
-import * as Mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const VehicleVariableSchema = new Mongoose.Schema({
-  dataType: String,
-  description: String,
-  varId: Number,
-  name: String,
-  values: [{
-    id: Number,
-    name: String
-  }]
-});
+export type CatDocument = VehicleVariable & Document;
 
-export const VehicleVariable = Mongoose.model('VehicleVariable', VehicleVariableSchema);
+@Schema()
+export class VehicleVariable {
+  @Prop()
+  dataType: string;
+
+  @Prop()
+  description: string;
+
+  @Prop()
+  varId: number;
+
+  @Prop()
+  name: string;
+
+  @Prop()
+  values: {
+    id: number,
+    name: string
+  }[]
+}
+
+export const VehicleVariableSchema = SchemaFactory.createForClass(VehicleVariable);

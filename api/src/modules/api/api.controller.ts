@@ -1,18 +1,19 @@
+// eslint-disable-next-line
+import { Observable } from 'rxjs';
 import { BadRequestException, Controller, Get, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { map } from 'rxjs/operators';
 import * as Joi from 'joi';
+import moment from 'moment';
+
 import { ApiService } from '@api/services/api/api.service';
 import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
-// eslint-disable-next-line
-import { Observable } from 'rxjs';
-
 
 @Controller('api')
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Get('vin-decode/:code/:lc?')
+  @Get('vin-decode/:code/')
   // @ts-ignore
   async decodeDefault$(@Req() req: Request): Promise<Observable<DecodedVinItemInterface[]>> {
     const merged = { ...req.params, ...req.query };
@@ -23,7 +24,8 @@ export class ApiController {
         .pattern(/(uk|ru|en)/),
       year: Joi.number()
         .min(1980)
-        .max(2021)
+        .max(moment()
+          .year())
     })
       .validate(merged);
 

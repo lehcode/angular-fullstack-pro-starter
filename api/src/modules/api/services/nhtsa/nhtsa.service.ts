@@ -1,16 +1,17 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
-import { from, Observable, of, zip } from 'rxjs';
+import { BadGatewayException, HttpService, Injectable, Logger } from '@nestjs/common';
+import { Observable, of, zip } from 'rxjs';
 import { delay, map, mergeMap, tap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
 import { ConfigService } from '@nestjs/config';
 import { isNaN, isEmpty } from 'lodash';
-// @ts-ignore
+// eslint-disable-next-line
 import { VehicleVariableDocument } from '@api/services/nhtsa/interfaces/vehicle-variable.document';
 import { VehicleVariableInterface } from '@api/services/nhtsa/interfaces/vehicle-variable.interface';
-import { CreateVehicleVariableDto } from '@api/services/nhtsa/dto/create-vehicle-variable.dto';
 import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
+import { VehicleVariable } from '@api/services/nhtsa/schemas/vehicle-variable.schema';
+import { VehicleVariablesService } from '@api/services/vehicle-variables/vehicle-variables.service';
 
 @Injectable()
 export class NHTSAService {
@@ -21,10 +22,10 @@ export class NHTSAService {
   constructor(
     private readonly http: HttpService,
     private readonly configService: ConfigService,
-    @InjectModel('VehicleVariable') private vehicleVariablesModel: Model<VehicleVariableDocument>
+    private readonly variables: VehicleVariablesService,
+    @InjectModel(VehicleVariable.name) private vehicleVariableModel: Model<VehicleVariableDocument>
   ) {
     this.apiHost = this.configService.get<string>('services.nhtsa.apiHost');
-    // this.vehicleVariablesModel
   }
 
   /**
@@ -90,36 +91,14 @@ export class NHTSAService {
    * Save NHTSA vehicle variables to DB
    */
   async storeVehicleVariables(data: VehicleVariableInterface[]): Promise<VehicleVariableInterface[]> {
-    await this.vehicleVariablesModel.deleteMany({});
-
-    for (const item of data) {
-      this.logger.log(`Inserting data (truncated): ${JSON.stringify(item)
-        .substr(0, 512)}`);
-
-      await new this.vehicleVariablesModel(item as CreateVehicleVariableDto)
-        .save()
-        .catch((err) => rethrow(err));
-    }
-
-    return data;
+    return await this.variables.store(data);
   }
 
   /**
    * Query MongoDB for vehicle variables
    */
   queryVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    return from(this.vehicleVariablesModel.find()
-      .exec());
-  }
-
-  getVariableValue$(varId: number, varName: string): Observable<any> {
-    return from(
-      this.vehicleVariablesModel
-        .findOne({ varId: varId, name: { $eq: varName }})
-        .select('-_id -__v')
-        .lean()
-        .exec()
-    );
+    return this.variables.fetchAll$();
   }
 
   private formatDecodedItem(result: any, variable: any): Record<string, any> {
@@ -170,8 +149,7 @@ export class NHTSAService {
         map((response) => response.data.Results),
         mergeMap((results: Record<string, any>[]) => {
           if (!results) {
-            this.logger.warn('NHTSAService.decodeVIN$(): Nothing found');
-            return of();
+            throw new BadGatewayException();
           }
 
           return zip(
@@ -186,7 +164,7 @@ export class NHTSAService {
                   result.valueId = isEmpty(result.valueId) || result.valueId === '0' ? null : result.valueId;
                 });
 
-              this.getVariableValue$(result.variableId, result.variable)
+              this.variables.fetch$(result.variableId, result.variable)
                 .subscribe({
                   next: (variable) => {
                     result = this.formatDecodedItem(result, variable);
@@ -201,16 +179,4 @@ export class NHTSAService {
         })
       );
   }
-
-  // /**
-  //  * Get flattened values
-  //  */
-  // decodeVINValues$(code: string): Observable<any> {
-  //   const endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVinValues');
-  //
-  //   return this.http.get(`${this.apiHost}${endpoint?.replace('{:vin}', code.toString())}`)
-  //     .pipe(
-  //       map((response) => response.data.Results)
-  //     );
-  // }
 }

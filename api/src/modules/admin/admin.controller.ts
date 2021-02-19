@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Req } from '@nestjs/common';
-import { ApiService } from '../api/services/api/api.service';
-import { NHTSAService } from '../api/services/nhtsa/nhtsa.service';
 import { Request } from 'express';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
 import { Observable } from 'rxjs';
+
+import { ApiService } from '@api/services/api/api.service';
+import { NHTSAService } from '@api/services/nhtsa/nhtsa.service';
 
 @Controller('api/admin')
 export class AdminController {

@@ -12,6 +12,7 @@ export default (): Record<string, any> => ({
   },
   env: process.env.NODE_ENV,
   locale: {
+    locales: ['en', 'ru', 'uk'],
     default: 'en'
   },
   mongo: {

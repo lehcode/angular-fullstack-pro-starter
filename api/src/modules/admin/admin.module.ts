@@ -1,18 +1,21 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { AdminController } from './admin.controller';
-import { ApiService } from '../api/services/api/api.service';
-import { NHTSAService } from '../api/services/nhtsa/nhtsa.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { VehicleVariableSchema } from '../api/services/nhtsa/schemas/vehicle-variable.schema';
+import { AdminController } from '@admin/admin.controller';
+import { ApiService } from '@api/services/api/api.service';
+import { NHTSAService } from '@api/services/nhtsa/nhtsa.service';
+import { DbModule } from '@db/db.module';
+import { MongooseService } from '@db/services/mongoose/mongoose.service';
+import { VehicleVariablesService } from '@api/services/vehicle-variables/vehicle-variables.service';
 
 @Module({
   imports: [
     HttpModule,
-    MongooseModule.forFeature([{ name: 'VehicleVariable', schema: VehicleVariableSchema }])
+    DbModule
   ],
   providers: [
     ApiService,
-    NHTSAService
+    NHTSAService,
+    MongooseService,
+    VehicleVariablesService
   ],
   controllers: [AdminController]
 })
