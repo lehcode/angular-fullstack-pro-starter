@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
 import config from '@root/config';
 
 @Injectable()
 export class AppConfigService {
   private readonly config: Record<string, any> = {};
 
-  constructor(private readonly service: ConfigService) {
+  constructor(
+    private readonly service: ConfigService
+  ) {
     this.config = config();
   }
 

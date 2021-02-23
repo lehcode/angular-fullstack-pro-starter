@@ -10,6 +10,7 @@ export class LocaleMiddleware implements NestMiddleware {
 
   use(req: Request, res: Response, next: NextFunction): void {
     const locale = this.locale.detect(req as Request);
+    this.locale.locale = locale;
 
     Object.assign(req, { appLocale: locale });
 

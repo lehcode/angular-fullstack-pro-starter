@@ -1,4 +1,4 @@
-import * as vehicleVariables from '../../nhtsa/__stubs__/vehicle-variables.json';
+import * as vehicleVariables from '@services/nhtsa/__stubs__/vehicle-variables.json';
 
 export default class ApiServiceMock {
   async getNHTSAVehicleVariables(): Promise<any> {

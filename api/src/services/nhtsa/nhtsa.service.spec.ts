@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NHTSAService } from './nhtsa.service';
 import { HttpModule } from '@nestjs/common';
-import { VehicleVariable } from './schemas/vehicle-variable.schema';
+import { VehicleVariable } from '../mongoose/schemas/vehicle-variable.schema';
 import NHTSAServiceMock from './__mocks__/nhtsa.service';
 import { VehicleVariableInterface } from './interfaces/vehicle-variable.interface';
 import * as vehicleVariableResponse from './__stubs__/vehicle-variables-response.json';

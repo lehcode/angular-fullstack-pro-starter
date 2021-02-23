@@ -10,13 +10,18 @@ export default (): Record<string, any> => ({
         vehicleVarsValues: '/api/vehicles/GetVehicleVariableValuesList/{:id}?format=json',
         decodeVin: '/api/vehicles/DecodeVinExtended/{:vin}?format=json',
         decodeVinValues: '/vehicles/DecodeVinValuesExtended/{:vin}?format=json&modelyear={:year}'
+      },
+      i18n: {
+        namespace: 'nhtsa'
       }
     }
   },
   env: process.env.NODE_ENV,
   locale: {
-    locales: ['en', 'ru', 'uk'],
-    default: 'en'
+    locales: ['en', 'ru', 'uk', 'dev'],
+    default: 'en',
+    fallback: 'dev',
+    defaultNs: 'default'
   },
   mongo: {
     host: process.env.MONGO_HOST,

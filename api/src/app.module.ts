@@ -2,11 +2,9 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
-
 import { AppController } from '@root/app.controller';
 import { ApiModule } from '@api/api.module';
 import { AdminModule } from '@admin/admin.module';
-import { DbModule } from '@db/db.module';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import config from '@root/config';
 import { BaseModule } from '@base/base.module';
@@ -50,7 +48,6 @@ if (process && process.env && (process.env.NODE_ENV === 'development'
         family: 4
       }
     ),
-    DbModule,
     BaseModule,
     ApiModule,
     AdminModule

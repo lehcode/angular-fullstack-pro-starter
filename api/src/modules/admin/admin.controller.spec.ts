@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpModule } from '@nestjs/common';
 import { AdminController } from '@admin/admin.controller';
-import { ApiService } from '@api/../../services/api/api.service';
-import { NHTSAService } from '@api/../../services/nhtsa/nhtsa.service';
-import { VehicleVariable } from '@api/../../services/nhtsa/schemas/vehicle-variable.schema';
-import * as vehicleVariablesResponse from '@api/../../services/nhtsa/__stubs__/vehicle-variables-response.json';
-import NHTSAServiceMock from '@api/../../services/nhtsa/__mocks__/nhtsa.service';
+import { ApiService } from '@services/api/api.service';
+import { NHTSAService } from '@services/nhtsa/nhtsa.service';
+import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
+import * as vehicleVariablesResponse from '@services/nhtsa/__stubs__/vehicle-variables-response.json';
+import NHTSAServiceMock from '@services/nhtsa/__mocks__/nhtsa.service';
 
 jest.mock('./admin.controller');
 

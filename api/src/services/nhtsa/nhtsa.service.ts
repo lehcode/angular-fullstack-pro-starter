@@ -1,41 +1,44 @@
 import { BadGatewayException, HttpService, Injectable, Logger } from '@nestjs/common';
-import { from, Observable, of, zip } from 'rxjs';
-import { delay, map, mergeMap, tap, filter, flatMap } from 'rxjs/operators';
+import { Observable, of, zip } from 'rxjs';
+import { delay, filter, map, mergeMap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { rethrow } from '@nestjs/core/helpers/rethrow';
 import { isNaN, isEmpty } from 'lodash';
-import { AxiosResponse } from 'axios';
-// eslint-disable-next-line
-import { VehicleVariableDocument } from '@services/nhtsa/interfaces/vehicle-variable.document';
-import {
-  VehicleVariableInterface,
-  VehicleVariableValueInterface
-} from '@services/nhtsa/interfaces/vehicle-variable.interface';
-import { DecodedVinItemInterface } from '@services/api/interfaces/decoded-vin-item.interface';
-import { VehicleVariable } from '@services/nhtsa/schemas/vehicle-variable.schema';
+import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
+import { VehicleVariableInterface } from '@services/nhtsa/interfaces/vehicle-variable.interface';
+import { DecodedVinItemInterface } from '@api/interfaces/decoded-vin-item.interface';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { LocaleService } from '@services/locale/locale.service';
 import { I18nService } from '@services/i18n/i18n.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { I18nNamespace } from '@services/i18n/interfaces/i18n-namespace.interface';
+import { NhtsaVinResponseEntity } from '@api/interfaces/nhtsa-vin-response-entity';
+import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
+// eslint-disable-next-line
+import { VehicleVariableDocument } from '@services/mongoose/schemas/vehicle-variable.schema';
+import { NhtsaVinResponseEntityProxy } from '@api/interfaces/nhtsa-vin-response-entity-proxy';
+// eslint-disable-next-line
+import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
-export class NHTSAService {
+export class NHTSAService implements I18nNamespace {
   private apiHost;
 
-  private readonly logger = new Logger(NHTSAService.name);
+  public logger = new Logger(NHTSAService.name);
 
-  private readonly i18nNamespace = 'nhtsa';
+  public i18nNs = 'nhtsa';
 
   constructor(
     private readonly http: HttpService,
     private readonly config: AppConfigService,
-    private readonly variables: VehicleVariablesService,
+    private readonly vehicleVariables: VehicleVariablesService,
     private readonly locale: LocaleService,
     private readonly i18n: I18nService,
-    @InjectModel(VehicleVariable.name) private vehicleVariableModel: Model<VehicleVariableDocument>
+    @InjectModel(VehicleVariable.name) private vehicleVariableModel: Model<VehicleVariableDocument>,
+    @InjectModel(I18nTranslation.name) private i18nTranslationModel: Model<I18nTranslationDocument>
   ) {
     this.apiHost = this.config.get<string>('services.nhtsa.apiHost');
+    this.i18n.instance.addResources(this.i18n.language, this.i18nNs, this.loadTranslations());
   }
 
   /**
@@ -43,24 +46,25 @@ export class NHTSAService {
    *
    * https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleVariableList?format=xml
    */
-  getVehicleVariables(): Observable<any> {
+  getVehicleVariables$(): Observable<any> {
     const endpoint = this.config.get<string>('services.nhtsa.uris.vehicleVars');
 
     return this.http.get(`${this.apiHost}${endpoint}`)
       .pipe(
         map((response) => response.data.Results),
         mergeMap(
-          (results: {
+          (
+              results: {
             DataType: string;
             Description: string;
             varId: number;
             name: string;
-          }[]) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result)))
-          , 2
+          }[]
+          ) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))),
+          2
         )
       );
   }
-
 
   /**
    * Provide normalized object
@@ -74,7 +78,8 @@ export class NHTSAService {
     };
 
     if (variable.dataType === 'lookup') {
-      return this.getLookupValues(variable);
+      return this.getLookupValues(variable)
+        .pipe(delay(500));
     }
 
     return of(variable);
@@ -88,8 +93,7 @@ export class NHTSAService {
   getLookupValues(variable: VehicleVariableInterface): Observable<VehicleVariableInterface> {
     const endpoint = this.config.get<string>('services.nhtsa.uris.vehicleVarsValues');
 
-    return this.http
-      .get(`${this.apiHost}${endpoint}`.replace('{:id}', variable.varId.toString()))
+    return this.http.get(`${this.apiHost}${endpoint}`.replace('{:id}', variable.varId.toString()))
       .pipe(
         map((response) => response.data),
         map((data: any) => {
@@ -98,32 +102,25 @@ export class NHTSAService {
             name: result.Name
           }));
           return Object.assign(variable, { values: mapped });
-        }),
-        tap((result) => {
-          console.log(result);
         })
       );
-  }
-
-  /**
-   * Save NHTSA vehicle variables to DB
-   */
-  async storeVehicleVariables(data: VehicleVariableInterface[]): Promise<VehicleVariableInterface[]> {
-    return await this.variables.store(data);
   }
 
   /**
    * Query MongoDB for vehicle variables
    */
   queryVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    return this.variables.fetchAll$();
+    return this.vehicleVariables.fetchAll$();
   }
 
-  private formatDecodedItem(result: any, variable: any): Record<string, any> {
+  /**
+   * Format decoded VIN item
+   */
+  private formatDecodedItem(result: any, variable: any): DecodedVinItemInterface | Record<string, any> {
     const valueIdx = parseInt(result.valueId) - 1;
 
     if (!variable) {
-      throw new Error('Variables not specified. Probably not updated from NHTSA API');
+      return {};
     }
 
     if (variable.values.length && variable.values[valueIdx]) {
@@ -165,39 +162,58 @@ export class NHTSAService {
     return this.http.get(`${this.apiHost}${endpoint}`)
       .pipe(
         map((response) => response.data.Results),
-        mergeMap((results: Record<string, any>[]) => {
-          if (!results) {
+        mergeMap((entities: NhtsaVinResponseEntity[]) => {
+          if (!entities) {
             throw new BadGatewayException();
           }
 
           return zip(
-            ...results.map((result: Record<any, any>) => {
-              Object.keys(result)
+            ...entities.map((entity: Record<string, any>) => {
+              const newEntity: NhtsaVinResponseEntityProxy = {
+                value: undefined,
+                valueId: undefined,
+                variable: undefined,
+                variableId: undefined
+              };
+
+              Object.keys(entity)
                 .forEach((key) => {
                   const keyToLower = `${key.charAt(0)
                     .toLowerCase()}${key.slice(1)}`;
-                  result[keyToLower] = result[key] as any;
-                  delete result[key];
-                  result.value = isEmpty(result.value) ? null : result.value;
-                  result.valueId = isEmpty(result.valueId) || result.valueId === '0' ? null : result.valueId;
+                  // @ts-ignore
+                  newEntity[keyToLower] = entity[key] as any;
+                  newEntity.value = isEmpty(entity.value) ? null : entity.value;
+                  newEntity.valueId = isEmpty(entity.valueId) || entity.valueId === '0' ? null : entity.valueId;
                 });
 
-              this.variables.fetch$(result.variableId, result.variable)
-                .subscribe({
-                  next: (variable) => {
-                    if (!variable) {
-                      throw new Error('Variables not specified. Probably not updated from NHTSA API');
+              return this.vehicleVariables.find$(entity.variableId, entity.variable)
+                .pipe(
+                  map((data) => data),
+                  map((variable) => {
+                    if (!variable && this.config.get<string>('env') === 'production') {
+                      throw new RuntimeException('Variables not specified. Probably not updated from NHTSA API');
+                    } else {
+                      this.logger.log(entity);
+                      this.logger.error('Variables not specified. Probably not updated from NHTSA API');
                     }
-                    result = this.formatDecodedItem(result, variable);
-                  },
-                  error: (err) => rethrow(err)
-                });
 
-              return of(result as DecodedVinItemInterface)
-                .pipe(delay(1000));
+                    return this.formatDecodedItem(entity, variable);
+                  }),
+                  filter((variable) => {
+                    return !!variable;
+                  })
+                );
             })
           );
         })
       );
+  }
+
+  private async loadTranslations(): Promise<any> {
+    return await this.i18nTranslationModel
+      .find()
+      .select('-_id -__v')
+      .lean()
+      .exec();
   }
 }

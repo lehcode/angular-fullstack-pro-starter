@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ApiService } from './api.service';
 import { HttpModule } from '@nestjs/common';
-import { NHTSAService } from '../nhtsa/nhtsa.service';
-import { VehicleVariable } from '../nhtsa/schemas/vehicle-variable.schema';
-import * as vehicleVariables from '../nhtsa/__stubs__/vehicle-variables.json';
+import { NHTSAService } from '@services/nhtsa/nhtsa.service';
+import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
+import * as vehicleVariables from '@services/nhtsa/__stubs__/vehicle-variables.json';
 import ApiServiceMock from './__mocks__/api.service';
 import { ConfigService } from '@nestjs/config';
-import { LocaleService } from '../locale/locale.service';
+import { LocaleService } from '@services/locale/locale.service';
 
 describe('ApiService', () => {
   let apiService: ApiService;

@@ -1,25 +1,28 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import browserLanguage from 'accept-language-parser';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { I18nService } from '@services/i18n/i18n.service';
+import { AppLoggerService } from '@services/app-logger/app-logger.service';
 
 @Injectable()
 export class LocaleService {
   private readonly fallback: string;
 
-  private readonly logger = new Logger(LocaleService.name);
-
   constructor(
-    private readonly appConfig: AppConfigService
+    private readonly appConfig: AppConfigService,
+    private readonly i18n: I18nService,
+    private logger: AppLoggerService
   ) {
     this.fallback = this.appConfig.get<string>('locale.default');
     this.appConfig.set('locale.app', this.fallback);
+    this.logger.setContext(LocaleService.name);
   }
 
   /**
    * Detect locale
    */
-  detect(req: Request): void {
+  detect(req: Request): string {
     let appLocale = 'en';
 
     if (req.headers.hasOwnProperty('accept-language')) {
@@ -35,17 +38,17 @@ export class LocaleService {
       appLocale = req.params.lc as string;
     }
 
-    this.locale = appLocale || this.fallback;
+    return appLocale || this.fallback;
   }
 
 
   /**
    * Set application locale
    */
-  set locale(val: string) {
-    this.logger.log(`App locale: ${val}`);
+  set locale(lang: string) {
+    this.logger.log(`App locale set to: ${lang}`);
 
-    this.appConfig.set('locale.app', val);
+    this.appConfig.set('locale.app', lang);
   }
 
   /**

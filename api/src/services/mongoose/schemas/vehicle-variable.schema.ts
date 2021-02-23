@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CatDocument = VehicleVariable & Document;
-
-@Schema()
+@Schema({
+  timestamps: true
+})
 export class VehicleVariable {
   @Prop()
   dataType: string;
@@ -23,5 +23,7 @@ export class VehicleVariable {
     name: string
   }[]
 }
+
+export type VehicleVariableDocument = VehicleVariable & Document;
 
 export const VehicleVariableSchema = SchemaFactory.createForClass(VehicleVariable);

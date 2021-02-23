@@ -1,17 +1,18 @@
 import { HttpModule, Module } from '@nestjs/common';
-
-import { ApiService } from '@api/../../services/api/api.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ApiService } from '@services/api/api.service';
 import { ApiController } from '@api/api.controller';
-import { NHTSAService } from '@api/../../services/nhtsa/nhtsa.service';
+import { NHTSAService } from '@services/nhtsa/nhtsa.service';
 import { DbModule } from '@db/db.module';
-import { VehicleVariablesService } from '@api/../../services/vehicle-variables/vehicle-variables.service';
+import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { BaseModule } from '@root/modules/base/base.module';
 
 @Module({
   imports: [
+    DbModule,
     BaseModule,
     HttpModule,
-    DbModule
+    MongooseModule
   ],
   controllers: [ApiController],
   providers: [
@@ -20,7 +21,7 @@ import { BaseModule } from '@root/modules/base/base.module';
     VehicleVariablesService
   ],
   exports: [
-    ApiService, 
+    ApiService,
     NHTSAService
   ]
 })

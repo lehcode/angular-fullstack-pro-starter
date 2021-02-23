@@ -1,13 +1,11 @@
-// eslint-disable-next-line
 import { Observable } from 'rxjs';
 import { BadRequestException, Controller, Get, Req } from '@nestjs/common';
 import { Request } from 'express';
-import { map } from 'rxjs/operators';
 import * as Joi from 'joi';
 import moment from 'moment';
-
-import { ApiService } from '@api/../../services/api/api.service';
-import { DecodedVinItemInterface } from '@api/../../services/api/interfaces/decoded-vin-item.interface';
+import { ApiService } from '@services/api/api.service';
+// eslint-disable-next-line
+import { DecodedVinItemInterface } from '@modules/api/interfaces/decoded-vin-item.interface';
 
 @Controller('api')
 export class ApiController {
@@ -15,7 +13,7 @@ export class ApiController {
 
   @Get('vin-decode/:code/')
   // @ts-ignore
-  async decodeDefault$(@Req() req: Request): Promise<Observable<DecodedVinItemInterface[]>> {
+  async decodeDefault$(@Req() req: Request): Observable<DecodedVinItemInterface[]> {
     const merged = { ...req.params, ...req.query };
     const { error, value } = Joi.object({
       code: Joi.string()
@@ -33,7 +31,6 @@ export class ApiController {
       throw new BadRequestException('Validation failed');
     }
 
-    return this.apiService.getNHTSADecodedVIN$(value)
-      .pipe(map((data: DecodedVinItemInterface[]) => data));
+    return this.apiService.getNHTSADecodedVIN$(value);
   }
 }

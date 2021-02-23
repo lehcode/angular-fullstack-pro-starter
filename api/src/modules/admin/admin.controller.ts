@@ -1,40 +1,52 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Post } from '@nestjs/common';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
-import { Observable } from 'rxjs';
-
-import { ApiService } from '@api/../../services/api/api.service';
-import { NHTSAService } from '@api/../../services/nhtsa/nhtsa.service';
-import { LocaleService } from '@services/locale/locale.service';
+import { from, Observable } from 'rxjs';
+import { ApiService } from '@services/api/api.service';
+import { NHTSAService } from '@services/nhtsa/nhtsa.service';
+import { I18nService } from '@services/i18n/i18n.service';
+import { AppLoggerService } from '@services/app-logger/app-logger.service';
+import { catchError, map } from 'rxjs/operators';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 
 @Controller('api/admin')
 export class AdminController {
   constructor(
-    private readonly apiService: ApiService,
-    private readonly nhtsaService: NHTSAService,
-    private readonly locale: LocaleService
-  ) {}
+    private readonly api: ApiService,
+    private readonly nhtsa: NHTSAService,
+    private readonly i18n: I18nService,
+    private readonly logger: AppLoggerService,
+    private readonly appConfig: AppConfigService,
+    private readonly vehicleVariables: VehicleVariablesService
+  ) {
+    this.logger.setContext(AdminController.name);
+  }
 
   @Post('nhtsa-variables')
-  async updateNHTSAVehicleVariables(): Promise<any> {
-    try {
-      const vars = await this.apiService.getNHTSAVehicleVariables();
-      const inserted = await this.nhtsaService.storeVehicleVariables(vars);
-      // const localized = await this
+  updateNHTSAVehicleVariables(): Observable<any> {
+    return from(this.nhtsa.getVehicleVariables$())
+      .pipe(
+        map(async (data) => {
+          const ns = this.appConfig.get<string>('services.nhtsa.i18n.namespace');
+          const rows = this.vehicleVariables.formatTranslationsI18n(
+            data,
+            this.appConfig.get<string>('services.nhtsa.i18n.namespace')
+          );
+          const stored = await this.i18n.storeTranslations(rows, ns);
 
-      return {
-        success: true,
-        message: `Inserted ${inserted.length} rows`
-      };
-    } catch (err) {
-      rethrow(err.message);
-    }
+          return {
+            status: 'success',
+            message: `Inserted ${stored.length} translations`
+          };
+        }),
+        catchError((err) => err)
+      );
   }
 
   @Get('nhtsa-variables')
   getNHTSAVehicleVariables(): Observable<any> {
     try {
-      return this.nhtsaService.queryVehicleVariables();
+      return this.nhtsa.queryVehicleVariables();
     } catch (err) {
       rethrow(err.message);
     }
