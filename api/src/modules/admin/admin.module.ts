@@ -1,22 +1,17 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { AdminController } from '@admin/admin.controller';
-import { ApiService } from '@api/services/api/api.service';
-import { NHTSAService } from '@api/services/nhtsa/nhtsa.service';
 import { DbModule } from '@db/db.module';
-import { MongooseService } from '@db/services/mongoose/mongoose.service';
-import { VehicleVariablesService } from '@api/services/vehicle-variables/vehicle-variables.service';
+import { BaseModule } from '@root/modules/base/base.module';
+import { ApiModule } from '@api/api.module';
 
 @Module({
   imports: [
+    BaseModule,
     HttpModule,
-    DbModule
+    DbModule,
+    ApiModule
   ],
-  providers: [
-    ApiService,
-    NHTSAService,
-    MongooseService,
-    VehicleVariablesService
-  ],
+  providers: [],
   controllers: [AdminController]
 })
 export class AdminModule {}

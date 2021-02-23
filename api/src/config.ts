@@ -1,4 +1,7 @@
 export default (): Record<string, any> => ({
+  api: {
+    port: 3000
+  },
   services: {
     nhtsa: {
       apiHost: 'https://vpic.nhtsa.dot.gov',

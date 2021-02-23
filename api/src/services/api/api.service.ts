@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ObjectSchema } from 'joi';
 
-import { NHTSAService } from '@api/services/nhtsa/nhtsa.service';
-import { VehicleVariableInterface } from '@api/services/nhtsa/interfaces/vehicle-variable.interface';
-import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
-import { VINDecodeParams } from '@api/services/api/validation/vin-decode-params';
+import { NHTSAService } from '@services/nhtsa/nhtsa.service';
+import { VehicleVariableInterface } from '@services/nhtsa/interfaces/vehicle-variable.interface';
+import { DecodedVinItemInterface } from '@services/api/interfaces/decoded-vin-item.interface';
+import { VINDecodeParams } from '@services/api/validation/vin-decode-params';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {

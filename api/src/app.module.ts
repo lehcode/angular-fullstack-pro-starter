@@ -1,26 +1,34 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 
-import { AppController } from '@base/app.controller';
-import { AppService } from '@base/app.service';
+import { AppController } from '@root/app.controller';
 import { ApiModule } from '@api/api.module';
 import { AdminModule } from '@admin/admin.module';
 import { DbModule } from '@db/db.module';
-import config from '@base/config';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import config from '@root/config';
+import { BaseModule } from '@base/base.module';
+import { LocaleMiddleware } from '@root/middleware/locale.middleware';
 
 dotenv.config();
+const appConfig = new AppConfigService(new ConfigService());
+const mongoHost = appConfig.get<string>('mongo.host');
+const mongoPort = appConfig.get<string>('mongo.port');
+const mongoUrlParams = appConfig.get<string>('mongo.urlParams');
+const mongoDb = appConfig.get<string>('mongo.db');
+const mongoUser = appConfig.get<string>('mongo.user');
+const mongoPass = appConfig.get<string>('mongo.pass');
 
-console.log(`MongoDB host: ${process.env.MONGO_HOST}`);
-console.log(`MongoDB port: ${process.env.MONGO_PORT}`);
-console.log(`MongoDB params: ${process.env.MONGO_URL_PARAMS}`);
-console.log(`MongoDB DB: ${process.env.MONGO_DB}`);
+console.log(`MongoDB host: ${mongoHost}`);
+console.log(`MongoDB port: ${mongoPort}`);
+console.log(`MongoDB params: ${mongoUrlParams}`);
+console.log(`MongoDB DB: ${mongoDb}`);
 
-if (process && process.env && (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')) {
-  console.log(`MongoDB user: ${process.env.MONGO_USER}`);
-  console.log(`MongoDB pass: ${process.env.MONGO_PASS}`);
-  console.log(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_URL_PARAMS}`);
+if (process && process.env && (process.env.NODE_ENV === 'development'
+  || process.env.NODE_ENV === 'test')) {
+  console.log(`mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`);
 }
 
 @Module({
@@ -30,23 +38,28 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
       load: [config]
     }),
     MongooseModule.forRoot(
-      `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_URL_PARAMS}`,
+      `mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
-        dbName: process.env.MONGO_DB,
-        user: process.env.MONGO_USER,
-        pass: process.env.MONGO_PASS,
+        dbName: mongoDb,
+        user: mongoUser,
+        pass: mongoPass,
         family: 4
       }
     ),
+    DbModule,
+    BaseModule,
     ApiModule,
-    AdminModule,
-    DbModule
+    AdminModule
   ],
-  controllers: [AppController],
-  providers: [AppService, ConfigService]
+  controllers: [AppController]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(LocaleMiddleware)
+      .forRoutes('api');
+  }
+}

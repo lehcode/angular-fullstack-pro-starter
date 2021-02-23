@@ -1,17 +1,23 @@
 import { BadGatewayException, HttpService, Injectable, Logger } from '@nestjs/common';
-import { Observable, of, zip } from 'rxjs';
-import { delay, map, mergeMap, tap } from 'rxjs/operators';
+import { from, Observable, of, zip } from 'rxjs';
+import { delay, map, mergeMap, tap, filter, flatMap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { rethrow } from '@nestjs/core/helpers/rethrow';
-import { ConfigService } from '@nestjs/config';
 import { isNaN, isEmpty } from 'lodash';
+import { AxiosResponse } from 'axios';
 // eslint-disable-next-line
-import { VehicleVariableDocument } from '@api/services/nhtsa/interfaces/vehicle-variable.document';
-import { VehicleVariableInterface } from '@api/services/nhtsa/interfaces/vehicle-variable.interface';
-import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
-import { VehicleVariable } from '@api/services/nhtsa/schemas/vehicle-variable.schema';
-import { VehicleVariablesService } from '@api/services/vehicle-variables/vehicle-variables.service';
+import { VehicleVariableDocument } from '@services/nhtsa/interfaces/vehicle-variable.document';
+import {
+  VehicleVariableInterface,
+  VehicleVariableValueInterface
+} from '@services/nhtsa/interfaces/vehicle-variable.interface';
+import { DecodedVinItemInterface } from '@services/api/interfaces/decoded-vin-item.interface';
+import { VehicleVariable } from '@services/nhtsa/schemas/vehicle-variable.schema';
+import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
+import { LocaleService } from '@services/locale/locale.service';
+import { I18nService } from '@services/i18n/i18n.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Injectable()
 export class NHTSAService {
@@ -19,13 +25,17 @@ export class NHTSAService {
 
   private readonly logger = new Logger(NHTSAService.name);
 
+  private readonly i18nNamespace = 'nhtsa';
+
   constructor(
     private readonly http: HttpService,
-    private readonly configService: ConfigService,
+    private readonly config: AppConfigService,
     private readonly variables: VehicleVariablesService,
+    private readonly locale: LocaleService,
+    private readonly i18n: I18nService,
     @InjectModel(VehicleVariable.name) private vehicleVariableModel: Model<VehicleVariableDocument>
   ) {
-    this.apiHost = this.configService.get<string>('services.nhtsa.apiHost');
+    this.apiHost = this.config.get<string>('services.nhtsa.apiHost');
   }
 
   /**
@@ -34,15 +44,23 @@ export class NHTSAService {
    * https://vpic.nhtsa.dot.gov/api/vehicles/GetVehicleVariableList?format=xml
    */
   getVehicleVariables(): Observable<any> {
-    let results: any;
-    const endpoint = this.configService.get<string>('services.nhtsa.uris.vehicleVars');
+    const endpoint = this.config.get<string>('services.nhtsa.uris.vehicleVars');
 
     return this.http.get(`${this.apiHost}${endpoint}`)
       .pipe(
-        tap((response) => (results = response.data.Results)),
-        mergeMap(() => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))), 2)
+        map((response) => response.data.Results),
+        mergeMap(
+          (results: {
+            DataType: string;
+            Description: string;
+            varId: number;
+            name: string;
+          }[]) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result)))
+          , 2
+        )
       );
   }
+
 
   /**
    * Provide normalized object
@@ -68,23 +86,23 @@ export class NHTSAService {
    * https://vpic.nhtsa.dot.gov/vehicles/GetVehicleVariableValuesList/:id?format=json
    */
   getLookupValues(variable: VehicleVariableInterface): Observable<VehicleVariableInterface> {
-    const record = Object.assign({}, variable);
-    const endpoint = this.configService.get<string>('services.nhtsa.uris.vehicleVarsValues');
+    const endpoint = this.config.get<string>('services.nhtsa.uris.vehicleVarsValues');
 
-    this.http
+    return this.http
       .get(`${this.apiHost}${endpoint}`.replace('{:id}', variable.varId.toString()))
-      .pipe(map((response) => response.data))
-      .subscribe({
-        next(data: Record<string, any>) {
-          record.values = data.Results.map((result: Record<string, any>) => ({
+      .pipe(
+        map((response) => response.data),
+        map((data: any) => {
+          const mapped = data.Results.map((result: Record<string, any>) => ({
             id: result.Id,
             name: result.Name
           }));
-        }
-      });
-
-    return of(record)
-      .pipe(delay(5000));
+          return Object.assign(variable, { values: mapped });
+        }),
+        tap((result) => {
+          console.log(result);
+        })
+      );
   }
 
   /**
@@ -137,7 +155,7 @@ export class NHTSAService {
    * Default VIN decoding
    */
   decodeVIN$(code: string, year?: number): Observable<any> {
-    let endpoint = this.configService.get<string>('services.nhtsa.uris.decodeVin')
+    let endpoint = this.config.get<string>('services.nhtsa.uris.decodeVin')
       ?.replace('{:vin}', code.toString());
 
     if (year) {
@@ -167,6 +185,9 @@ export class NHTSAService {
               this.variables.fetch$(result.variableId, result.variable)
                 .subscribe({
                   next: (variable) => {
+                    if (!variable) {
+                      throw new Error('Variables not specified. Probably not updated from NHTSA API');
+                    }
                     result = this.formatDecodedItem(result, variable);
                   },
                   error: (err) => rethrow(err)

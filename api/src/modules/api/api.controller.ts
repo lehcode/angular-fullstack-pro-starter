@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 import * as Joi from 'joi';
 import moment from 'moment';
 
-import { ApiService } from '@api/services/api/api.service';
-import { DecodedVinItemInterface } from '@api/services/api/interfaces/decoded-vin-item.interface';
+import { ApiService } from '@api/../../services/api/api.service';
+import { DecodedVinItemInterface } from '@api/../../services/api/interfaces/decoded-vin-item.interface';
 
 @Controller('api')
 export class ApiController {
