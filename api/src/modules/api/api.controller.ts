@@ -5,7 +5,7 @@ import * as Joi from 'joi';
 import moment from 'moment';
 import { ApiService } from '@services/api/api.service';
 // eslint-disable-next-line
-import { DecodedVinItemInterface } from '@modules/api/interfaces/decoded-vin-item.interface';
+import { DecodedVinItemInterface } from '@interfaces/decoded-vin-item.interface';
 
 @Controller('api')
 export class ApiController {

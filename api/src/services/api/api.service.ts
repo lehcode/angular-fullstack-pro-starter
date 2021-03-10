@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { NHTSAService } from '@services/nhtsa/nhtsa.service';
-import { DecodedVinItemInterface } from '@api/interfaces/decoded-vin-item.interface';
+import { DecodedVinItemInterface } from '@interfaces/decoded-vin-item.interface';
 import { VINDecodeParams } from '@services/api/validation/vin-decode-params';
 
 @Injectable()

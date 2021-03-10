@@ -10,7 +10,7 @@ import {
   I18nTranslationDocument
 } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';
-import { I18nMongoTranslation } from '@services/i18n/interfaces/i18n-mongo-translation';
+import { I18nMongoTranslation } from '@interfaces/i18n-mongo-translation';
 
 @Injectable()
 export class I18nService {
@@ -106,7 +106,7 @@ export class I18nService {
   /**
    * Change translation language
    */
-  async changeLanguage(lang: string): Promise<void> {
+  async changeLanguage(lang: string): Promise<any> {
     await this.instance.changeLanguage(lang, (err) => this.logger.error(err));
   }
 

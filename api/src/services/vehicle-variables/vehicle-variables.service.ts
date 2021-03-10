@@ -3,13 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, Observable } from 'rxjs';
 import { VehicleVariable, VehicleVariableDocument } from '@services/mongoose/schemas/vehicle-variable.schema';
-import { VehicleVariableInterface } from '@services/nhtsa/interfaces/vehicle-variable.interface';
+import { VehicleVariableInterface } from '@root/interfaces/vehicle-variable.interface';
 import { I18nService } from '@services/i18n/i18n.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { isNaN } from 'lodash';
 import { AppLoggerService } from '@services/app-logger/app-logger.service';
 import { map } from 'rxjs/operators';
-import { I18nMongoTranslation } from '@services/i18n/interfaces/i18n-mongo-translation';
+import { I18nMongoTranslation } from '@interfaces/i18n-mongo-translation';
 
 @Injectable()
 export class VehicleVariablesService {

@@ -4,18 +4,18 @@ import { delay, filter, map, mergeMap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { isNaN, isEmpty } from 'lodash';
 import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
-import { VehicleVariableInterface } from '@services/nhtsa/interfaces/vehicle-variable.interface';
-import { DecodedVinItemInterface } from '@api/interfaces/decoded-vin-item.interface';
+import { VehicleVariableInterface } from '@root/interfaces/vehicle-variable.interface';
+import { DecodedVinItemInterface } from '@interfaces/decoded-vin-item.interface';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { LocaleService } from '@services/locale/locale.service';
 import { I18nService } from '@services/i18n/i18n.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { I18nNamespace } from '@services/i18n/interfaces/i18n-namespace.interface';
-import { NhtsaVinResponseEntity } from '@api/interfaces/nhtsa-vin-response-entity';
+import { I18nNamespace } from '@interfaces/i18n-namespace.interface';
+import { NhtsaVinResponseEntity } from '@interfaces/nhtsa-vin-response-entity';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 // eslint-disable-next-line
 import { VehicleVariableDocument } from '@services/mongoose/schemas/vehicle-variable.schema';
-import { NhtsaVinResponseEntityProxy } from '@api/interfaces/nhtsa-vin-response-entity-proxy';
+import { NhtsaVinResponseEntityProxy } from '@interfaces/nhtsa-vin-response-entity-proxy';
 // eslint-disable-next-line
 import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';

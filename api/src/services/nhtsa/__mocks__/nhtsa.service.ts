@@ -1,4 +1,4 @@
-import { VehicleVariableInterface } from '../interfaces/vehicle-variable.interface';
+import { VehicleVariableInterface } from '../../../interfaces/vehicle-variable.interface';
 import { from, Observable, of } from 'rxjs';
 import * as vehicleVariablesResponse from '../__stubs__/vehicle-variables-response.json';
 import { delay, map } from 'rxjs/operators';
