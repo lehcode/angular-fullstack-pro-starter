@@ -27,6 +27,7 @@ module.exports = {
       },
     ],
     "newline-per-chained-call": ["warn", { ignoreChainWithDepth: 1 }],
+    "no-inline-comments": ["error"],
     "object-curly-spacing": ["warn", "always", {
       arraysInObjects: false,
       objectsInObjects: false

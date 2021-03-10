@@ -17,10 +17,14 @@
       "es2020.symbol.wellknown"
     ],
     "paths": {
-      "@base/*": [ "../src/*" ],
+      "@root/*": [ "../src/*" ],
       "@admin/*": [ "modules/admin/*" ],
       "@api/*": [ "modules/api/*" ],
-      "@db/*": [ "modules/db/*" ]
+      "@base/*": [ "modules/base/*" ],
+      "@db/*": [ "modules/db/*" ],
+      "@services/*": ["services/*"],
+      "@modules/*": ["modules/*"],
+      "@interfaces/*": ["interfaces/*"]
     },
     "noImplicitAny": true,
     "outDir": "./dist",
