@@ -30,5 +30,6 @@ export default (): Record<string, any> => ({
     db: process.env.MONGO_DB,
     user: process.env.MONGO_USER,
     pass: process.env.MONGO_PASS
-  }
+  },
+  htmlRegex: /<(\S*?)[^>]*>.*?<\/\1>|<.*?\/>/g
 });

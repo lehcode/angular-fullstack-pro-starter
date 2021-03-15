@@ -1,18 +1,19 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { rethrow } from '@nestjs/core/helpers/rethrow';
+import { BadGatewayException, Controller, Get, Post } from '@nestjs/common';
 import { from, Observable } from 'rxjs';
-import { ApiService } from '@services/api/api.service';
 import { NHTSAService } from '@services/nhtsa/nhtsa.service';
 import { I18nService } from '@services/i18n/i18n.service';
 import { AppLoggerService } from '@services/app-logger/app-logger.service';
 import { catchError, map } from 'rxjs/operators';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
+import { I18nNamespace } from '@interfaces/i18n-namespace';
+import { VehicleVariableInterface } from '@interfaces/vehicle.variable';
 
 @Controller('api/admin')
-export class AdminController {
+export class AdminController implements I18nNamespace {
+  i18nNs = 'nhtsa';
+
   constructor(
-    private readonly api: ApiService,
     private readonly nhtsa: NHTSAService,
     private readonly i18n: I18nService,
     private readonly logger: AppLoggerService,
@@ -28,27 +29,32 @@ export class AdminController {
       .pipe(
         map(async (data) => {
           const ns = this.appConfig.get<string>('services.nhtsa.i18n.namespace');
-          const rows = this.vehicleVariables.formatTranslationsI18n(
+          const i18nRows = this.vehicleVariables.toI18nMongoFormat(
             data,
             this.appConfig.get<string>('services.nhtsa.i18n.namespace')
           );
-          const stored = await this.i18n.storeTranslations(rows, ns);
+          const variables = await this.vehicleVariables.store(data);
+          const translations = await this.i18n.storeTranslations(i18nRows, ns);
+          await this.i18n.addTranslations(translations, ns);
 
           return {
             status: 'success',
-            message: `Inserted ${stored.length} translations`
+            message: `Inserted ${translations.length} translations and ${variables.length} variables`
           };
         }),
-        catchError((err) => err)
+        catchError((err) => {
+          throw new BadGatewayException(err);
+        })
       );
   }
 
   @Get('nhtsa-variables')
-  getNHTSAVehicleVariables(): Observable<any> {
-    try {
-      return this.nhtsa.queryVehicleVariables();
-    } catch (err) {
-      rethrow(err.message);
+  getNHTSAVehicleVariables(): Observable<VehicleVariableInterface[]> {
+    let loaded = this.i18n.getTranslations(this.i18nNs, this.i18n.language);
+    if (!loaded) {
+      loaded = this.i18n.loadTranslations(this.i18nNs, this.i18n.language);
     }
+
+    return this.nhtsa.vehicleVariables$;
   }
 }

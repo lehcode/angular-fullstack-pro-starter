@@ -1,4 +1,4 @@
-export interface DecodedVinItemInterface {
+export interface DecodedVinItem {
   description?: string;
   label: string;
   value?: string | number;

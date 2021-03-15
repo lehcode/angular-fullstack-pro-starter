@@ -3,7 +3,7 @@ import { NHTSAService } from './nhtsa.service';
 import { HttpModule } from '@nestjs/common';
 import { VehicleVariable } from '../mongoose/schemas/vehicle-variable.schema';
 import NHTSAServiceMock from './__mocks__/nhtsa.service';
-import { VehicleVariableInterface } from '../../interfaces/vehicle-variable.interface';
+import { VehicleVariable } from '@interfaces/vehicle.variable';
 import * as vehicleVariableResponse from './__stubs__/vehicle-variables-response.json';
 import * as vehicleVariables from './__stubs__/vehicle-variables.json';
 import { ConfigService } from '@nestjs/config';
@@ -43,7 +43,7 @@ describe('NHTSAService', () => {
 
     nhtsaServiceMock.getVehicleVariables()
       .subscribe({
-        next: (data: VehicleVariableInterface[]) => {
+        next: (data: VehicleVariable[]) => {
           expect(data.length)
             .toBe(3);
         },
@@ -60,7 +60,7 @@ describe('NHTSAService', () => {
 
     nhtsaServiceMock.formatVariable(responseStub.Results[0])
       .subscribe({
-        next: (variable: VehicleVariableInterface) => {
+        next: (variable: VehicleVariable) => {
           expect(variable)
             .toEqual({
               dataType: responseStub.Results[0].DataType,
@@ -81,7 +81,7 @@ describe('NHTSAService', () => {
 
     nhtsaServiceMock.formatVariable(responseStub.Results[1])
       .subscribe({
-        next: (variable: VehicleVariableInterface) => {
+        next: (variable: VehicleVariable) => {
         // expect(nhtsaServiceMock.getLookupValues).toHaveBeenCalled();
           expect(variable)
             .toEqual({
@@ -108,7 +108,7 @@ describe('NHTSAService', () => {
         name: 'Battery Type'
       })
       .subscribe({
-        next: (variable: VehicleVariableInterface) => {
+        next: (variable: VehicleVariable) => {
           expect(variable)
             .toEqual({
               dataType: responseStub.Results[1].DataType,

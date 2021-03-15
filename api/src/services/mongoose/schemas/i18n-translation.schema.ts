@@ -11,8 +11,14 @@ export class I18nTranslation {
   @Prop()
   ns: string;
 
-  @Prop({ type: Object })
-  data: Record<string, string>;
+  @Prop()
+  variable: number;
+
+  @Prop()
+  key: string;
+
+  @Prop({ type: Map })
+  i18n: Map<any, any>;
 }
 
 export type I18nTranslationDocument = I18nTranslation & Document;

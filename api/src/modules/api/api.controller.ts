@@ -5,7 +5,7 @@ import * as Joi from 'joi';
 import moment from 'moment';
 import { ApiService } from '@services/api/api.service';
 // eslint-disable-next-line
-import { DecodedVinItemInterface } from '@interfaces/decoded-vin-item.interface';
+import { DecodedVinItem } from '@interfaces/decoded-vin.item';
 
 @Controller('api')
 export class ApiController {
@@ -13,7 +13,7 @@ export class ApiController {
 
   @Get('vin-decode/:code/')
   // @ts-ignore
-  async decodeDefault$(@Req() req: Request): Observable<DecodedVinItemInterface[]> {
+  async decodeDefault$(@Req() req: Request): Observable<DecodedVinItem[]> {
     const merged = { ...req.params, ...req.query };
     const { error, value } = Joi.object({
       code: Joi.string()

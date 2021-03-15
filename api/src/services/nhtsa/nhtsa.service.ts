@@ -1,16 +1,16 @@
 import { BadGatewayException, HttpService, Injectable, Logger } from '@nestjs/common';
-import { Observable, of, zip } from 'rxjs';
-import { delay, filter, map, mergeMap } from 'rxjs/operators';
+import { from, Observable, of, zip } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { isNaN, isEmpty } from 'lodash';
 import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
-import { VehicleVariableInterface } from '@root/interfaces/vehicle-variable.interface';
-import { DecodedVinItemInterface } from '@interfaces/decoded-vin-item.interface';
+import { VehicleVariableInterface } from '@interfaces/vehicle.variable';
+import { DecodedVinItem } from '@interfaces/decoded-vin.item';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { LocaleService } from '@services/locale/locale.service';
 import { I18nService } from '@services/i18n/i18n.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { I18nNamespace } from '@interfaces/i18n-namespace.interface';
+import { I18nNamespace } from '@interfaces/i18n-namespace';
 import { NhtsaVinResponseEntity } from '@interfaces/nhtsa-vin-response-entity';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 // eslint-disable-next-line
@@ -19,6 +19,7 @@ import { NhtsaVinResponseEntityProxy } from '@interfaces/nhtsa-vin-response-enti
 // eslint-disable-next-line
 import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';
+import * as toMarkdown from 'html-to-markdown';
 
 @Injectable()
 export class NHTSAService implements I18nNamespace {
@@ -53,14 +54,12 @@ export class NHTSAService implements I18nNamespace {
       .pipe(
         map((response) => response.data.Results),
         mergeMap(
-          (
-              results: {
+          (results: {
             DataType: string;
             Description: string;
             varId: number;
             name: string;
-          }[]
-          ) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))),
+          }[]) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))),
           2
         )
       );
@@ -70,16 +69,16 @@ export class NHTSAService implements I18nNamespace {
    * Provide normalized object
    */
   formatVariable(result: Record<string, any>): Observable<VehicleVariableInterface> {
+    const html = this.config.get<RegExp>('htmlRegex');
     const variable: VehicleVariableInterface = {
       dataType: result.DataType,
-      description: result.Description,
+      description: result.Description.match(html) ? toMarkdown.convert(result.Description) : result.Description,
       varId: result.ID,
       name: result.Name
     };
 
     if (variable.dataType === 'lookup') {
-      return this.getLookupValues(variable)
-        .pipe(delay(500));
+      return this.getLookupValues$(variable);
     }
 
     return of(variable);
@@ -90,7 +89,7 @@ export class NHTSAService implements I18nNamespace {
    * Get values for 'lookup' type variables.
    * https://vpic.nhtsa.dot.gov/vehicles/GetVehicleVariableValuesList/:id?format=json
    */
-  getLookupValues(variable: VehicleVariableInterface): Observable<VehicleVariableInterface> {
+  getLookupValues$(variable: VehicleVariableInterface): Observable<VehicleVariableInterface> {
     const endpoint = this.config.get<string>('services.nhtsa.uris.vehicleVarsValues');
 
     return this.http.get(`${this.apiHost}${endpoint}`.replace('{:id}', variable.varId.toString()))
@@ -109,14 +108,14 @@ export class NHTSAService implements I18nNamespace {
   /**
    * Query MongoDB for vehicle variables
    */
-  queryVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    return this.vehicleVariables.fetchAll$();
+  get vehicleVariables$(): Observable<VehicleVariableInterface[]> {
+    return from(this.vehicleVariables.fetchAll());
   }
 
   /**
    * Format decoded VIN item
    */
-  private formatDecodedItem(result: any, variable: any): DecodedVinItemInterface | Record<string, any> {
+  private formatDecodedItem(result: any, variable: any): DecodedVinItem | Record<string, any> {
     const valueIdx = parseInt(result.valueId) - 1;
 
     if (!variable) {
@@ -209,9 +208,8 @@ export class NHTSAService implements I18nNamespace {
       );
   }
 
-  private async loadTranslations(): Promise<any> {
-    return await this.i18nTranslationModel
-      .find()
+  private async loadTranslations(): Promise<any[]> {
+    return await this.i18nTranslationModel.find()
       .select('-_id -__v')
       .lean()
       .exec();
