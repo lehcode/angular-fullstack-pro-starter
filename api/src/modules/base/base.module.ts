@@ -6,6 +6,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import { MongooseService } from '@services/mongoose/mongoose.service';
 import { AppLoggerService } from '@services/app-logger/app-logger.service';
 import { DbModule } from '@db/db.module';
+import { DateService } from '@services/date/date.service';
 
 @Global()
 @Module({
@@ -18,7 +19,8 @@ import { DbModule } from '@db/db.module';
     I18nService,
     AppConfigService,
     AppLoggerService,
-    MongooseService
+    MongooseService,
+    DateService
   ],
   exports: [
     AppService,
@@ -26,7 +28,8 @@ import { DbModule } from '@db/db.module';
     I18nService,
     AppConfigService,
     AppLoggerService,
-    MongooseService
+    MongooseService,
+    DateService
   ]
 })
 export class BaseModule {}

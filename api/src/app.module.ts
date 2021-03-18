@@ -9,7 +9,6 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import config from '@root/config';
 import { BaseModule } from '@base/base.module';
 import { LocaleMiddleware } from '@root/middleware/locale.middleware';
-import * as moment from 'moment';
 
 dotenv.config();
 const appConfig = new AppConfigService(new ConfigService());
@@ -49,9 +48,7 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
     ApiModule,
     AdminModule
   ],
-  controllers: [AppController],
-  providers: [{ provide: 'moment', useValue: moment }],
-  exports: ['moment']
+  controllers: [AppController]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
