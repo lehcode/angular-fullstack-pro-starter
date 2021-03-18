@@ -4,7 +4,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 import { InjectModel } from '@nestjs/mongoose';
 import { isNaN, isEmpty } from 'lodash';
 import { VehicleVariable } from '@services/mongoose/schemas/vehicle-variable.schema';
-import { VehicleVariableInterface } from '@interfaces/vehicle.variable';
+import { VehicleVariableInterface } from '@interfaces/vehicle-variable';
 import { DecodedVinItem } from '@interfaces/decoded-vin.item';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { LocaleService } from '@services/locale/locale.service';
@@ -39,7 +39,6 @@ export class NHTSAService implements I18nNamespace {
     @InjectModel(I18nTranslation.name) private i18nTranslationModel: Model<I18nTranslationDocument>
   ) {
     this.apiHost = this.config.get<string>('services.nhtsa.apiHost');
-    this.i18n.instance.addResources(this.i18n.language, this.i18nNs, this.loadTranslations());
   }
 
   /**
@@ -54,12 +53,14 @@ export class NHTSAService implements I18nNamespace {
       .pipe(
         map((response) => response.data.Results),
         mergeMap(
-          (results: {
+          (
+              results: {
             DataType: string;
             Description: string;
             varId: number;
             name: string;
-          }[]) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))),
+          }[]
+          ) => zip(...results.map((result: Record<string, any>) => this.formatVariable(result))),
           2
         )
       );
@@ -100,7 +101,7 @@ export class NHTSAService implements I18nNamespace {
             id: result.Id,
             name: result.Name
           }));
-          return Object.assign(variable, { values: mapped });
+          return { ...variable, values: mapped };
         })
       );
   }
@@ -206,12 +207,5 @@ export class NHTSAService implements I18nNamespace {
           );
         })
       );
-  }
-
-  private async loadTranslations(): Promise<any[]> {
-    return await this.i18nTranslationModel.find()
-      .select('-_id -__v')
-      .lean()
-      .exec();
   }
 }

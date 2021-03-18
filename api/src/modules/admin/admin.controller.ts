@@ -6,13 +6,11 @@ import { AppLoggerService } from '@services/app-logger/app-logger.service';
 import { catchError, map } from 'rxjs/operators';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
-import { I18nNamespace } from '@interfaces/i18n-namespace';
-import { VehicleVariableInterface } from '@interfaces/vehicle.variable';
+// eslint-disable-next-line
+import { VehicleVariableInterface } from '@interfaces/vehicle-variable';
 
 @Controller('api/admin')
-export class AdminController implements I18nNamespace {
-  i18nNs = 'nhtsa';
-
+export class AdminController {
   constructor(
     private readonly nhtsa: NHTSAService,
     private readonly i18n: I18nService,
@@ -21,6 +19,7 @@ export class AdminController implements I18nNamespace {
     private readonly vehicleVariables: VehicleVariablesService
   ) {
     this.logger.setContext(AdminController.name);
+    this.i18n.changeLanguage('en');
   }
 
   @Post('nhtsa-variables')
@@ -31,10 +30,11 @@ export class AdminController implements I18nNamespace {
           const ns = this.appConfig.get<string>('services.nhtsa.i18n.namespace');
           const i18nRows = this.vehicleVariables.toI18nMongoFormat(
             data,
-            this.appConfig.get<string>('services.nhtsa.i18n.namespace')
+            this.appConfig.get<string>('services.nhtsa.i18n.namespace'),
+            this.i18n.language
           );
           const variables = await this.vehicleVariables.store(data);
-          const translations = await this.i18n.storeTranslations(i18nRows, ns);
+          const translations = await this.i18n.storeTranslations(i18nRows);
           await this.i18n.addTranslations(translations, ns);
 
           return {
@@ -50,11 +50,6 @@ export class AdminController implements I18nNamespace {
 
   @Get('nhtsa-variables')
   getNHTSAVehicleVariables(): Observable<VehicleVariableInterface[]> {
-    let loaded = this.i18n.getTranslations(this.i18nNs, this.i18n.language);
-    if (!loaded) {
-      loaded = this.i18n.loadTranslations(this.i18nNs, this.i18n.language);
-    }
-
-    return this.nhtsa.vehicleVariables$;
+    return this.vehicleVariables.all;
   }
 }

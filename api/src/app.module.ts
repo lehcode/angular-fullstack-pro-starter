@@ -9,6 +9,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import config from '@root/config';
 import { BaseModule } from '@base/base.module';
 import { LocaleMiddleware } from '@root/middleware/locale.middleware';
+import * as moment from 'moment';
 
 dotenv.config();
 const appConfig = new AppConfigService(new ConfigService());
@@ -24,8 +25,7 @@ console.log(`MongoDB port: ${mongoPort}`);
 console.log(`MongoDB params: ${mongoUrlParams}`);
 console.log(`MongoDB DB: ${mongoDb}`);
 
-if (process && process.env && (process.env.NODE_ENV === 'development'
-  || process.env.NODE_ENV === 'test')) {
+if (process && process.env && (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test')) {
   console.log(`mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`);
 }
 
@@ -35,24 +35,23 @@ if (process && process.env && (process.env.NODE_ENV === 'development'
       isGlobal: true,
       load: [config]
     }),
-    MongooseModule.forRoot(
-      `mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-        dbName: mongoDb,
-        user: mongoUser,
-        pass: mongoPass,
-        family: 4
-      }
-    ),
+    MongooseModule.forRoot(`mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      dbName: mongoDb,
+      user: mongoUser,
+      pass: mongoPass,
+      family: 4
+    }),
     BaseModule,
     ApiModule,
     AdminModule
   ],
-  controllers: [AppController]
+  controllers: [AppController],
+  providers: [{ provide: 'moment', useValue: moment }],
+  exports: ['moment']
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

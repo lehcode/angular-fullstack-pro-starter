@@ -19,6 +19,12 @@ export class I18nTranslation {
 
   @Prop({ type: Map })
   i18n: Map<any, any>;
+
+  @Prop({
+    type: Date,
+    default: null
+  })
+  modifiedDate: Date | null;
 }
 
 export type I18nTranslationDocument = I18nTranslation & Document;
