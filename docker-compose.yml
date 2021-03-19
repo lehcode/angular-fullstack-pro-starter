@@ -4,59 +4,131 @@ services:
   api:
     image: carvin/api:dev
     container_name: carvin-api-dev
+    command: /bin/bash /init.sh
     build:
-      context: ./api
+      context: ./docker-assets/api-v1/
+      dockerfile: Dockerfile
       args:
-        workdir: /home/node/carvin/api
-        tz: Etc/UTC
+        workdir: ${API_WORKDIR:?Environment variable API_WORKDIR not specified}
+        tz: ${TZ:-Etc/UTC}
+        node_version: ${USE_NODE_VERSION:?Environment variable USE_NODE_VERSION not specified}
+        node_env: ${NODE_ENV:?Environment variable NODE_ENV not specified}
+        nestjs_version: ${NESTJS_CLI_VERSION:?Environment variable NESTJS_VERSION not specified}
+        user: ${HOST_USER:?Specify HOST_USER environment variable}
+        uid: ${HOST_UID:?Specify HOST_UID environment variable}
+        group: ${HOST_DOCKER_GROUP:?Specify HOST_DOCKER_GROUP environment variable}
+        gid: ${HOST_DOCKER_GID:?Specify HOST_DOCKER_GID environment variable}
+        debug: ${DEBUG:-no}
     environment:
-      AWS_REGION: eu-central-1
+      AWS_REGION: ${AWS_REGION:-eu-central-1}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      API_PORT: 3000
-      MONGO_DB: carvin
-      MONGO_HOST: carvin-mongo-dev
-      MONGO_URL_PARAMS: "?authSource=admin&ssl=false&appname=CarVIN&retryWrites=true&w=majority"
-      MONGO_PASS: Dev_Pass123
-      MONGO_PORT: 27017
-      MONGO_USER: dev
-      NODE_ENV: development
-      TZ: Etc/UTC
+      API_PORT: ${API_PORT:-3000}
+      MONGO_DB: ${MONGO_DB:?Environment variable MONGO_DB not specified}
+      MONGO_HOST: ${MONGO_HOST:-127.0.0.1}
+      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS:-?retryWrites=true&w=majority}
+      MONGO_PASS: ${MONGO_PASS:?Environment variable MONGO_PASS not specified}
+      MONGO_PORT: ${MONGO_PORT:-27017}
+      MONGO_USER: ${MONGO_USER:?Environment variable MONGO_USER not specified}
+      NODE_ENV: ${NODE_ENV:?Environment variable NODE_ENV not specified}
+      NODE_VERSION: ${USE_NODE_VERSION:?Environment variable USE_NODE_VERSION not specified}
     tty: true
-    command: "yarn start-dev"
     volumes:
-      - ./api:/home/node/carvin/api
+      - ./api:${API_WORKDIR:?Environment variable API_WORKDIR not specified}
     ports:
-      - "0.0.0.0:3000:3000"
-      - "0.0.0.0:3443:3443"
-      - "0.0.0.0:9229:9229"
+      - "3000:3000"
+      - "3443:3443"
+      - "9229:9229"
     restart: always
     depends_on:
-      - mongo
+      - db_mongo
+    # network settings
+    networks:
+      - carvinnet
 
   front:
     image: carvin/front:dev
     container_name: carvin-ui-dev
+    command: /bin/bash /init.sh
     build:
-      context: ./ui
+      context: ./docker-assets/ui-v1/
+      dockerfile: Dockerfile
       args:
-        workdir: /home/node/carvin/ui
-        tz: Etc/UTC
-        node_env: development
+        workdir: ${UI_WORKDIR:?Environment variable UI_WORKDIR not specified}
+        tz: ${TZ:-Etc/UTC}
+        angular_version: ${ANGULAR_CLI_VERSION:?Environment variable USE_ANGULAR_VERSION not specified}
+        node_env: ${NODE_ENV:-development}
+        node_version: ${USE_NODE_VERSION:?Environment variable USE_NODE_VERSION not specified}
+        debug: ${DEBUG:-no}
     environment:
-      TZ: Etc/UTC
-      NODE_ENV: development
-    env_file:
-      - ui/.env
+      TZ: ${TZ:-Etc/UTC}
+      NODE_ENV: ${NODE_ENV:-development}
     tty: true
 #    command: "yarn ssr-build && yarn sls-local"
-    command: "yarn start"
     volumes:
-      - ./ui:/home/node/carvin/ui
+      - ./ui:${UI_WORKDIR:-/home/node/carvin/ui}
     ports:
-      - "0.0.0.0:4000:4000"
-      - "0.0.0.0:4200:4200"
-      - "0.0.0.0:4300:4300"
-      - "0.0.0.0:9222:9222"
+      - "4000:4000"
+      - "4200:4200"
+      - "4300:4300"
+      - "9222:9222"
     depends_on:
       - api
+    # network settings
+    networks:
+      - carvinnet
+
+  # db_mongo service
+  db_mongo:
+    # container name
+    container_name: mongo
+    # container hostname
+    hostname: db
+    # command to run on container startup
+    command: mongod --auth --port ${MONGO_PORT:-27017} --wiredTigerCacheSizeGB 1.5
+    # build settings
+    build:
+      context: docker-assets/mongo/
+      dockerfile: Dockerfile
+      shm_size: 500m
+      args:
+        # build arguments
+        mongo_version: ${MONGO_VERSION:?Environment variable MONGO_VERSION not specified}
+        tz: ${TZ:-Etc/UTC}
+    # environment variables for the container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:?Specify MONGO_USER environment variable}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:?Specify MONGO_PASS environment variable}
+      MONGO_INITDB_DATABASE: ${MONGO_DB:?Specify MONGO_DB environment variable}
+    # volumes to mount
+    volumes:
+      - data_db_mongodb:/data/db
+      - var_lib_mongodb:/var/lib/mongodb
+      - var_log_mongodb:/var/log/mongodb
+    ports:
+      - "27017:27017"
+    # network settings
+    networks:
+      - carvinnet
+    # set ulimit values
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 64000
+        hard: 128000
+    # restart policy for the container
+    restart: unless-stopped
+
+# Specify volumes
+volumes:
+  data_db_mongodb:
+  var_lib_mongodb:
+  var_log_mongodb:
+
+# Specify networks
+networks:
+  carvinnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.52.0/24

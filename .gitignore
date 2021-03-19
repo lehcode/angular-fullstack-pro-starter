@@ -1,8 +1,4 @@
 .idea
-ui/design/
-ui/seo/
-promo
-session_buddy*
 *.pdf
 
 #amplify
@@ -12,10 +8,10 @@ amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/awscloudformation
-amplify/backend/.temp
-build/
-dist/
-node_modules/
+.temp
+build
+dist
+node_modules
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
@@ -24,4 +20,6 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 admin_accessKeys.csv
-.ssl/
+.ssl
+.env
+

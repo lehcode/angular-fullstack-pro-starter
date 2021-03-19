@@ -1,4 +1,9 @@
-﻿FROM mongo:4.4-bionic
+﻿ARG mongo_version
+FROM mongo:${mongo_version}
+
+ENV MONGO_VERSION=${mongo_version}
+ARG tz
+ENV TZ=${tz}
 
 LABEL maintainer="lehcode <3556648+lehcode@users.noreply.github.com>"
 LABEL description="MongoDB server"
@@ -10,11 +15,7 @@ RUN apt-get update \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get -y upgrade \
-    && apt-get -y install curl wget tree \
+#    && apt-get -y install curl wget tree \
     && cp /etc/mongod.conf.orig /etc/mongod.conf \
-    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf \
-    && chown -R mongodb:mongodb /var/lib/mongodb /var/log/mongodb
-
-EXPOSE 27017:27017/tcp
-EXPOSE 27018:27018/tcp
-EXPOSE 27019:27019/tcp
+    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf
+#    && chown -R mongodb:mongodb /var/lib/mongodb /var/log/mongodb

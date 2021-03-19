@@ -1,8 +1,0 @@
-.build/
-.idea/
-.serverless/
-dist/
-documentation/
-node_modules/
-.dockerignore
-yarn-error.log

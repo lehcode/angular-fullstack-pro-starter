@@ -78,8 +78,8 @@ export class VehicleVariablesService {
 
     const push = (key: string, value: string, varId: number) => {
       const i18Map = new Map();
-      locales.forEach((loc) => {
-        i18Map.set(loc, '');
+      locales.forEach((locale) => {
+        i18Map.set(locale, '');
       });
       i18Map.set(lang, value);
 

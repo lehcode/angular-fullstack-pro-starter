@@ -29,7 +29,7 @@ class MongooseBackend {
     this.options = { ...backendOptions, ...i18nextOptions };
   }
 
-  read(language: string, namespace: string, callback: (ctx: null, data: any[]) => any): any {
+  read(language: string, namespace: string, callback: (ctx: any, data: any[] | null) => any): any {
     from(
       this.model
         .find({ lang: language, ns: namespace })
@@ -50,7 +50,7 @@ class MongooseBackend {
         catchError(
           (err, caught): ObservableInput<any> => {
             this.logger.error(err);
-
+            callback(err, null);
             return caught;
           }
         )
@@ -58,9 +58,6 @@ class MongooseBackend {
       .subscribe((d) => {
         callback(null, d);
       });
-
-    /* if method fails/returns an error, call this: */
-    /* callback(truthyValue, null); */
   }
 
   // optional
