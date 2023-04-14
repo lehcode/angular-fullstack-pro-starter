@@ -65,6 +65,7 @@ services:
         debug: ${DEBUG:-no}
     environment:
       NODE_ENV: ${NODE_ENV:-development}
+      ANALYTICS_REPORTING: false
     tty: true
     volumes:
       - ./apps/ui:${UI_WORKDIR:?Environment variable UI_WORKDIR not specified}
@@ -73,14 +74,14 @@ services:
       - "4200:4200"
       - "4300:4300"
       - "9222:9222"
-#    depends_on:
-#      - api
+    depends_on:
+      - api
     networks:
       - starternet
 
   # MongoDB Service
   mongo:
-    image: starter/mongo:1.0
+    image: starter/mongo:${MONGO_VERSION}
     container_name: starter-mongo
     hostname: mongo
     command: mongod --auth --port ${MONGO_PORT:-27017} --wiredTigerCacheSizeGB 1.5
@@ -94,6 +95,11 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:?Specify MONGO_USER environment variable}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:?Specify MONGO_PASS environment variable}
       MONGO_INITDB_DATABASE: ${MONGO_DB:?Specify MONGO_DB environment variable}
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 64000
+        hard: 128000
     volumes:
       - data_db_mongodb:/data/db
       - var_lib_mongodb:/var/lib/mongodb
@@ -102,11 +108,6 @@ services:
       - "27017:27017"
     networks:
       - starternet
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 64000
-        hard: 128000
     restart: always
 
   # Redis Caching Service

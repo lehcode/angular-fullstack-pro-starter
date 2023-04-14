@@ -3,9 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ApiService } from '@services/api/api.service';
 import { ApiController } from '@api/api.controller';
-import { NHTSAService } from '@services/nhtsa/nhtsa.service';
 import { DbModule } from '@db/db.module';
-import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 import { BaseModule } from '@base/base.module';
 
 @Module({
@@ -17,13 +15,10 @@ import { BaseModule } from '@base/base.module';
   ],
   controllers: [ApiController],
   providers: [
-    ApiService,
-    NHTSAService,
-    VehicleVariablesService
+    ApiService
   ],
   exports: [
-    ApiService,
-    NHTSAService
+    ApiService
   ]
 })
 export class ApiModule {}

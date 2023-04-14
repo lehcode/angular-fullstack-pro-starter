@@ -10,6 +10,7 @@ ENV ANGULAR_VERSION=${angular_version}
 ENV DEBUG=${debug}
 ENV NODE_VERSION=${node_version}
 ENV TZ=${tz}
+ENV ANALYTICS_REPORTING=false
 
 WORKDIR ${workdir}
 
@@ -38,7 +39,8 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && echo "NPM binary &version: $(npm bin):$(npm -v)" \
   && echo "Yarn binary & version: $(yarn global bin):$(yarn --version)" \
   && yarn global add @angular/cli@${angular_version} serverless@latest  \
-  && echo "Angular CLI binary & version: $(which ng):$(ng version)"
+  && echo "Angular CLI binary & version: $(which ng):$(ng version)" \
+  && ng analytics disable
 
 WORKDIR ${workdir}
 

@@ -5,7 +5,6 @@ import { DbModule } from '@db/db.module';
 import { BaseModule } from '@base/base.module';
 import { ApiModule } from '@api/api.module';
 import { MongooseService } from '@services/mongoose/mongoose.service';
-import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-variables.service';
 
 @Module({
   imports: [
@@ -14,7 +13,7 @@ import { VehicleVariablesService } from '@services/vehicle-variables/vehicle-var
     DbModule,
     ApiModule
   ],
-  providers: [MongooseService, VehicleVariablesService],
+  providers: [MongooseService],
   controllers: [AdminController]
 })
 export class AdminModule {}

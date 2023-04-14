@@ -13,10 +13,6 @@ export class AppPage {
     return element(by.css('app-root header .hero__content p')).getText();
   }
 
-  async getVinSearchForm(){
-    return element(by.css('app-root header .hero__content form')).getText();
-  }
-
   async getSubmitButton(){
     return element(by.css('app-root header .hero__content form button')).getText();
   }

@@ -24,11 +24,11 @@ The system also includes code linting and testing pipelines for [Bitbucket](http
 - [Mongoose](https://mongoosejs.com/docs/) service.
 
 #### Angular
-- [Angular Material](https://material.angular.io/guide/getting-started).
+- [Angular Material](https://material.angular.io/guide/getting-started) styling.
 - [Compodoc](https://compodoc.app/) documenting.
 
 ## Prerequisites
-This is simple, as you only need **Docker** with Docker Compose installed on your system and NodeJS >=16.14. 
+This is simple, as you only need **Docker** with Docker Compose installed on your system and NodeJS>=16.14.0.
 Compose should be installed with Docker engine by default. Run `$ docker compose` to see similar output:
 ```
 $ docker compose

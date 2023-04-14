@@ -1,9 +1,8 @@
 {
   "name": "nest-angular-starter-api",
   "version": "0.0.1",
-  "description": "Starter API",
-  "author": "Antony Repin<lehcode@gmail.com>",
-  "private": true,
+  "description": "Starter NestJS application",
+  "author": "Lehcode<53556648+lehcode@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

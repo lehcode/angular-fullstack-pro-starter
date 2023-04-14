@@ -2,23 +2,10 @@ export default (): Record<string, any> => ({
   api: {
     port: 3000
   },
-  services: {
-    nhtsa: {
-      apiHost: 'https://vpic.nhtsa.dot.gov',
-      uris: {
-        vehicleVars: '/api/vehicles/GetVehicleVariableList?format=json',
-        vehicleVarsValues: '/api/vehicles/GetVehicleVariableValuesList/{:id}?format=json',
-        decodeVin: '/api/vehicles/DecodeVinExtended/{:vin}?format=json',
-        decodeVinValues: '/vehicles/DecodeVinValuesExtended/{:vin}?format=json&modelyear={:year}'
-      },
-      i18n: {
-        namespace: 'nhtsa'
-      }
-    }
-  },
+  services: {},
   env: process.env.NODE_ENV,
   locale: {
-    locales: ['en', 'ru', 'uk', 'dev'],
+    locales: ['en', 'uk', 'dev'],
     default: 'en',
     fallback: 'dev',
     defaultNs: 'default'
