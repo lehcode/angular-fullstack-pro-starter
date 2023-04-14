@@ -2,6 +2,7 @@ ARG node_version
 FROM node:${node_version} AS install
 
 ARG debug
+ARG node_version
 ARG nestjs_version
 ARG node_env
 ARG tz
@@ -12,25 +13,27 @@ ENV NESTJS_VERSION=${nestjs_version}
 ENV NODE_ENV=${node_env}
 ENV NODE_VERSION=${node_version}
 
-RUN set -ex \
+RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && chown -R node:node /usr/local/lib/node_modules \
+  && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
   && apt-get -y upgrade \
-  && apt-get -y install sudo \
+  && apt-get -y --no-install-recommends --no-install-suggests install sudo lsb-release curl \
   && apt-get clean \
-  && sh -c 'echo "node ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers' \
+  && echo "node ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers \
   && npm install -g npm \
-  && npm --force install -g yarn \
-  && env
+  && npm --force install -g yarn
 
 COPY entrypoint.sh /init.sh
 
 USER node:node
-RUN set -ex \
+
+RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && echo "Node.js version: "$(node -v) \
   && echo "NPM binary &version: $(npm bin):$(npm -v)" \
   && echo "Yarn binary & version: $(yarn global bin):$(yarn --version)" \
-  && yarn global add @nestjs/cli@${nestjs_version} serverless@0.5
+  && yarn global add @nestjs/cli@${nestjs_version} serverless@latest \
+  && echo "NestJS binary & version: $(which nest):$(nest --version)"
 
 WORKDIR ${workdir}
 

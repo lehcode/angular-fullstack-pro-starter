@@ -15,7 +15,5 @@ RUN apt-get update \
     && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get -y upgrade \
-#    && apt-get -y install curl wget tree \
     && cp /etc/mongod.conf.orig /etc/mongod.conf \
     && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf
-#    && chown -R mongodb:mongodb /var/lib/mongodb /var/log/mongodb

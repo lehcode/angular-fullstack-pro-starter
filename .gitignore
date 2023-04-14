@@ -22,4 +22,5 @@ amplifytools.xcconfig
 admin_accessKeys.csv
 .ssl
 .env
+.angular
 
