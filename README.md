@@ -1,12 +1,30 @@
 # NestJS & Angular Serverless Development Starter Boilerplate
 
+This NestJS and Angular starter boilerplate is designed to help you quickly set up a single application for development 
+using Docker Compose, MongoDB, MySQL, Redis, and AWS Lambda. The boilerplate includes configuration for code linting 
+and testing pipelines for Bitbucket.
 
-NestJS and Angular starter repository intended for development of a single application. Includes the `docker-compose.yml` file is a configuration file for [Docker Compose](https://docs.docker.com/compose/), a tool for defining and running multi-container Docker applications. The file specifies the services (API, UI, MongoDB, MySQL, Redis) that should be created, and their configurations. 
-The system includes both [MongoDB](https://www.mongodb.com/docs/) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/) Docker services, which are used as databases for the NestJS application. Depending on the needs of the application, either or both of these services can be used.
-The [Redis](https://redis.io/docs/about/) service is used as a caching server for the NestJS application, which can improve performance by caching frequently accessed data in memory.
-[NestJS](https://docs.nestjs.com/) is a Node.js web framework that is used to build the API service in this system. The pre-configured connections to MongoDB, MySQL, and Redis allow the NestJS application to interact with these services out of the box.
-The system includes configuration for [AWS Lambda](https://aws.amazon.com/lambda/) and other cloud services using the serverless framework, which is a popular tool for building and deploying serverless applications.
-The system also includes code linting and testing pipelines for [Bitbucket](https://bitbucket.org/product/features/pipelines), which is a web-based hosting service for [Git](https://git-scm.com/about) repositories.    
+Includes the `docker-compose.yml` file is a configuration file for [Docker Compose](https://docs.docker.com/compose/), 
+a tool for defining and running multi-container Docker applications. The file specifies the services (API, UI, MongoDB,
+MySQL, Redis) that should be created, and their configurations. 
+
+The system includes both [MongoDB](https://www.mongodb.com/docs/) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/) 
+Docker services, which are used as databases for the NestJS application. Depending on the needs of the application, 
+either or both of these services can be used.
+
+The [Redis](https://redis.io/docs/about/) service is used as a caching server for the NestJS application, which can 
+improve performance by caching frequently accessed data in memory.
+
+[NestJS](https://docs.nestjs.com/) is a Node.js web framework that is used to build the API service in this system. The
+pre-configured connections to MongoDB, MySQL, and Redis allow the NestJS application to interact with these 
+services out of the box.
+
+The system includes configuration for [AWS Lambda](https://aws.amazon.com/lambda/) and other cloud services using the 
+serverless framework, which is a popular tool for building and deploying serverless applications.
+
+The system also includes code linting and testing pipelines for 
+[Bitbucket](https://bitbucket.org/product/features/pipelines), which is a web-based hosting service for
+[Git](https://git-scm.com/about) repositories.
 
 ## What It Does?
 1. Downloads all software images `$ docker compose up`.

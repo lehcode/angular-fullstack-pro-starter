@@ -4,9 +4,12 @@
 [[ "${DEBUG}" = "yes" ]] && set -ex || set -e
 [[ "${DEBUG}" = "yes" ]] && env
 
-echo "${PWD}"
-
 [[ ! -f "${PWD}/package.json" ]] && echo -e "${PWD}/package.json not found!\n" && exit 1
+
+ng analytics disable
+
+sudo find /etc -type f -name "my.cnf"
+
 [[ ! -d "./node_modules" ]] && yarn install
 
 yarn start

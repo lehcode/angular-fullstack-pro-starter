@@ -14,6 +14,7 @@ ENV NODE_ENV=${node_env}
 ENV NODE_VERSION=${node_version}
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
+  && if [ "${debug}" != "yes" ]; then env; fi \
   && chown -R node:node /usr/local/lib/node_modules \
   && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
@@ -22,19 +23,15 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && apt-get clean \
   && echo "node ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers \
   && npm install -g npm \
-  && npm --force install -g yarn
-
-COPY entrypoint.sh /init.sh
-
-USER node:node
-
-RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
+  && npm --force install -g yarn \
   && echo "Node.js version: "$(node -v) \
   && echo "NPM binary &version: $(npm bin):$(npm -v)" \
   && echo "Yarn binary & version: $(yarn global bin):$(yarn --version)" \
-  && yarn global add @nestjs/cli@${nestjs_version} serverless@latest \
+  && yarn global add @nestjs/cli@${nestjs_version} serverless \
   && echo "NestJS binary & version: $(which nest):$(nest --version)"
 
+COPY entrypoint.sh /init.sh
+USER node:node
 WORKDIR ${workdir}
 
 #---
