@@ -40,9 +40,10 @@ The system also includes code linting and testing pipelines for
 - Application configuration service loading config from `.ts` file.
 - Application logger service.
 - [Mongoose](https://mongoosejs.com/docs/) service.
+- AWS Lambda configuration
 
 #### Angular
-- [Angular Material](https://material.angular.io/guide/getting-started) styling.
+- [Angular Material](https://material.angular.io/guide/getting-started) theme and styling.
 - [Compodoc](https://compodoc.app/) documenting.
 
 ## Prerequisites
@@ -65,13 +66,12 @@ Docker version 20.10.24, build 297e128
 1. Create project directory `$ mkdir starter`
 2. Clone the [NestJS & Angular starter boilerplate repository](https://github.com/lehcode/nest-angular-starter) onto your computer by running the command `$ git clone git@github.com:lehcode/nest-angular-starter.git ./starter` 
 3. Copy `docker-compose.yml.dist` to `docker-compose.yml` and update `container_name` property and other values if you need. DO NOT change the `hostname` property as it may break connectivity to servers.
-4. Create file `.env` by copying `.env.dist`. Use command `cp .env.dist .env` in project root directory.
-5. Do the same with the `docker-assets/mongo/.env.dist` and `docker-assets/mysql/.env.dist`.
-6. Use empty value for `$DEBUG` environment variable in `starter/.env` file to disable debug output. Debug is enabled by default.
-7. Adjust variables values in `.env` files as needed:
-- `.env` - A file with a kind of global environment variables for Docker used at build time
-- `docker-assets/mongo/.env` - A file with MongoDB environment variables for Docker used at build time
-- `docker-assets/mysql/.env` - A file with MySQL environment variables for Docker used at build time
+4. Create file `starter/.env` by copying `starter/.env.dist`. Use following command in project root directory.
+```
+$ cp .env.dist .env
+```
+5. Use empty value for `$DEBUG` environment variable in `starter/.env` file to disable debug output. Debug is enabled by default.
+6. Adjust variables values in `.env` file as needed.
 
 ## WSL
 You MAY need to update current user name, UID, Docker group name and GID mappings in `.env` File. Permissions and access issues are possible otherwise. Try to use defaults first.
@@ -102,6 +102,19 @@ $ docker compose up
 ```
 
 ## That's It!
+
+Check if all containers are running:
+```shell
+$ docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED             STATUS          PORTS                                                                                            NAMES
+f7d404320dee   starter/api:dev        "docker-entrypoint.s…"   41 minutes ago      Up 31 seconds   0.0.0.0:3000->3000/tcp, 0.0.0.0:3443->3443/tcp, 0.0.0.0:9229->9229/tcp                           starter-api-dev
+22ca57777403   starter/ui:dev         "docker-entrypoint.s…"   43 minutes ago      Up 30 seconds   0.0.0.0:4000->4000/tcp, 0.0.0.0:4200->4200/tcp, 0.0.0.0:4300->4300/tcp, 0.0.0.0:9222->9222/tcp   starter-ui-dev
+5e69999a6aed   starter/redis:7.0.10   "docker-entrypoint.s…"   About an hour ago   Up 32 seconds   0.0.0.0:6379->6379/tcp                                                                           starter-redis
+ac0eb591f839   starter/mysql:8.0      "docker-entrypoint.s…"   About an hour ago   Up 31 seconds   0.0.0.0:3306->3306/tcp, 33060/tcp                                                                starter-mysql
+70fdb1da25ea   starter/mongo:6.0      "docker-entrypoint.s…"   About an hour ago   Up 32 seconds   0.0.0.0:27017->27017/tcp                                                                         starter-mongo
+
+```
+
 Have fun with dev :-)
 
 If you like starter, please support with small recurring donation at [Patreon](https://www.patreon.com/lehcode) or one-time donation at [Open Collective](https://opencollective.com/nestjs-and-angular-starter)

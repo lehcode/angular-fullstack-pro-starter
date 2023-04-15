@@ -19,7 +19,7 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
   && apt-get -y upgrade \
-  && apt-get -yq install --no-install-recommends --no-install-suggests sudo lsb-release xdg-utils google-chrome-stable curl \
+  && apt-get -yq install --no-install-recommends --no-install-suggests sudo lsb-release xdg-utils google-chrome-stable curl tzdata locales \
   && apt-get clean \
   && ln -fs /usr/share/zoneinfo/${tz} /etc/localtime \
   && echo ${tz} > /etc/timezone \

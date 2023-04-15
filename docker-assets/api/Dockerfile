@@ -15,13 +15,16 @@ ENV NODE_VERSION=${node_version}
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && if [ "${debug}" != "yes" ]; then env; fi \
-  && chown -R node:node /usr/local/lib/node_modules \
   && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
   && apt-get -y upgrade \
-  && apt-get -y --no-install-recommends --no-install-suggests install sudo lsb-release curl \
+  && apt-get -y --no-install-recommends --no-install-suggests install sudo lsb-release curl tzdata locales \
+  && ln -fs /usr/share/zoneinfo/${tz} /etc/localtime \
+  && echo ${tz} > /etc/timezone \
+  && dpkg-reconfigure -f noninteractive tzdata \
   && apt-get clean \
   && echo "node ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers \
+#  && chown -R node:node /usr/local/lib/node_modules \
   && npm install -g npm \
   && npm --force install -g yarn \
   && echo "Node.js version: "$(node -v) \
