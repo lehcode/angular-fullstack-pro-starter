@@ -16,4 +16,5 @@ RUN apt-get update \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get -y upgrade \
     && cp /etc/mongod.conf.orig /etc/mongod.conf \
-    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf
+    && sed -i 's/bindIp: 127\.0\.0\.1/bindIp: 0\.0\.0\.0/g' /etc/mongod.conf \
+    && echo "vm.max_map_count=102400" | tee -a /etc/sysctl.conf

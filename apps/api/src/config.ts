@@ -1,10 +1,12 @@
 export default (): Record<string, any> => ({
   api: {
-    port: 3000
+    port: process.env.API_PORT,
+    ssl: process.env.SSL
   },
+  hostname: process.env.HOSTNAME || 'localhost',
   services: {},
   env: process.env.NODE_ENV,
-  locale: {
+  i18n: {
     locales: ['en', 'uk', 'dev'],
     default: 'en',
     fallback: 'dev',
@@ -17,6 +19,5 @@ export default (): Record<string, any> => ({
     db: process.env.MONGO_DB,
     user: process.env.MONGO_USER,
     pass: process.env.MONGO_PASS
-  },
-  htmlRegex: /<(\S*?)[^>]*>.*?<\/\1>|<.*?\/>/g
+  }
 });

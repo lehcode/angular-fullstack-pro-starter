@@ -35,12 +35,13 @@ The system also includes code linting and testing pipelines for
 
 ## What It Provides?
 #### NestJS
-- [i18n](https://www.npmjs.com/package/nestjs-i18n) library and middleware with locale service for working with multiple languages in your nestjs project.
+- [i18n](https://www.i18next.com/overview/getting-started) library and middleware with locale service for working with multiple languages in your nestjs project.
 - Authorized administration API endpoints.
 - Application configuration service loading config from `.ts` file.
 - Application logger service.
 - [Mongoose](https://mongoosejs.com/docs/) service.
-- AWS Lambda configuration
+- AWS Lambda configuration.
+- `mongosh` to manually connect to MongoDB if needed and execute queries from command line.
 
 #### Angular
 - [Angular Material](https://material.angular.io/guide/getting-started) theme and styling.
@@ -49,7 +50,7 @@ The system also includes code linting and testing pipelines for
 ## Prerequisites
 This is simple, as you only need **Docker** with Docker Compose installed on your system and NodeJS>=16.14.0.
 Compose should be installed with Docker engine by default. Run `$ docker compose` to see similar output:
-```
+```shell
 $ docker compose
 
 Usage:  docker compose [OPTIONS] COMMAND
@@ -67,7 +68,7 @@ Docker version 20.10.24, build 297e128
 2. Clone the [NestJS & Angular starter boilerplate repository](https://github.com/lehcode/nest-angular-starter) onto your computer by running the command `$ git clone git@github.com:lehcode/nest-angular-starter.git ./starter` 
 3. Copy `docker-compose.yml.dist` to `docker-compose.yml` and update `container_name` property and other values if you need. DO NOT change the `hostname` property as it may break connectivity to servers.
 4. Create file `starter/.env` by copying `starter/.env.dist`. Use following command in project root directory.
-```
+```shell
 $ cp .env.dist .env
 ```
 5. Use empty value for `$DEBUG` environment variable in `starter/.env` file to disable debug output. Debug is enabled by default.
@@ -122,12 +123,13 @@ If you like starter, please support with small recurring donation at [Patreon](h
 #### Notes on MongoDB
 Connection string to connect to MongoDB instance from host system:
 
-`mongodb://[Your_Username]:[YourPassw0rd]@localhost:[MONGO_PORT]/?authMechanism=DEFAULT`
+`mongodb://[UsernAme]:[YourPassw0rd]@localhost:[MONGO_PORT]/starter?authMechanism=DEFAULT`
 
 Connection string to connect to MongoDB container from inside any container:
 
-`mongodb://[Your_Username]:[YourPassw0rd]@mongo-db:[MONGO_PORT]/?authMechanism=DEFAULT`
+`mongodb://[UsernAme]:[YourPassw0rd]@[MONGO_HOST]:[MONGO_PORT]/starter?authMechanism=DEFAULT`
 
 #### TODO
 1. Code linting and testing pipelines for [GitLab](https://docs.gitlab.com/ee/ci/pipelines/).
 2. Docker multi-stage build configuration for production.
+3. [Locize](https://locize.com/) integration

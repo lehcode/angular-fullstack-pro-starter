@@ -12,9 +12,6 @@ export class AppConfigService {
     this.config = config();
   }
 
-  /**
-   * App config getter
-   */
   get<T>(path: string): T {
     return path.split('.')
       .reduce((object, path) => {
@@ -22,12 +19,9 @@ export class AppConfigService {
       }, this.config) as T;
   }
 
-  /**
-   * App config runtime value setter
-   */
   set<T>(path: string, value: T): void {
     path.split('.')
-      .reduce((config, key) => {
+      .reduce((config: Record<string, any>, key) => {
         if (config[key] instanceof Object) {
           return config[key];
         }
@@ -37,12 +31,8 @@ export class AppConfigService {
         }
       }, this.config);
   }
-  
-  get port(): number {
-    return this.config.api.port;
-  }
 
-  get locales(): string[] {
-    return this.config.locale.locales;
+  get ssl(): boolean {
+    return this.config.api.ssl === 'yes' || this.config.api.ssl === 'true';
   }
 }
