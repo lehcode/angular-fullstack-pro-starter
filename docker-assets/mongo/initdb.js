@@ -14,7 +14,6 @@ const userName = process.env.user;
 const userPass = process.env.pass;
 
 adminDb.createUser({ user: rootUser, pwd: rootPass, roles: ["root"] });
-adminDb.auth(rootUser, rootPass);
 
 // Create the user with read and write access to the specified collections
 adminDb.createUser({

@@ -46,8 +46,7 @@ services:
       - ./apps/api:${API_WORKDIR}
     ports:
       - "${API_PORT_HOST:-3000}:${API_PORT_CONT:-3000}"
-      # NodeJS debugger port
-      - "9229:9229"
+      - "9229:9229" # NodeJS debugger port
     depends_on:
       - mongo
       - mysql
@@ -99,7 +98,7 @@ services:
       - "${MONGO_PORT_HOST:-27017}:${MONGO_PORT_CONT:-27017}"
     networks:
       - starternet
-    restart: on-failure
+    restart: no
     depends_on:
       - ca
     user: mongodb:mongodb
@@ -146,7 +145,7 @@ services:
       - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - starternet
-    restart: on-failure
+    restart: no
 
   # UI Frontend Service
   ui:
@@ -215,9 +214,6 @@ volumes:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
-  mongodb_ssl:
-  # certs_server:
-  # certs_client:
 
 # Specify networks
 networks:
