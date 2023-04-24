@@ -43,10 +43,10 @@ services:
     tty: true
     volumes:
       - ./apps/api:${API_WORKDIR:?Environment variable API_WORKDIR not specified}
+      - ./docker-assets/ssl/:/home/node/.ssl
     ports:
       - "${API_PORT_HOST:-3000}:${API_PORT_CONT:-3000}"
-      # NodeJS debugger port
-      - "9229:9229"
+      - "9229:9229" # NodeJS debugger port
     depends_on:
       - mongo
       - redis
@@ -92,7 +92,7 @@ services:
       - "${MONGO_PORT_HOST:-27017}:${MONGO_PORT_CONT:-27017}"
     networks:
       - starternet
-    restart: on-failure
+    restart: no
     depends_on:
       - ca
     user: mongodb:mongodb
@@ -116,7 +116,7 @@ services:
       - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - starternet
-    restart: on-failure
+    restart: no
 
   # MySQL Database Service
   mysql:
@@ -136,7 +136,7 @@ services:
       - var_lib_mysql:/var/lib/mysql
     ports:
       - "${MYSQL_PORT_HOST:-3306}:${MYSQL_PORT_CONTAINER:-3306}"
-    restart: on-failure
+    restart: no
     networks:
       - starternet
 
@@ -169,30 +169,12 @@ services:
     networks:
       - starternet
 
-  ca:
-    image: starter/openssl
-    container_name: starter-ca
-    build:
-      context: ./docker-assets/certs/
-      args:
-        debug: ${DEBUG:-yes}
-        key_len: ${KEY_LEN:-4096}
-        days: ${CERT_DAYS:-1461}
-        ca_cn: ${CA_ORG_CN:-Starter RootCA Org}
-        server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
-        subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
-    volumes:
-      - mongodb_ssl:/etc/ssl/mongodb/
-
 # Specify volumes
 volumes:
   data_db_mongodb:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
-  mongodb_ssl:
-  # certs_server:
-  # certs_client:
 
 # Specify networks
 networks:
