@@ -18,36 +18,33 @@ services:
   api:
     image: starter/api:dev
     container_name: starter-api-dev
-    hostname: starter-api
+    hostname: localhost
     command: /bin/bash /init.sh
     build:
       context: docker-assets/api/
       args:
-        workdir: ${API_WORKDIR:?Build variable API_WORKDIR not specified}
+        workdir: ${API_WORKDIR:?Environment variable API_WORKDIR not specified}
         tz: ${TZ:-Etc/UTC}
         node_version: ${USE_NODE_VERSION:-16.20.0}
         node_env: ${NODE_ENV:-development}
         nestjs_version: ${NESTJS_CLI_VERSION:-latest}
         debug: ${DEBUG:-yes}
+        # passport_auth_strategy: ${PASSPORT_AUTH_STRATEGY:-local}
+        mongo_user: ${MONGO_USER_NAME:-starter}
+        mongo_pass: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not specified}
     environment:
-      API_PORT: ${API_PORT:-3000}
-      MONGO_DB: ${MONGO_DB:-starter}
-      MONGO_HOST: ${MONGO_HOST:-localhost}
-      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS:-?retryWrites=true&w=majority}
-      MONGO_USER: ${MONGO_USER:?Build variable MONGO_USER not specified}
-      MONGO_PASS: ${MONGO_PASS:?Build variable MONGO_PASS not specified}
-      MONGO_PORT: ${MONGO_PORT:-27017}
-      NODE_VERSION: ${USE_NODE_VERSION:?Build variable USE_NODE_VERSION not specified}
-      AWS_REGION: ${AWS_REGION:-eu-central-1}
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      SSL: ${API_SSL:-no}
+      NODE_VERSION: ${USE_NODE_VERSION:?Environment variable USE_NODE_VERSION not specified}
+      API_PORT: ${API_PORT_CONT:-3000}
+      MONGO_PORT: ${MONGO_PORT_CONT:-27017}
+      MONGO_HOST: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
+      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS:??authMechanism=DEFAULT}
+      MONGO_SECURE: ${MONGO_TLS:-no}
     tty: true
     volumes:
-      - ./apps/api:${API_WORKDIR:?Build variable API_WORKDIR not specified}
-      - ./docker-assets/.ssl/:/home/node/.ssl
+      - ./apps/api:${API_WORKDIR:?Environment variable API_WORKDIR not specified}
+      - ./docker-assets/ssl/:/home/node/.ssl
     ports:
-      - "${CNT_API_PORT:-3000}:${HOST_API_PORT:-3000}"
+      - "${API_PORT_HOST:-3000}:${API_PORT_CONT:-3000}"
       - "9229:9229" # NodeJS debugger port
     depends_on:
       - mongo
@@ -61,10 +58,101 @@ services:
       - mysql
       - redis
 
+  # MongoDB Service
+  mongo:
+    image: starter/mongo:${MONGO_VERSION:?Environment variable MONGO_VERSION not specified}
+    container_name: starter-mongo
+    hostname: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
+    command: /init.sh
+    build:
+      context: ./docker-assets/mongo/
+      shm_size: 500m
+      args:
+        mongo_version: ${MONGO_VERSION:?Environment variable MONGO_VERSION not specified}
+        tz: ${TZ:-Etc/UTC}
+        debug: ${DEBUG:-yes}
+        port: ${MONGO_PORT_CONT:-27017}
+        logpath: ${MONGO_LOGFILE}
+        telemetry: ${MONGO_TELEMETRY:-yes}
+        mongo_user: ${MONGO_USER_NAME:?Environment variable MONGO_USER_NAME not specified}
+        mongo_pass: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not specified}
+        db: ${MONGO_DB:-starter}
+        mongo_collections: ${MONGO_COLLECTIONS:-starter1,starter2}
+        mongo_root_user: ${MONGO_ROOT_USER:?Environment variable MONGO_ROOT_USER not specified}
+        mongo_root_pass: ${MONGO_ROOT_PASS:?Environment variable MONGO_ROOT_PASS not specified}
+    environment:
+      SECURE: ${MONGO_SECURE:-no}
+      SERVER_CN: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
+      MONGO_VERSION: ${MONGO_VERSION:?Environment variable MONGO_VERSION not specified}
+      MAX_MAP_COUNT: ${MONGO_VM_MAX_MAP_COUNT:-102400}
+      CACHE_SIZE: ${MONGO_CACHE_SIZE_GB:-1}
+      TZ: ${TZ:-Etc/UTC}
+      DEBUG: ${DEBUG:-yes}
+      COLLECTIONS: ${MONGO_COLLECTIONS:-starter1,starter2}
+      IP: ${MONGO_IP:-0.0.0.0}
+      PORT: ${MONGO_PORT_CONT:-27017}
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 64000
+        hard: 128000
+    volumes:
+      - data_db_mongodb:/data/db
+      - var_lib_mongodb:/var/lib/mongodb
+      - var_log_mongodb:/var/log/mongodb/
+    ports:
+      - "${MONGO_PORT_HOST:-27017}:${MONGO_PORT_CONT:-27017}"
+    networks:
+      - starternet
+    restart: on-failure
+
+  # Redis Caching Service
+  redis:
+    image: starter/redis:${REDIS_VERSION}
+    hostname: starter-redis
+    container_name: redis
+    build:
+      context: ./docker-assets/redis/
+      args:
+        tz: ${TZ:-Etc/UTC}
+    sysctls:
+      net.core.somaxconn: 1024
+    command: /bin/bash /init.sh
+    ports:
+      - "${REDIS_PORT_HOST:-6379}:${REDIS_PORT_CONTAINER:-6379}"
+    volumes:
+      - redis_data_bases:/data/bases
+      - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - starternet
+    restart: on-failure
+
+  # MySQL Database Service
+  mysql:
+    hostname: starter-mysql
+    container_name: mysql
+    image: starter/mysql:${MYSQL_VERSION}
+    build:
+      context: ./docker-assets/mysql/
+      args:
+        mysql_version: ${MYSQL_VERSION:?Specify MYSQL_VERSION environment variable}
+    environment:
+      MYSQL_ROOT_USER: ${MYSQL_PASS:?Specify MYSQL_USER environment variable}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS:?Specify MYSQL_PASS environment variable}
+    volumes:
+      - ./docker-assets/mysql/my.cnf:/etc/alternatives/my.cnf
+      - ./docker-assets/mysql/log/:/var/log/mysql
+      - var_lib_mysql:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT_HOST:-3306}:${MYSQL_PORT_CONTAINER:-3306}"
+    restart: on-failure
+    networks:
+      - starternet
+
   # UI Frontend Service
   ui:
     image: starter/ui:dev
-    container_name: starter-ui-dev
+    container_name: ui
     command: /bin/bash /init.sh
     hostname: starter-ui
     build:
@@ -77,6 +165,7 @@ services:
         debug: ${DEBUG:-yes}
     environment:
       NODE_ENV: ${NODE_ENV:-development}
+      SERVERLESS: ${SERVERLESS:-no}
     tty: true
     volumes:
       - ./apps/ui:${UI_WORKDIR:?Build variable UI_WORKDIR not specified}
@@ -91,84 +180,13 @@ services:
       - starternet
     user: node:node
 
-  # MongoDB Service
-  mongo:
-    image: starter/mongo:${MONGO_VERSION}
-    container_name: starter-mongo
-    hostname: mongo
-    command: mongod --auth --port ${MONGO_PORT:-27017} --wiredTigerCacheSizeGB 1.5
-    build:
-      context: ./docker-assets/mongo/
-      shm_size: 500m
-      args:
-        mongo_version: ${MONGO_VERSION:?Build variable MONGO_VERSION not specified}
-        tz: ${TZ:-Etc/UTC}
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-starter}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:?Specify MONGO_PASS environment variable}
-      MONGO_INITDB_DATABASE: ${MONGO_DB:-starter}
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 64000
-        hard: 128000
-    volumes:
-      - data_db_mongodb:/data/db
-      - var_lib_mongodb:/var/lib/mongodb
-      - var_log_mongodb:/var/log/mongodb
-    ports:
-      - "${MONGO_PORT:-27017}:${MONGO_PORT:-27017}"
-    networks:
-      - starternet
-    restart: always
-
-  # Redis Caching Service
-  redis:
-    image: starter/redis:${REDIS_VERSION}
-    hostname: redis
-    container_name: starter-redis
-    build:
-      context: ./docker-assets/redis/
-      args:
-        tz: ${TZ:-Etc/UTC}
-    sysctls:
-      net.core.somaxconn: 1024
-    command: /bin/bash /init.sh
-    ports:
-      - "${REDIS_PORT:-6379}:${REDIS_PORT:-6379}"
-    volumes:
-      - redis_data_bases:/data/bases
-      - ./docker-assets/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - starternet
-    restart: always
-
-  # MySQL Database Service
-  mysql:
-    hostname: mysql
-    container_name: starter-mysql
-    image: starter/mysql:${MYSQL_VERSION}
-    build:
-      context: ./docker-assets/mysql/
-      args:
-        mysql_version: ${MYSQL_VERSION:?Specify MYSQL_VERSION environment variable}
-    environment:
-      MYSQL_ROOT_USER: ${MYSQL_PASS:?Specify MYSQL_USER environment variable}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS:?Specify MYSQL_PASS environment variable}
-    volumes:
-      - ./docker-assets/mysql/my.cnf:/etc/mysql/my.cnf
-    ports:
-      - "${MYSQL_PORT:-3306}:${MYSQL_PORT:-3306}"
-    restart: always
-    networks:
-      - starternet
-
 # Specify volumes
 volumes:
   data_db_mongodb:
   var_lib_mongodb:
   var_log_mongodb:
   redis_data_bases:
+  var_lib_mysql:
 
 # Specify networks
 networks:
