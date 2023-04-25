@@ -7,8 +7,9 @@ const conn = new Mongo();
 const collections = process.env.mongo_collections.split(",");
 const rootUser = process.env.mongo_root_user;
 const rootPass = process.env.mongo_root_pass;
+const dataDbName = process.env.db;
 const adminDb = conn.getDB('admin');
-const dataDb = conn.getDB(process.env.db);
+const dataDb = conn.getDB(dataDbName);
 const userName = process.env.mongo_user;
 const userPass = process.env.mongo_pass;
 
@@ -20,7 +21,7 @@ adminDb.createUser({
   pwd: userPass,
   roles: collections.map(name => ({
     role: "readWrite",
-    db: process.env.db,
+    db: dataDbName,
     collection: name.trim()
   }))
 });

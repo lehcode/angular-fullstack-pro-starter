@@ -153,6 +153,8 @@ Connection string to connect to MongoDB container from inside any container:
 
 ### TODO
 
+### TODO
+
 1. Code linting and testing pipelines for [GitLab](https://docs.gitlab.com/ee/ci/pipelines/).
 2. Docker multi-stage build configuration for production.
 3. [Locize](https://locize.com/) integration
