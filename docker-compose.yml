@@ -46,7 +46,8 @@ services:
       - ./apps/api:${API_WORKDIR}
     ports:
       - "${API_PORT_HOST:-3000}:${API_PORT_CONT:-3000}"
-      - "9229:9229" # NodeJS debugger port
+      # NodeJS debugger port
+      - "9229:9229"
     depends_on:
       - mongo
       - mysql
@@ -214,6 +215,7 @@ volumes:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
+  certs_ca:
 
 # Specify networks
 networks:
