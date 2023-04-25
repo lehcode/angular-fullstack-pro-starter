@@ -10,17 +10,24 @@ export DAYS=1461
 export PASSPHRASE=fcyLV061dcXyYv8BFDyNUxNA
 
 # Certificate variables
-export COUNTRY=UA # Country Name (2 letter code from https://www.iso.org/obp/ui/#search)
-export STATE=Odesa # State or Province Name
-export LOC=Odesa # Locality Name (eg, city)
-export ORG=StarterOrg # Organization Name (eg, company)
-export ORG_UNIT=. # Organizational Unit Name (eg, section)
-export SERVER_CN=server-mongo-${KEY_LEN} # Common Name (e.g. server FQDN or YOUR name)
+# Country Name (2 letter code from https://www.iso.org/obp/ui/#search)
+export COUNTRY=UA
+# State or Province Name
+export STATE=Odesa
+# Locality Name (eg, city)
+export LOC=Odesa
+# Organization Name (eg, company)
+export ORG=StarterOrg
+# Organizational Unit Name (eg, section)
+export ORG_UNIT=.
+# Common Name (e.g. server FQDN or YOUR name)
+export SERVER_CN=server-mongo-${KEY_LEN}
 export EMAIL=53556648+lehcode@users.noreply.github.com
 
 # Certificate authority variables
 export CA=Starter-CA # Key file
-export CA_ORG_CN=Starter Root-CA Org # Certificate Authority Organisation Common Name
+# Certificate Authority Organisation Common Name
+export CA_ORG_CN=Starter Root-CA Org
 ```
 
 ## Generate the CA Private Key
