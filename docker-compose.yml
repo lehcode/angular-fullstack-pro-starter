@@ -194,6 +194,23 @@ services:
     volumes:
       - mongodb_ssl:/etc/ssl/mongodb/
 
+  ca:
+    image: starter/openssl
+    container_name: starter-ca
+    build:
+      context: ./docker-assets/certs/
+      args:
+        debug: ${DEBUG:-yes}
+        key_len: ${KEY_LEN:-4096}
+        days: ${CERT_DAYS:-1461}
+        ca_cn: ${CA_ORG_CN:-Starter RootCA Org}
+        server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
+        subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
+    volumes:
+      - certs_ca:/.certs/ca
+      - certs_server:/.certs/server
+      - certs_client:/.certs/client
+
 # Specify volumes
 volumes:
   data_db_mongodb:
