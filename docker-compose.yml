@@ -151,7 +151,7 @@ services:
   # UI Frontend Service
   ui:
     image: starter/ui:dev
-    container_name: starter-ui-dev
+    container_name: ui
     command: /bin/bash /init.sh
     hostname: starter-ui
     build:
