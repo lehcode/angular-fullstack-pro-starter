@@ -1,0 +1,16 @@
+.build
+.idea
+.serverless
+dist
+documentation
+node_modules
+.dockerignore
+yarn-error.log
+design
+dist
+out-tsc
+seo
+uml
+.dockerignore
+yarn-error.log
+*.dist
