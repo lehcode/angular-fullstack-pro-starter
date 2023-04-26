@@ -43,7 +43,6 @@ services:
     tty: true
     volumes:
       - ./apps/api:${API_WORKDIR:?Environment variable API_WORKDIR not specified}
-      - certs_client:/home/mongodb/.certs/client
     ports:
       - "${API_PORT_HOST:-3000}:${API_PORT_CONT:-3000}"
       # NodeJS debugger port
@@ -175,8 +174,7 @@ services:
     volumes:
       - data_db_mongodb:/data/db/
       - var_log_mongodb:/var/log/mongodb/
-      - certs_server:/.certs/server
-      - certs_client:/.certs/client
+      - mongodb_ssl:/data/ssl/
       - ./docker-assets/mongo/mongod.conf.yml:/etc/mongod.conf:ro
     ports:
       - "${MONGO_PORT_HOST:-27017}:${MONGO_PORT_CONT:-27017}"
@@ -185,6 +183,7 @@ services:
     restart: on-failure
     depends_on:
       - ca
+    user: mongodb:mongodb
 
   # Redis Caching Service
   redis:
@@ -271,9 +270,7 @@ services:
         server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
         subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
     volumes:
-      - certs_ca:/.certs/ca
-      - certs_server:/.certs/server
-      - certs_client:/.certs/client
+      - mongodb_ssl:/etc/ssl/mongodb/
 
 # Specify volumes
 volumes:
@@ -281,9 +278,9 @@ volumes:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
-  certs_ca:
-  certs_server:
-  certs_client:
+  mongodb_ssl:
+  # certs_server:
+  # certs_client:
 
 # Specify networks
 networks:
