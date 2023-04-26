@@ -6,25 +6,22 @@ import { Document } from 'mongoose';
 })
 export class I18nTranslation {
   @Prop()
-  lang: string;
+    lang: string;
 
   @Prop()
-  ns: string;
+    ns: string;
 
   @Prop()
-  variable: number;
+    variable: number;
 
   @Prop()
-  key: string;
+    key: string;
 
   @Prop({ type: Map })
-  i18n: Map<any, any>;
+    i18n: Map<any, any>;
 
-  @Prop({
-    type: Date,
-    default: null
-  })
-  modifiedDate: Date | null;
+  @Prop({ type: Date, default: null })
+    modifiedDate: Date | null;
 }
 
 export type I18nTranslationDocument = I18nTranslation & Document;

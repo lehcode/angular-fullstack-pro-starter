@@ -1,11 +1,9 @@
-// eslint-disable: id-length
 import { Injectable } from '@nestjs/common';
 import i18next, { i18n, InitOptions, TFunction } from 'i18next';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppLoggerService } from '@services/app-logger/app-logger.service';
 import { MongooseService } from '@services/mongoose/mongoose.service';
 import { InjectModel } from '@nestjs/mongoose';
-// eslint-disable-next-line
 import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';
 import { I18nTranslationInterface } from '@interfaces/i18n-translation';
@@ -13,14 +11,15 @@ import { I18nData } from '@interfaces/i18n-data';
 import MongooseBackend from '@services/i18n/mongoose-backend';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+//import {string} from 'joi';
 
 @Injectable()
 export class I18nService {
   private i18n: i18n;
 
-  private namespaces = ['default', 'nhtsa', 'frontpage'];
+  private namespaces: string[] = ['default', 'admin'];
 
-  public languages: string[] = ['en'];
+  private languages: string[] = ['en', 'dev'];
 
   public language = 'en';
 
@@ -28,6 +27,7 @@ export class I18nService {
 
   private db = 'i18ntranslations';
 
+  // eslint-disable-next-line id-length
   t: TFunction;
 
   constructor(
@@ -36,10 +36,10 @@ export class I18nService {
     private readonly mongo: MongooseService,
     @InjectModel(I18nTranslation.name) private i18nTranslation: Model<I18nTranslationDocument>
   ) {
-    // this.logger.setContext(I18nService.name); // error TS2339: Property 'setContext' does not exist on type 'AppLoggerService'.
+    this.logger.setContext(I18nService.name);
 
-    this.languages = this.appConfig.get<string[]>('locale.locales');
-    this.language = this.appConfig.get('locale.default');
+    this.languages = this.appConfig.get<string[]>('i18n.locales');
+    this.language = this.appConfig.get('i18n.default');
 
     this.logger.log(`I18n language: ${this.language}`);
 
@@ -83,8 +83,8 @@ export class I18nService {
       this.i18n.init(
         {
           lng: this.language,
-          fallbackLng: this.appConfig.get<string>('locale.fallback'),
-          supportedLngs: this.appConfig.get<string[]>('locale.locales'),
+          fallbackLng: this.appConfig.get<string>('i18n.fallback'),
+          supportedLngs: this.appConfig.get<string[]>('i18n.locales'),
           ns: this.namespaces,
           defaultNS: this.namespaces[0],
           debug: this.appConfig.get<string>('env') !== 'production',

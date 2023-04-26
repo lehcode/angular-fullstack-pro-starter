@@ -1,7 +1,11 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "module": "node16",
+    "target": "esnext",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -10,40 +14,25 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "lib": [
-      "es2022",
-    ],
-    "paths": {
-      "@root/*": [ "../src/*" ],
-      "@admin/*": [ "modules/admin/*" ],
-      "@api/*": [ "modules/api/*" ],
-      "@base/*": [ "modules/base/*" ],
-      "@db/*": [ "modules/db/*" ],
-      "@services/*": ["services/*"],
-      "@modules/*": ["modules/*"],
-      "@interfaces/*": ["interfaces/*"]
-    },
+    "lib": ["es2022"],
     "noImplicitAny": true,
-    "outDir": "./dist",
-    "baseUrl": "./src",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "types": [
-      "jest",
-      "node"
-    ],
-    "moduleResolution": "node"
+    "types": ["jest", "node"],
+    "paths": {
+      "@root/*": ["src/*"],
+      "@admin/*": ["src/modules/admin/*"],
+      "@api/*": ["src/modules/api/*"],
+      "@base/*": ["src/modules/base/*"],
+      "@db/*": ["src/modules/db/*"],
+      "@services/*": ["src/services/*"],
+      "@modules/*": ["src/modules/*"],
+      "@interfaces/*": ["src/interfaces/*"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "node_modules/@types/jest/index.d.ts",
-    "node_modules/@types/node/index.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "*.js"
-  ]
+  "include": ["src/**/*.ts", "node_modules/@types/jest/index.d.ts", "node_modules/@types/node/index.d.ts"],
+  "exclude": ["node_modules", "*.js"]
 }
