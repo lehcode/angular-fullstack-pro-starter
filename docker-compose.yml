@@ -192,9 +192,7 @@ services:
         server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
         subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
     volumes:
-      - certs_ca:/.certs/ca
-      - certs_server:/.certs/server
-      - certs_client:/.certs/client
+      - mongodb_ssl:/etc/ssl/mongodb/
 
 # Specify volumes
 volumes:
@@ -202,9 +200,9 @@ volumes:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
-  certs_ca:
-  certs_server:
-  certs_client:
+  mongodb_ssl:
+  # certs_server:
+  # certs_client:
 
 # Specify networks
 networks:
