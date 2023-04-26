@@ -20,9 +20,10 @@ storage:
 net:
   port: 27017
   bindIp: 0.0.0.0
-  #tls:
-  #  certificateKeyFile: /home/mongodb/.certs/mongo-4096.key
-  #  mode: requireTLS
+  tls:
+    certificateKeyFile: /data/ssl/server/mongo-4096.pem
+    #CAFile: /.certs/server/ca.pem
+    mode: requireTLS
   unixDomainSocket:
     enabled: false
 
