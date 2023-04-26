@@ -1,0 +1,47 @@
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: /data/db
+  wiredTiger:
+    engineConfig:
+      cacheSizeGB: 2
+
+# where to write logging data.
+#systemLog:
+#  destination: syslog
+#  logAppend: true
+#  path: /var/log/mongodb/mongod.log
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+  tls:
+    certificateKeyFile: /data/ssl/server/mongo-4096.pem
+    #CAFile: /.certs/server/ca.pem
+    mode: requireTLS
+  unixDomainSocket:
+    enabled: false
+
+# how the process runs
+processManagement:
+  timeZoneInfo: /usr/share/zoneinfo
+
+security:
+  authorization: enabled
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+
+## Enterprise-Only Options:
+
+#auditLog:
+
+#snmp:
