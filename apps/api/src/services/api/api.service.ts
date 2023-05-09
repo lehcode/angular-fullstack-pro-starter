@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { VINDecodeParams } from '@services/api/validation/vin-decode-params';
 
 @Injectable()
 export class ApiService {
-  helloWorld(): Observable<string> {
-    return new Observable<string>((subscriber) => {
-      subscriber.next('Hello World!');
-      subscriber.complete();
-    });
-  }
+  constructor() {}
 }

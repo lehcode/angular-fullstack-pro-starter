@@ -8,6 +8,8 @@
 
 ng analytics disable
 
+sudo find /etc -type f -name "my.cnf"
+
 [[ ! -d "./node_modules" ]] && yarn install
 
 yarn start
