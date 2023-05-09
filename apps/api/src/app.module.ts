@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as dotenv from 'dotenv';
+//import * as dotenv from 'dotenv';
 import { AppController } from '@root/app.controller';
 import { ApiModule } from '@api/api.module';
 import { AdminModule } from '@admin/admin.module';
@@ -9,8 +9,12 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import config from '@root/config';
 import { BaseModule } from '@base/base.module';
 import { LocaleMiddleware } from '@root/middleware/locale.middleware';
+import { AuthService } from '@services/auth/auth.service';
+import { UsersModule } from '@modules/users/users.module';
+import { UsersService } from '@services/users/users.service';
+import { ApiController } from '@api/api.controller';
 
-dotenv.config();
+//dotenv.config();
 const appConfig: AppConfigService = new AppConfigService(new ConfigService());
 const mongoHost = appConfig.get<string>('mongo.host');
 const mongoPort = appConfig.get<string>('mongo.port');
@@ -39,8 +43,6 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
     MongooseModule.forRoot(mongoConnectionString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // useFindAndModify: false,
-      // useCreateIndex: true,
       dbName: dbName,
       user: mongoUser,
       pass: mongoPass,
@@ -48,9 +50,18 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
     }),
     BaseModule,
     ApiModule,
-    AdminModule
+    AdminModule,
+    // AuthModule,
+    UsersModule
   ],
-  controllers: [AppController]
+  controllers: [
+    ApiController,
+    // AuthController
+  ],
+  providers: [
+    //AuthService,
+    UsersService
+  ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

@@ -6,8 +6,8 @@ import { MongooseService } from '@services/mongoose/mongoose.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';
-import { I18nTranslationInterface } from '@interfaces/i18n-translation';
-import { I18nData } from '@interfaces/i18n-data';
+import { I18nTranslationInterface } from '@interfaces/i18n/i18n-translation';
+import { I18nData } from '@interfaces/i18n/i18n-data';
 import MongooseBackend from '@services/i18n/mongoose-backend';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class I18nService {
 
   private namespaces: string[] = ['default', 'admin'];
 
-  private languages: string[] = ['en', 'dev'];
+  private languages: string[];
 
   public language = 'en';
 
