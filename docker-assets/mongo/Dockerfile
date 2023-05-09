@@ -6,14 +6,14 @@ LABEL description="MongoDB server"
 
 ARG tz
 ARG port
-ARG mongo_user
-ARG mongo_pass
+ARG user
+ARG pass
 ARG debug
 ARG telemetry
 ARG db
-ARG mongo_collections
-ARG mongo_root_user
-ARG mongo_root_pass
+ARG collections
+ARG root_user
+ARG root_pass
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
     && apt-get update \
@@ -26,9 +26,10 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
     && echo "vm.max_map_count=102400" | tee -a /etc/sysctl.conf \
     && mkdir /data/ssl
 
+COPY initdb.js /tmp/
 WORKDIR /data/db
 
 RUN mongod --fork --syslog --port ${port} \
-    && mongosh --verbose /initdb.js \
+    && mongosh --verbose /tmp/initdb.js \
     && if [ "${telemetry}" = "no" ]; then mongosh --nodb --eval "disableTelemetry()"; fi \
     && chown -R mongodb:mongodb /data/db /data/ssl
