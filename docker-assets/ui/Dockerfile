@@ -1,6 +1,9 @@
 ARG node_version
 FROM node:${node_version} AS install
 
+LABEL maintainer="lehcode <3556648+lehcode@users.noreply.github.com>"
+LABEL description="Angular UI frontend"
+
 ARG angular_version
 ARG debug
 ARG tz
@@ -20,7 +23,7 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
   && apt-get -y upgrade \
-  && apt-get -yq install --no-install-recommends --no-install-suggests sudo lsb-release xdg-utils google-chrome-stable curl tzdata locales \
+  && apt-get -yq install --no-install-recommends --no-install-suggests sudo lsb-release xdg-utils google-chrome-stable curl tzdata locales ca-certificates \
   && apt-get clean \
   && ln -fs /usr/share/zoneinfo/${tz} /etc/localtime \
   && echo ${tz} > /etc/timezone \
@@ -33,7 +36,8 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && npm --force install -g yarn \
   && echo "Yarn binary & version: $(yarn global bin):$(yarn --version)" \
   && yarn global add @angular/cli@${angular_version} \
-  && echo "Angular CLI binary & version: $(which ng):$(ng version)"
+  && echo "Angular CLI binary & version: $(which ng):$(ng version)" \
+  && ng config -g cli.warnings.versionMismatch false
 
 COPY entrypoint.sh /init.sh
 WORKDIR ${workdir}

@@ -70,21 +70,19 @@ services:
       shm_size: 500m
       args:
         mongo_version: ${MONGO_VERSION:-6.0}
-        tz: ${TZ:-Etc/UTC}
         debug: ${DEBUG:-yes}
         port: ${MONGO_PORT_CONT:-27017}
+        user: ${MONGO_USER_NAME:?Environment variable MONGO_USER_NAME not specified}
+        pass: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not specified}
+        db: ${MONGO_DB:-db1,db2}
+        collections: ${MONGO_COLLECTIONS:-demo1,demo2}
+        root_user: ${MONGO_ROOT_USER:?Environment variable MONGO_ROOT_USER not specified}
+        root_pass: ${MONGO_ROOT_PASS:?Environment variable MONGO_ROOT_PASS not specified}
         telemetry: ${MONGO_TELEMETRY:-yes}
-        mongo_user: ${MONGO_USER_NAME:?Environment variable MONGO_USER_NAME not specified}
-        mongo_pass: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not specified}
-        db: ${MONGO_DB:-starter}
-        mongo_collections: ${MONGO_COLLECTIONS:-starter1,starter2}
-        mongo_root_user: ${MONGO_ROOT_USER:?Environment variable MONGO_ROOT_USER not specified}
-        mongo_root_pass: ${MONGO_ROOT_PASS:?Environment variable MONGO_ROOT_PASS not specified}
-        key_pass: ${KEY_PASS:?Environment variable KEY_PASS not specified}
+        tz: ${TZ:-Etc/UTC}
     environment:
       SECURE: ${MONGO_SECURE:-no}
       MAX_MAP_COUNT: ${MONGO_VM_MAX_MAP_COUNT:-102400}
-      COLLECTIONS: ${MONGO_COLLECTIONS:-starter1,starter2}
     ulimits:
       nproc: 65535
       nofile:
@@ -93,7 +91,7 @@ services:
     volumes:
       - data_db_mongodb:/data/db/
       - var_log_mongodb:/var/log/mongodb/
-      - mongodb_ssl:/data/ssl/
+      - mongodb_ssl:/data/ssl/:ro
       - ./docker-assets/mongo/mongod.conf.yml:/etc/mongod.conf:ro
     ports:
       - "${MONGO_PORT_HOST:-27017}:${MONGO_PORT_CONT:-27017}"
