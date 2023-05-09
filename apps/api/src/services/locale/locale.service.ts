@@ -14,10 +14,9 @@ export class LocaleService {
     private readonly i18n: I18nService,
     private logger: AppLoggerService
   ) {
-    this.fallback = this.appConfig.get<string>('i18n.default');
-    this.appConfig.set('i18n.app', this.fallback);
-    // @ts-ignore
-    this.logger.context = LocaleService.name;
+    this.fallback = this.appConfig.get<string>('locale.default');
+    this.appConfig.set('locale.app', this.fallback);
+    // this.logger.setContext(LocaleService.name); // error TS2339: Property 'setContext' does not exist on type 'AppLoggerService'.
   }
 
   /**
@@ -27,9 +26,8 @@ export class LocaleService {
     let appLocale = 'en';
 
     if (req.headers.hasOwnProperty('accept-language')) {
-      // @ts-ignore
-      appLocale = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language']).exec(/^([a-z]{2})/)[1] as string;
-
+      appLocale = browserLanguage.pick(['en', 'ru', 'uk'], req.headers['accept-language'])
+        .exec(/^([a-z]{2})/)[1] as string;
     }
 
     if (req.query.hasOwnProperty('lc')) {
@@ -50,14 +48,14 @@ export class LocaleService {
   set locale(lang: string) {
     this.logger.log(`App locale set to: ${lang}`);
 
-    this.appConfig.set('i18n.app', lang);
+    this.appConfig.set('locale.app', lang);
   }
 
   /**
    * Application locale getter
    */
   get locale(): string {
-    return this.appConfig.get('i18n.app');
+    return this.appConfig.get('locale.app');
   }
 
   get defaultLocale(): string {

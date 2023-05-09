@@ -23,7 +23,7 @@ class MongooseBackend {
     delete backendOptions.model;
     delete backendOptions.logger;
 
-    this.logger.setContext('I18nMongooseBackend');
+    // this.logger.setContext('I18nMongooseBackend'); // error TS2339: Property 'setContext' does not exist on type 'AppLoggerService'.
 
     this.services = services;
     this.options = { ...backendOptions, ...i18nextOptions };

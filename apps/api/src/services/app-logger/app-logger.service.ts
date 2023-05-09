@@ -1,12 +1,4 @@
-import {ConsoleLogger, Injectable} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class AppLoggerService extends ConsoleLogger {
-  constructor(context: string) {
-    super(context);
-  }
-
-  setContext(context: string) {
-    this.context = context;
-  }
-}
+export class AppLoggerService extends Logger {}
