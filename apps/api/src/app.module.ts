@@ -14,8 +14,8 @@ import { UsersModule } from '@modules/users/users.module';
 import { UsersService } from '@services/users/users.service';
 import { ApiController } from '@api/api.controller';
 
-//dotenv.config();
-const appConfig: AppConfigService = new AppConfigService(new ConfigService());
+dotenv.config();
+const appConfig = new AppConfigService(new ConfigService());
 const mongoHost = appConfig.get<string>('mongo.host');
 const mongoPort = appConfig.get<string>('mongo.port');
 const mongoUrlParams = appConfig.get<string>('mongo.urlParams');
@@ -41,7 +41,9 @@ if (process && process.env && (process.env.NODE_ENV === 'development' || process
     MongooseModule.forRoot(`mongodb://${mongoHost}:${mongoPort}/${mongoUrlParams}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      dbName: dbName,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      dbName: mongoDb,
       user: mongoUser,
       pass: mongoPass,
       family: 4

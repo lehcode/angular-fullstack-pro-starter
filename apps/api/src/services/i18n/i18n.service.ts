@@ -20,7 +20,7 @@ export class I18nService {
 
   private namespaces = ['default', 'nhtsa', 'frontpage'];
 
-  private languages: string[];
+  public languages: string[] = ['en'];
 
   public language = 'en';
 
