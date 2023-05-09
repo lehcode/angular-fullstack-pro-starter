@@ -2,6 +2,10 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": ["locales/**/*"]
+    "assets": [
+      {
+        "include": "locales/**/*",
+        "watchAssets": true
+      }]
   }
 }
