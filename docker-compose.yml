@@ -49,15 +49,10 @@ services:
       - "9229:9229"
     depends_on:
       - mongo
-      - mysql
       - redis
+      - mysql
     networks:
       - starternet
-    user: node:node
-    links:
-      - mongo
-      - mysql
-      - redis
 
   # MongoDB Service
   mongo:
@@ -150,7 +145,6 @@ services:
     image: starter/ui:dev
     container_name: ui
     command: /bin/bash /init.sh
-    hostname: starter-ui
     build:
       context: ./docker-assets/ui/
       args:
@@ -174,7 +168,6 @@ services:
       - api
     networks:
       - starternet
-    user: node:node
 
   ca:
     image: starter/openssl

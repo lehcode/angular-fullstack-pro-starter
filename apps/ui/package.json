@@ -1,5 +1,5 @@
 {
-  "name": "@lehcode/angular-starter",
+  "name": "nest-angular-starter-ui",
   "version": "0.0.1",
   "description": "Starter Frontend Application",
   "author": "Lehcode<53556648+lehcode@users.noreply.github.com>",
@@ -9,9 +9,10 @@
     "build": "ng build",
     "e2e": "jest --config ./test/jest-e2e.json",
     "lint": "ng lint --type-check",
-    "start": "ng serve --host 0.0.0.0 --public-host=starter-ui --port 4300",
+    "start": "ng serve --host 0.0.0.0 --public-host=starter.local --port 4300",
     "test": "ng test ui",
-    "test-watch": "ng test ui --reporters dots,kjhtml --browsers Chrome --watch"
+    "test-watch": "ng test ui --reporters dots,kjhtml --browsers Chrome --watch",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@angular/animations": "~15.2.7",
