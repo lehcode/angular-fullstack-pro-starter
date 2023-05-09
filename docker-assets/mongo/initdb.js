@@ -24,3 +24,25 @@ adminDb.createUser({
 });
 
 adminDb.auth(userName, userPass);
+
+// const collection = dataDb.getCollection('i18n');
+// const records = [{
+//   createdAt: new Date(),
+//   updatedAt: new Date(),
+//   lang: 'dev',
+//   ns: 'default',
+//   key: 'foo',
+//   modifiedDate: new Date()
+// },
+// {
+//   createdAt: new Date(),
+//   updatedAt: new Date(),
+//   lang: 'dev',
+//   ns: 'default',
+//   key: 'dev_bar',
+//   i18n: new Map([['en', 'bar'], ['dev', 'dev_bar']]),
+//   modifiedDate: new Date()
+// }];
+
+// const result = collection.insertMany(records, { ordered: true });
+// console.log(`${result.insertedCount} documents were inserted`);
