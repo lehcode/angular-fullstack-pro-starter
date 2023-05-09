@@ -31,7 +31,6 @@ adminDb.auth(userName, userPass);
 //   lang: 'dev',
 //   ns: 'default',
 //   key: 'foo',
-//   i18n: new Map([['en', 'foo'], ['dev', 'dev_foo']]),
 //   modifiedDate: new Date()
 // },
 // {
