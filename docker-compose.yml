@@ -18,7 +18,7 @@ services:
   api:
     image: starter/api:dev
     container_name: starter-api-dev
-    hostname: starter-api
+    hostname: localhost
     command: /bin/bash /init.sh
     build:
       context: docker-assets/api/
@@ -62,8 +62,7 @@ services:
     hostname: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
     command: mongod --config /etc/mongod.conf --port ${MONGO_PORT_CONT:-27017} --bind_ip ${MONGO_IP:-0.0.0.0}
     build:
-      context: ./docker-assets/mongo/
-      shm_size: 500m
+      context: ./docker-assets/certs/
       args:
         mongo_version: ${MONGO_VERSION:-6.0}
         debug: ${DEBUG:-yes}
