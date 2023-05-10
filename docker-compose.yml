@@ -18,7 +18,7 @@ services:
   api:
     image: starter/api:dev
     container_name: starter-api-dev
-    hostname: localhost
+    hostname: starter-api
     command: /bin/bash /init.sh
     build:
       context: docker-assets/api/
