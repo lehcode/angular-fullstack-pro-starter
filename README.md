@@ -145,11 +145,13 @@ If you like starter, please support with small recurring donation at [Patreon](h
 
 Connection string to connect to MongoDB instance from host system:
 
-`mongodb://[UsernAme]:[YourPassw0rd]@localhost:[MONGO_PORT]/starter?authMechanism=DEFAULT`
+`mongodb://[Your_Username]:[YourPassw0rd]@localhost:[MONGO_PORT]/?authMechanism=DEFAULT`
 
 Connection string to connect to MongoDB container from inside any container:
 
-`mongodb://[UsernAme]:[YourPassw0rd]@[MONGO_HOST]:[MONGO_PORT]/starter?authMechanism=DEFAULT`
+`mongodb://[Your_Username]:[YourPassw0rd]@mongo-db:[MONGO_PORT]/?authMechanism=DEFAULT`
+
+### TODO
 
 ### TODO
 

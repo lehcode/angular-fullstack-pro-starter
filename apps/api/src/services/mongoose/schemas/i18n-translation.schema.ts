@@ -12,9 +12,6 @@ export class I18nTranslation {
     ns: string;
 
   @Prop()
-    variable: number;
-
-  @Prop()
     key: string;
 
   @Prop({ type: Map })

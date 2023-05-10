@@ -35,6 +35,6 @@ lerna-debug.log*
 
 .env
 dist
-documentation
 .build/
 .serverless/
+coverage

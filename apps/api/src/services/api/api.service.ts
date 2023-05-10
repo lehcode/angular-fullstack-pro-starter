@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class ApiService {
-  helloWorld(): Observable<string> {
-    return new Observable<string>((subscriber) => {
-      subscriber.next('Hello World!');
+  getHelloWorld(): Observable<Record<string, any>> {
+    return new Observable<Record<string, any>>((subscriber) => {
+      subscriber.next({data:'Hello World!'});
       subscriber.complete();
     });
   }

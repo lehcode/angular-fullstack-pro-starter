@@ -9,8 +9,8 @@ export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
   @Get('hello')
-  helloWorld(): Observable<string> {
-    return this.apiService.helloWorld();
+  helloWorld(): Observable<Record<string, any>> {
+    return this.apiService.getHelloWorld();
   }
 
   @Post('/hello')

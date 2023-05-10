@@ -6,26 +6,26 @@ import { MongooseService } from '@services/mongoose/mongoose.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { I18nTranslation, I18nTranslationDocument } from '@services/mongoose/schemas/i18n-translation.schema';
 import { Model } from 'mongoose';
-import { I18nTranslationInterface } from '@interfaces/i18n-translation';
-import { I18nData } from '@interfaces/i18n-data';
+import { I18nTranslationInterface } from '@interfaces/i18n/i18n-translation';
+import { I18nData } from '@interfaces/i18n/i18n-data';
 import MongooseBackend from '@services/i18n/mongoose-backend';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 //import {string} from 'joi';
 
 @Injectable()
 export class I18nService {
   private i18n: i18n;
 
-  private namespaces: string[] = ['default', 'admin'];
+  private namespaces: string[] = ['default', 'admin', 'api'];
 
-  private languages: string[] = ['en', 'dev'];
+  private languages: string[];
 
   public language = 'en';
 
   private i18nOptions: InitOptions;
 
-  private db = 'i18ntranslations';
+  private collection = 'translations';
 
   // eslint-disable-next-line id-length
   t: TFunction;
@@ -38,8 +38,8 @@ export class I18nService {
   ) {
     this.logger.setContext(I18nService.name);
 
-    this.languages = this.appConfig.get<string[]>('i18n.locales');
-    this.language = this.appConfig.get('i18n.default');
+    this.languages = this.appConfig.get<string[]>('locale.locales') || this.appConfig.get<string[]>('locale.fallback') || 'dev';
+    this.language = this.appConfig.get('locale.default') || 'en';
 
     this.logger.log(`I18n language: ${this.language}`);
 
