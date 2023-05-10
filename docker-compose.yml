@@ -18,7 +18,7 @@ services:
   api:
     image: starter/api:dev
     container_name: starter-api-dev
-    hostname: localhost
+    hostname: starter-api
     command: /bin/bash /init.sh
     build:
       context: docker-assets/api/
@@ -50,15 +50,10 @@ services:
       - "9229:9229"
     depends_on:
       - mongo
-      - mysql
       - redis
+      - mysql
     networks:
       - starternet
-    user: node:node
-    links:
-      - mongo
-      - mysql
-      - redis
 
   # MongoDB Service
   mongo:
@@ -153,7 +148,6 @@ services:
     image: starter/ui:dev
     container_name: starter-ui-dev
     command: /bin/bash /init.sh
-    hostname: starter-ui
     build:
       context: ./docker-assets/ui/
       args:
@@ -177,22 +171,6 @@ services:
       - api
     networks:
       - starternet
-    user: node:node
-
-  ca:
-    image: starter/openssl
-    container_name: starter-ca
-    build:
-      context: ./docker-assets/certs/
-      args:
-        debug: ${DEBUG:-yes}
-        key_len: ${KEY_LEN:-4096}
-        days: ${CERT_DAYS:-1461}
-        ca_cn: ${CA_ORG_CN:-Starter RootCA Org}
-        server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
-        subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
-    volumes:
-      - mongodb_ssl:/etc/ssl/mongodb/
 
   ca:
     image: starter/openssl

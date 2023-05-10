@@ -45,9 +45,13 @@ export class AppConfigService {
         }
       }, this.config);
   }
+  
+  get port(): number {
+    return this.config.api.port;
+  }
 
-  get ssl(): boolean {
-    return this.config.api.ssl === 'yes' || this.config.api.ssl === 'true';
+  get locales(): string[] {
+    return this.config.locale.locales;
   }
 
   get port(): number {

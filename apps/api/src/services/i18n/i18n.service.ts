@@ -9,8 +9,8 @@ import { Model } from 'mongoose';
 import { I18nTranslationInterface } from '@interfaces/i18n/i18n-translation';
 import { I18nData } from '@interfaces/i18n/i18n-data';
 import MongooseBackend from '@services/i18n/mongoose-backend';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 //import {string} from 'joi';
 
 @Injectable()

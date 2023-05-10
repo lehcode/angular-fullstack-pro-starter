@@ -35,6 +35,7 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && apt-get clean \
   && echo -e "${user}\t\tALL=(ALL:ALL)\tNOPASSWD:ALL" | tee -a /etc/sudoers \
   && npm install -g npm \
+  && npm --force install -g yarn \
   && echo "Node.js version: "$(node -v) \
   && echo "NPM binary & version: $(npm bin):$(npm -v)" \
   && npm --force install -g yarn \
@@ -43,6 +44,7 @@ RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && echo "NestJS binary & version: $(which nest):$(nest --version)"
 
 COPY entrypoint.sh /init.sh
+USER node:node
 WORKDIR ${workdir}
 USER ${user}:${group}
 
