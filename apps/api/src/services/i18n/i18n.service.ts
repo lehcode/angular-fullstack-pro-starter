@@ -17,7 +17,7 @@ import { map, catchError } from 'rxjs/operators';
 export class I18nService {
   private i18n: i18n;
 
-  private namespaces: string[] = ['default', 'admin'];
+  private namespaces: string[] = ['default', 'admin', 'api'];
 
   private languages: string[];
 
@@ -38,8 +38,8 @@ export class I18nService {
   ) {
     this.logger.setContext(I18nService.name);
 
-    this.languages = this.appConfig.get<string[]>('i18n.locales');
-    this.language = this.appConfig.get('i18n.default');
+    this.languages = this.appConfig.get<string[]>('locale.locales') || this.appConfig.get<string[]>('locale.fallback') || 'dev';
+    this.language = this.appConfig.get('locale.default') || 'en';
 
     this.logger.log(`I18n language: ${this.language}`);
 

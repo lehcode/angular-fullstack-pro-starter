@@ -14,11 +14,7 @@ import { BaseModule } from '@base/base.module';
     MongooseModule
   ],
   controllers: [ApiController],
-  providers: [
-    ApiService
-  ],
-  exports: [
-    ApiService
-  ]
+  providers: [ApiService],
+  exports: [ApiService]
 })
 export class ApiModule {}
