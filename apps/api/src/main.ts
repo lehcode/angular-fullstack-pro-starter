@@ -9,7 +9,7 @@ import { AppLoggerService } from '@services/app-logger/app-logger.service';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-  const appConfig: AppConfigService = app.get('AppConfigService');
+  const appConfig: AppConfigService = app.get(AppConfigService);
   const appLogger: AppLoggerService = app.get(AppLoggerService);
 
   app.enableCors({
