@@ -123,7 +123,7 @@ services:
       - var_lib_mysql:/var/lib/mysql
     ports:
       - "${MYSQL_PORT_HOST:-3306}:${MYSQL_PORT_CONTAINER:-3306}"
-    restart: on-failure
+    restart: no
     networks:
       - starternet
 
@@ -151,7 +151,7 @@ services:
   # UI Frontend Service
   ui:
     image: starter/ui:dev
-    container_name: ui
+    container_name: starter-ui-dev
     command: /bin/bash /init.sh
     hostname: starter-ui
     build:
@@ -215,7 +215,7 @@ volumes:
   var_log_mongodb:
   redis_data_bases:
   var_lib_mysql:
-  certs_ca:
+  mongodb_ssl:
 
 # Specify networks
 networks:
