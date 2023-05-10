@@ -30,16 +30,17 @@ services:
         mongo_version: ${MONGO_VERSION:-6.0}
         debug: ${DEBUG:-yes}
         passport_auth_strategy: ${PASSPORT_AUTH_STRATEGY:-local}
-        mongo_user: ${MONGO_USER_NAME:-starter}
-        mongo_pass: ${MONGO_USER_PASS}
         tz: ${TZ:-Etc/UTC}
     environment:
       NODE_VERSION: ${USE_NODE_VERSION}
       API_PORT: ${API_PORT_CONT:-3000}
       MONGO_PORT: ${MONGO_PORT_CONT:-27017}
       MONGO_HOST: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
-      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS:??authMechanism=DEFAULT}
-      MONGO_SECURE: ${MONGO_TLS:-no}
+      MONGO_USER: ${MONGO_USER_NAME:-starter_api}
+      MONGO_PASS: ${MONGO_USER_PASS?Environment variable MONGO_USER_PASS not specified}
+      MONGO_DB: ${MONGO_DB:-starter}
+      MONGO_URL_PARAMS: "?appName=${MONGO_APP_NAME}&authSource=${MONGO_DB:-starter}&appName=${MONGO_APP_NAME}&tls=true&tlsAllowInvalidCertificates=true&retryWrites=true&w=majority&keepAlive=true&authMechanism=DEFAULT"
+      MONGO_SECURE: ${MONGO_SECURE:-yes}
       SERVERLESS: ${API_SERVERLESS:-no}
     tty: true
     volumes:
@@ -57,29 +58,32 @@ services:
 
   # MongoDB Service
   mongo:
-    image: starter/mongo:${MONGO_VERSION:-6.0}
+    image: starter/mongo:${MONGO_VERSION}
     container_name: starter-mongo
-    hostname: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
-    command: mongod --config /etc/mongod.conf --port ${MONGO_PORT_CONT:-27017} --bind_ip ${MONGO_IP:-0.0.0.0}
+    hostname: ${MONGO_HOST}-${KEY_LEN:-4096}
+    command: mongod --config /etc/mongod.conf --bind_ip ${MONGO_IP:-0.0.0.0}
     build:
       context: ./docker-assets/mongo/
-      shm_size: 500m
       args:
-        mongo_version: ${MONGO_VERSION:-6.0}
+        mongo_version: ${MONGO_VERSION}
         debug: ${DEBUG:-yes}
         port: ${MONGO_PORT_CONT:-27017}
+        data_db: ${MONGO_DB:?Environment variable MONGO_DB not specified}
+        admin_db: ${MONGO_ADMIN_DB}
+        root_user: ${MONGO_ROOT_USER:-admin}
+        root_pass: ${MONGO_ROOT_PASS:?Environment variable MONGO_ROOT_PASS not defined}
         user: ${MONGO_USER_NAME}
-        pass: ${MONGO_USER_PASS}
-        db: ${MONGO_DB}
-        collections: ${MONGO_COLLECTIONS}
-        root_user: ${MONGO_ROOT_USER}
-        root_pass: ${MONGO_ROOT_PASS}
+        pass: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not defined}
         telemetry: ${MONGO_TELEMETRY:-yes}
         tz: ${TZ:-Etc/UTC}
-        admin_db: ${MONGO_ADMIN_DB}
+        max_map_count: ${MONGO_VM_MAX_MAP_COUNT:-102400}
     environment:
       SECURE: ${MONGO_SECURE:-no}
-      MAX_MAP_COUNT: ${MONGO_VM_MAX_MAP_COUNT:-102400}
+      MONGO_HOST: ${MONGO_HOST}-${KEY_LEN:-4096}
+      MONGO_DB: ${MONGO_DB}
+      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS}
+      MONGO_USER: ${MONGO_USER_NAME}
+      MONGO_PASS: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not defined}
     ulimits:
       nproc: 65535
       nofile:
@@ -103,15 +107,15 @@ services:
   mysql:
     hostname: starter-mysql
     container_name: starter-mysql
-    image: starter/mysql:${MYSQL_VERSION}
+    image: starter/mysql:${MYSQL_VERSION:-8.0}
     build:
       context: ./docker-assets/mysql/
       args:
         tz: ${TZ:-Etc/UTC}
-        mysql_version: ${MYSQL_VERSION}
+        mysql_version: ${MYSQL_VERSION:-8.0}
     environment:
-      MYSQL_ROOT_USER: ${MYSQL_USER}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER:?Environment variable MYSQL_ROOT_USER not defined}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS:?Environment variable MYSQL_ROOT_PASS not defined}
     volumes:
       - ./docker-assets/mysql/my.cnf:/etc/alternatives/my.cnf
       - ./docker-assets/mysql/log/:/var/log/mysql
@@ -142,6 +146,9 @@ services:
     networks:
       - starternet
     restart: no
+    depends_on:
+      - mongo
+      - mysql
 
   # UI Frontend Service
   ui:
@@ -180,10 +187,9 @@ services:
       args:
         debug: ${DEBUG:-yes}
         key_len: ${KEY_LEN:-4096}
-        days: ${CERT_DAYS:-1461}
-        ca_cn: ${CA_ORG_CN:-Starter RootCA Org}
+        days: ${CERT_DAYS:-365}
+        ca_cn: ${CA_ORG_CN:-CAuth}
         server_cn: ${MONGO_HOST:-mongo}-${KEY_LEN:-4096}
-        subj: /C=${CERT_COUNTRY:-UA}/ST=${CERT_STATE:-Odesa}/L=${CERT_LOC:-Odesa}/O=${CERT_ORG:-Starter Org Pty}/OU=${CERT_ORG_UNIT:-.}
     volumes:
       - mongodb_ssl:/etc/ssl/mongodb/
 

@@ -19,10 +19,8 @@ storage:
 # network interfaces
 net:
   port: 27017
-  bindIp: 0.0.0.0
   tls:
     certificateKeyFile: /data/ssl/server/mongo-4096.pem
-    #CAFile: /.certs/server/ca.pem
     mode: requireTLS
   unixDomainSocket:
     enabled: false

@@ -24,12 +24,11 @@ export default (): Record<string, any> => ({
   mongo: {
     host: process.env.MONGO_HOST || 'localhost',
     port: process.env.MONGO_PORT_CONTAINER || 27017,
-    urlParams: process.env.MONGO_URL_PARAMS,
+    urlParams: process.env.MONGO_URL_PARAMS || '?authMechanism=DEFAULT',
     db: process.env.MONGO_DB || 'starter',
     user: process.env.MONGO_USER,
     pass: process.env.MONGO_PASS,
     secure: process.env.MONGO_SECURE
-
   },
   mysql: {
     host: process.env.MYSQL_HOST || 'localhost',
@@ -39,4 +38,3 @@ export default (): Record<string, any> => ({
     pass: process.env.MYSQL_PASS
   }
 });
-// @ts-ignore
