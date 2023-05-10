@@ -45,14 +45,6 @@ export class AppConfigService {
         }
       }, this.config);
   }
-  
-  get port(): number {
-    return this.config.api.port;
-  }
-
-  get locales(): string[] {
-    return this.config.locale.locales;
-  }
 
   get port(): number {
     return this.config.api.port;
