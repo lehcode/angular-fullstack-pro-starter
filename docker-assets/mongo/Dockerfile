@@ -6,8 +6,8 @@ LABEL description="MongoDB server"
 
 ARG tz
 ARG port
-ARG mongo_user
-ARG mongo_pass
+ARG user
+ARG pass
 ARG debug
 ARG telemetry
 ARG db
