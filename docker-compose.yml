@@ -39,7 +39,7 @@ services:
       MONGO_USER: ${MONGO_USER_NAME:-starter_api}
       MONGO_PASS: ${MONGO_USER_PASS?Environment variable MONGO_USER_PASS not specified}
       MONGO_DB: ${MONGO_DB:-starter}
-      MONGO_URL_PARAMS: "?appName=${MONGO_APP_NAME}&authSource=${MONGO_DB:-starter}&appName=${MONGO_APP_NAME}&tls=true&tlsAllowInvalidCertificates=true&retryWrites=true&w=majority&keepAlive=true&authMechanism=DEFAULT"
+      MONGO_URL_PARAMS: ${MONGO_PARAMS}&authSource=${MONGO_DB:-starter}
       MONGO_SECURE: ${MONGO_SECURE:-yes}
       SERVERLESS: ${API_SERVERLESS:-no}
     tty: true
@@ -78,10 +78,9 @@ services:
         tz: ${TZ:-Etc/UTC}
         max_map_count: ${MONGO_VM_MAX_MAP_COUNT:-102400}
     environment:
-      SECURE: ${MONGO_SECURE:-no}
+      SECURE: ${MONGO_SECURE:-yes}
       MONGO_HOST: ${MONGO_HOST}-${KEY_LEN:-4096}
       MONGO_DB: ${MONGO_DB}
-      MONGO_URL_PARAMS: ${MONGO_URL_PARAMS}
       MONGO_USER: ${MONGO_USER_NAME}
       MONGO_PASS: ${MONGO_USER_PASS:?Environment variable MONGO_USER_PASS not defined}
     ulimits:

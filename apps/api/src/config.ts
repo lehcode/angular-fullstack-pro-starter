@@ -38,4 +38,3 @@ export default (): Record<string, any> => ({
     pass: process.env.MYSQL_PASS
   }
 });
-// @ts-ignore
