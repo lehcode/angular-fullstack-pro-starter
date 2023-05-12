@@ -11,8 +11,6 @@ ARG node_env
 ARG tz
 ARG workdir
 ARG mongo_version
-ARG mongo_user
-ARG mongo_pass
 
 ENV DEBUG=${debug}
 ENV NESTJS_VERSION=${nestjs_version}
