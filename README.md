@@ -1,8 +1,6 @@
 # NestJS & Angular Development Starter Boilerplate
 
-This NestJS and Angular starter boilerplate is designed to help you quickly set up a single application for development
-using Docker Compose, MongoDB, MySQL, Redis, and AWS Lambda. The boilerplate includes configuration for code linting
-and testing pipelines for Bitbucket. Whether you deploy to containers or not, containers make a great development environment because you can:
+This NestJS and Angular starter boilerplate is designed to help you quickly set up a single application for development using Docker Compose, MongoDB, MySQL, Redis, and AWS Lambda. The boilerplate includes configuration for code linting and testing pipelines for Bitbucket. Whether you deploy to containers or not,  containers make a great development environment because you can:
 
 - Develop with a consistent, easily reproducible toolchain on the same operating system you deploy to.
 - Quickly swap between different, separate development environments and safely make updates without worrying about impacting your local machine.
