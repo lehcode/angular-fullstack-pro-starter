@@ -45,7 +45,7 @@ export class AppConfigService {
         }
       }, this.config);
   }
-
+  
   get port(): number {
     return this.config.api.port;
   }
