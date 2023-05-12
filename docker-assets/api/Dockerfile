@@ -17,6 +17,8 @@ ENV NESTJS_VERSION=${nestjs_version}
 ENV NODE_ENV=${node_env}
 ENV NODE_VERSION=${node_version}
 ENV CONTAINER_WORKDIR=${workdir}
+ENV MONGO_USER=${mongo_user}
+ENV MONGO_PASS=${mongo_pass}
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
