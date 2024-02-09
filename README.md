@@ -9,7 +9,24 @@ This NestJS and Angular starter boilerplate is designed to help you quickly set 
 
 **NOTICE: Starter is supposed to use in development, testing or staging environments. DO NOT use it for production even if the effort was made to use the best security practices.**
 
-Includes the `docker-compose.yml` file, the configuration file for [Docker Compose](https://docs.docker.com/compose/),
+## What's Inside?
+
+The nest-angular-starter provides a foundational setup for a full-stack development environment, integrating:
+
+ - **NestJS**: A progressive Node.js framework for building efficient and scalable server-side applications.
+ - **Angular**: A platform for building mobile and desktop web applications using TypeScript/HTML/CSS.
+
+### Key Features
+
+ - **Boilerplate Code**: Get up and running with pre-configured boilerplate code for both NestJS and Angular.
+ - **Language Support**: The project primarily uses TypeScript, with a mix of HTML, JavaScript, Dockerfile, SCSS, and Shell for a comprehensive development experience.
+ - **Docker Integration**: Simplify your development and deployment workflow with Dockerfile configurations.
+ - **i18n Support**: Internationalization is baked in, allowing for easy localization of your applications.
+ - **Database Ready**: Integration with MongoDB for building applications with a NoSQL database.
+ - **Cloud Functions**: AWS Lambda support for creating serverless functions.
+ - **Starter Kit**: A perfect starting point for both learning and building enterprise-grade applications.
+
+Provides the `docker-compose.yml` file, the configuration file for [Docker Compose](https://docs.docker.com/compose/),
 a tool for defining and running multi-container Docker applications. The file specifies the Docker services (`API`, `UI`, `MongoDB`,
 `MySQL`, `Redis`) that should be created, and their configurations.
 
