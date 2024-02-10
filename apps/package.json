@@ -1,0 +1,42 @@
+{
+  "name": "aims",
+  "version": "1.0.0",
+  "repository": "git@github.com:lehcode/angular-fullstack-pro-starter.git",
+  "author": "AntonyR <971638-lehcode@users.noreply.gitlab.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn start",
+    "test": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn test",
+    "build": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn build",
+    "lint": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn lint"
+  },
+  "workspaces": [
+    "*"
+  ],
+  "devDependencies": {
+    "@aws-sdk/credential-provider-node": "^3.511.0",
+    "@nrwl/angular": "^18.0.4",
+    "@nrwl/jest": "^18.0.4",
+    "@nrwl/linter": "^18.0.4",
+    "@nrwl/nest": "^18.0.4",
+    "@nrwl/web": "^18.0.4",
+    "@nrwl/workspace": "^18.0.4",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.17",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "dotenv": "^16.4.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "lerna": "^8.1.2",
+    "prettier": "^3.2.5",
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.3",
+    "serverless-plugin-typescript": "^2.1.5",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

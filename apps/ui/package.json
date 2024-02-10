@@ -1,5 +1,5 @@
 {
-  "name": "nest-angular-starter-ui",
+  "name": "@aims/admin",
   "version": "0.0.1",
   "description": "Starter Frontend Application",
   "author": "Lehcode<53556648+lehcode@users.noreply.github.com>",
@@ -28,7 +28,6 @@
     "@angular/platform-server": "^15.2.7",
     "@angular/router": "~15.2.7",
     "@nguniversal/express-engine": "^15.2.1",
-    "@types/lodash": "^4.14.168",
     "aws-serverless-express": "^3.4.0",
     "express": "^4.15.2",
     "lodash": "^4.17.20",
@@ -50,6 +49,7 @@
     "@tsconfig/recommended": "^1.0.2",
     "@types/jasmine": "^4.3.1",
     "@types/jest": "^29.5.0",
+    "@types/lodash": "^4.14.168",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.58.0",
