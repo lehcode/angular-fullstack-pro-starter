@@ -35,7 +35,8 @@
     "markdown-to-html": "^0.0.13",
     "ngx-logger": "^5.0.12",
     "tslib": "^2.6.2",
-    "zone.js": "^0.13.0"
+    "rxjs": "^7.4.0",
+    "zone.js": "^0.14.4"
   },
   "devDependencies": {
     "@angular-devkit/architect": "^0.1602.12",
@@ -83,6 +84,6 @@
     "stylelint-prettier": "^3.0.0",
     "stylelint-scss": "^4.6.0",
     "ts-node": "~10.9.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   }
 }

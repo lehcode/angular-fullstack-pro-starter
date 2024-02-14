@@ -19,9 +19,9 @@ ENV NODE_VERSION=${node_version}
 ENV CONTAINER_WORKDIR=${workdir}
 ENV MONGO_USER=${mongo_user}
 ENV MONGO_PASS=${mongo_pass}
+ENV DEBIAN_FRONTEND="noninteractive
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
-  && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && wget -qO - "https://www.mongodb.org/static/pgp/server-${mongo_version}.asc" | apt-key add - \
   && echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/${mongo_version} multiverse" | tee "/etc/apt/sources.list.d/mongodb-org-${mongo_version}.list" \
   && apt-get update \

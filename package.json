@@ -14,13 +14,12 @@
   "workspaces": ["apps/*"],
   "devDependencies": {
     "@aws-sdk/credential-provider-node": "^3.513.0",
-    "@nrwl/nest": "^18.0.4",
     "@nrwl/nx": "^7.8.7",
-    "@nrwl/workspace": "^16.10.0",
+    "@nrwl/workspace": "^18.0.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.17",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
     "dotenv": "^16.4.4",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -34,6 +33,6 @@
     "serverless-plugin-typescript": "^2.1.5",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   }
 }
