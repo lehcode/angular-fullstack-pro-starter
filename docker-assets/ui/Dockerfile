@@ -14,12 +14,13 @@ ENV DEBUG=${debug}
 ENV NODE_VERSION=${node_version}
 ENV TZ=${tz}
 ENV ANALYTICS_REPORTING=false
+ENV DEBIAN_FRONTEND="noninteractive
 
 RUN if [ "${debug}" != "yes" ]; then set -e; else set -ex; fi \
   && if [ "${debug}" != "yes" ]; then env; fi \
   && curl -qs https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
-  && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
+#  && sh -c 'export DEBIAN_FRONTEND="noninteractive"' \
   && apt-get update \
   && apt-get -y upgrade \
   && apt-get -yq install --no-install-recommends --no-install-suggests sudo lsb-release xdg-utils google-chrome-stable curl tzdata locales ca-certificates \
