@@ -180,7 +180,7 @@ export class I18nService {
         map((translations) => {
           const resources = {};
 
-          translations.forEach((translation: I18nTranslationInterface) => {
+          translations.forEach((translation) => {
             const i18nKey = translation.key as string;
             // @ts-ignore
             resources[i18nKey] = Object.assign({}, translation.i18n)[this.language] as string;

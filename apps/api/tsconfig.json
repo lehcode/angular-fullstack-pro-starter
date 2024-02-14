@@ -14,7 +14,7 @@
       "es2022",
     ],
     "paths": {
-      "@root/*": [ "../src/*" ],
+//      "@root/*": [ "src/*" ],
       "@admin/*": [ "modules/admin/*" ],
       "@api/*": [ "modules/api/*" ],
       "@base/*": [ "modules/base/*" ],

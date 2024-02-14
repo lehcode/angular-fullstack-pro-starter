@@ -46,7 +46,7 @@ module.exports = {
         project: ["tsconfig.json"],
         createDefaultProgram: true,
       },
-      extends: ["plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"],
+      extends: ["plugin:@typescript-eslint/recommended"],
       rules: {
         "no-multiple-empty-lines": ["warn", { "max": 2,
           "maxBOF": 0,

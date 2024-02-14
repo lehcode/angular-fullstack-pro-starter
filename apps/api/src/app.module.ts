@@ -40,8 +40,8 @@ if (process?.env.NODE_ENV === 'development' || process?.env.NODE_ENV === 'test')
       load: [config]
     }),
     MongooseModule.forRoot(mongoConnectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       dbName: mongoDb,
       user: mongoUser,
       pass: mongoPass,
@@ -50,15 +50,13 @@ if (process?.env.NODE_ENV === 'development' || process?.env.NODE_ENV === 'test')
     BaseModule,
     ApiModule,
     AdminModule,
-    // AuthModule,
     UsersModule
   ],
   controllers: [
     ApiController,
-    // AuthController
   ],
   providers: [
-    //AuthService,
+    AuthService,
     UsersService
   ]
 })

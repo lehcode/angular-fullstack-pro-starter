@@ -6,10 +6,10 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn start",
-    "test": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn test",
-    "build": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn build",
-    "lint": "npx lerna exec --scope={@aims/api,@aims/admin} -- yarn lint"
+    "start": "npx lerna exec --scope={@aims/api,@aims/ui} -- yarn start",
+    "test": "npx lerna exec --scope={@aims/api,@aims/ui} -- yarn test",
+    "build": "npx lerna exec --scope={@aims/api,@aims/ui} -- yarn build",
+    "lint": "npx lerna exec --scope={@aims/api,@aims/ui} -- yarn lint"
   },
   "workspaces": ["apps/*"],
   "devDependencies": {
